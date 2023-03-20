@@ -11,7 +11,8 @@ NAME = minishell
 LIBFT = libft.a
 LIBFT_DIR = libft/
 
-SRC = main.c
+SRC =	main.c			\
+		lexer/list.c	\
 
 OBJ = $(SRC:.c=.o)
 

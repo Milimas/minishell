@@ -6,29 +6,11 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/03/19 23:14:35 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/03/20 22:54:42 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <dirent.h>
-#include <termios.h>
-#include "includes/libft.h"
-
-#define PROMPT_TEXT "\033[0;31mbash-0.1$ \033[0m"
-
-extern char	**environ;
-
-typedef struct s_cmd
-{
-	char	**args;
-	char	*cmd;
-}	t_cmd;
+#include "includes/minishell.h"
 
 void		sig_ign_handler(int signum);
 
@@ -181,54 +163,158 @@ char	**bsh_split(char const *s, char c)
 	return (arr);
 }
 
-t_cmd	parse_command(char *line)
+int	is_token(char c)
 {
-	t_cmd	cmd;
-	char	**tmp_args;
-	char	*tmp;
+	return (c == WHITE_SPACE || c == NEW_LINE || c == QUOTE
+		|| c == DOUBLE_QUOTE || c == ESCAPE || c == ENV
+		|| c == PIPE_LINE || c == REDIRECTION_IN
+		|| c == REDIRECTION_OUT || c == WILDCARD
+		|| c == PARENTASIS_OPEN || c == PARENTASIS_CLOSE);
+}
 
-	tmp_args = bsh_split(line, ' ');
-	cmd.args = tmp_args;
-	while (*tmp_args)
+t_linkedlist	*ft_lexer(char *line)
+{
+	t_linkedlist	*list;
+	t_elem			elem;
+	int				state;
+
+	list = list_init(NULL);
+	state = GENERAL;
+	while (line && *line)
 	{
-		if (ft_strchr(*tmp_args, '$'))
+		if (list->tail && (list->tail->type == QUOTE || list->tail->state == IN_QUOTE))
 		{
-			tmp = ft_strchr(*tmp_args, '$');
-			tmp = ft_substr(tmp, 1, ft_strchr(tmp, ' ') - tmp);
-			
-			// printf("====>%s\n", get_env_variable(tmp));
+			state = IN_QUOTE;
+			if (*line == QUOTE)
+				state = GENERAL;
 		}
-		tmp_args++;
+		else if (list->tail && (list->tail->type == DOUBLE_QUOTE || list->tail->state == IN_DOUBLE_QUOTE))
+		{
+			state = IN_DOUBLE_QUOTE;
+			if (*line == DOUBLE_QUOTE)
+				state = GENERAL;
+		}
+		else
+			state = GENERAL;
+		if (is_token(*line) && *line != ENV)
+		{
+			list_add_back(list, list_new_elem(line, 1, *line, state));
+			line++;
+		}
+		else
+		{
+			elem.content = line;
+			elem.len = 0;
+			elem.type = WORD;
+			if (*line == ENV)
+			{
+				elem.type = ENV;
+			}
+			elem.state = state;
+			while (*line)
+			{
+				line++;
+				elem.len++;
+				if (is_token(*line))
+					break ;
+			}
+			list_add_back(list, list_new_elem(elem.content, elem.len, elem.type, elem.state));
+		}
 	}
-	cmd.cmd = cmd.args[0];
-	return (cmd);
+	return (list);
+}
+
+char	*state_to_text(int state)
+{
+	if (state == IN_DOUBLE_QUOTE)
+		return ("IN_DOUBLE_QUOTE");
+	if (state == IN_QUOTE)
+		return ("IN_QUOTE");
+	if (state == GENERAL)
+		return ("GENERAL");
+	if (state == IN_PARENTASIS)
+		return ("IN_PARENTASIS");
+	return (NULL);
+}
+
+char	*type_to_text(int type)
+{
+	if (type == WORD)
+		return ("WORD");
+	if (type == WHITE_SPACE)
+		return ("WHITE_SPACE");
+	if (type == NEW_LINE)
+		return ("NEW_LINE");
+	if (type == QUOTE)
+		return ("QUOTE");
+	if (type == DOUBLE_QUOTE)
+		return ("DOUBLE_QUOTE");
+	if (type == ESCAPE)
+		return ("ESCAPE");
+	if (type == ENV)
+		return ("ENV");
+	if (type == PIPE_LINE)
+		return ("PIPE_LINE");
+	if (type == REDIRECTION_IN)
+		return ("REDIRECTION_IN");
+	if (type == REDIRECTION_OUT)
+		return ("REDIRECTION_OUT");
+	if (type == HERE_DOC)
+		return ("HERE_DOC");
+	if (type == DOUBLE_REDIRECTION_OUT)
+		return ("DOUBLE_REDIRECTION_OUT");
+	if (type == WILDCARD)
+		return ("WILDCARD");
+	if (type == PARENTASIS_OPEN)
+		return ("PARENTASIS_OPEN");
+	if (type == PARENTASIS_CLOSE)
+		return ("PARENTASIS_CLOSE");
+	if (type == DOUBLE_AMPERSAND)
+		return ("DOUBLE_AMPERSAND");
+	if (type == LOGOCAL_OR_OPERATOR)
+		return ("LOGOCAL_OR_OPERATOR");
+	return (NULL);
+}
+
+void	print_linkedlist(t_linkedlist *list)
+{
+	t_elem	*elem;
+
+	elem = list->head;
+	printf("=================================================================\n");
+	while (elem)
+	{
+		printf("content: %s\tlen: %d\tstate: %s\ttype: %s\n", elem->content, elem->len, state_to_text(elem->state), type_to_text(elem->type));
+		elem = elem->next;
+	}
+	printf("=================================================================\n");
 }
 
 void	bash_promt(void)
 {
 	char	*line;
-	t_cmd	cmd;
 
 	line = readline(PROMPT_TEXT);
-	if (line && *line != 0)
+	if (!line)
+		exit(!!printf("exit\n"));
+	if (ft_strlen(line))
 	{
 		add_history(line);
-		cmd = parse_command(line);
-		if (cmd.cmd && !ft_strncmp(cmd.cmd, "echo", ft_strlen(cmd.cmd)))
-			bsh_echo(&cmd);
-		if (cmd.cmd && !ft_strncmp(cmd.cmd, "cd", ft_strlen(cmd.cmd)))
-			bsh_chdir(&cmd);
-		if (cmd.cmd && !ft_strncmp(cmd.cmd, "pwd", ft_strlen(cmd.cmd)))
-			bsh_pwd();
-		if (cmd.cmd && !ft_strncmp(cmd.cmd, "env", ft_strlen(cmd.cmd)))
-			bsh_env();
-		if (cmd.cmd && !ft_strncmp(cmd.cmd, "exit", ft_strlen(cmd.cmd)))
-			exit(!printf("exit\n"));
-		if (cmd.cmd && !ft_strncmp(cmd.cmd, "dbg", ft_strlen(cmd.cmd)))
-			get_env_variable(cmd.args[1]);
+		print_linkedlist(ft_lexer(line));
+		// cmd = parse_command(line);
+		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "echo", ft_strlen(cmd.cmd)))
+		// 	bsh_echo(&cmd);
+		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "cd", ft_strlen(cmd.cmd)))
+		// 	bsh_chdir(&cmd);
+		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "pwd", ft_strlen(cmd.cmd)))
+		// 	bsh_pwd();
+		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "env", ft_strlen(cmd.cmd)))
+		// 	bsh_env();
+		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "exit", ft_strlen(cmd.cmd)))
+		// 	exit(!printf("exit\n"));
+		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "dbg", ft_strlen(cmd.cmd)))
+		// 	get_env_variable(cmd.args[1]);
 	}
-	if (!line)
-		exit(!printf("exit\n"));
 	free(line);
 }
 
