@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/03/20 22:54:42 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/03/21 00:52:04 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,20 @@ int	is_token(char c)
 		|| c == PARENTASIS_OPEN || c == PARENTASIS_CLOSE);
 }
 
+enum e_state	get_previous_state(t_elem *elem, enum e_state current_state)
+{
+	t_elem	*tmp;
+
+	tmp = elem;
+	while (tmp)
+	{
+		if (tmp->state != current_state && )
+			return (tmp->state);
+		tmp = tmp->prev;
+	}
+	return (current_state);
+}
+
 t_linkedlist	*ft_lexer(char *line)
 {
 	t_linkedlist	*list;
@@ -186,13 +200,13 @@ t_linkedlist	*ft_lexer(char *line)
 		{
 			state = IN_QUOTE;
 			if (*line == QUOTE)
-				state = GENERAL;
+				state = get_previous_state(list->tail, state);
 		}
 		else if (list->tail && (list->tail->type == DOUBLE_QUOTE || list->tail->state == IN_DOUBLE_QUOTE))
 		{
 			state = IN_DOUBLE_QUOTE;
 			if (*line == DOUBLE_QUOTE)
-				state = GENERAL;
+				state = get_previous_state(list->tail, state);
 		}
 		else
 			state = GENERAL;

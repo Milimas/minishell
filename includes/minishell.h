@@ -126,7 +126,7 @@ typedef struct s_redir_elem
 int				list_is_empty(t_linkedlist *list);
 t_linkedlist	*list_init(t_linkedlist *list);
 t_elem			*list_new_elem(char *content,
-				int len, enum e_token type, enum e_state state);
+						int len, enum e_token type, enum e_state state);
 void			list_add_back(t_linkedlist *list, t_elem *new);
 void			list_free(t_linkedlist *list);
 
