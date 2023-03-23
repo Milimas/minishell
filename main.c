@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/03/21 00:52:04 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/03/23 06:06:02 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,22 @@ char	*get_env_variable(char *name)
 	return (NULL);
 }
 
-void	bsh_echo(t_cmd *cmd)
+void	bsh_echo(t_elem *lexer)
 {
 	int		n;
 	char	*flag;
 
 	n = 1;
-	cmd->args++;
-	while (*cmd->args && ft_strnstr(*cmd->args, "-", ft_strlen(*cmd->args) + 1))
+	// if (lexer->next)
+		lexer = lexer->next;
+	while ((lexer && ft_strnstr(lexer->content, "-", ft_strlen(lexer->content) + 1)) || (lexer && *lexer->content == ' '))
 	{
-		flag = (*cmd->args);
+		if (*lexer->content == ' ')
+		{
+			lexer = lexer->next;
+			continue ;
+		}
+		flag = lexer->content;
 		while (++flag && *flag)
 		{
 			if (!ft_strchr("neE", *flag))
@@ -49,14 +55,14 @@ void	bsh_echo(t_cmd *cmd)
 		}
 		if (!flag)
 			break ;
-		cmd->args++;
+		lexer = lexer->next;
 		n = 0;
 	}
-	while (*cmd->args)
+	while (lexer)
 	{
-		ft_putstr_fd(*cmd->args, 1);
-		cmd->args++;
-		write(1, " ", !!(*cmd->args));
+		ft_putstr_fd(lexer->content, 1);
+		lexer = lexer->next;
+		// write(1, " ", !!(lexer));
 	}
 	write(1, "\n", 1 * n);
 }
@@ -84,7 +90,7 @@ void	bsh_pwd(void)
 {
 	char *buf;
 
-	buf = getcwd(NULL, 10);
+	buf = getcwd(0, 0);
 	printf("%s\n", buf);
 	free(buf);
 }
@@ -179,7 +185,7 @@ enum e_state	get_previous_state(t_elem *elem, enum e_state current_state)
 	tmp = elem;
 	while (tmp)
 	{
-		if (tmp->state != current_state && )
+		if (tmp->state != current_state)
 			return (tmp->state);
 		tmp = tmp->prev;
 	}
@@ -196,20 +202,6 @@ t_linkedlist	*ft_lexer(char *line)
 	state = GENERAL;
 	while (line && *line)
 	{
-		if (list->tail && (list->tail->type == QUOTE || list->tail->state == IN_QUOTE))
-		{
-			state = IN_QUOTE;
-			if (*line == QUOTE)
-				state = get_previous_state(list->tail, state);
-		}
-		else if (list->tail && (list->tail->type == DOUBLE_QUOTE || list->tail->state == IN_DOUBLE_QUOTE))
-		{
-			state = IN_DOUBLE_QUOTE;
-			if (*line == DOUBLE_QUOTE)
-				state = get_previous_state(list->tail, state);
-		}
-		else
-			state = GENERAL;
 		if (is_token(*line) && *line != ENV)
 		{
 			list_add_back(list, list_new_elem(line, 1, *line, state));
@@ -233,6 +225,21 @@ t_linkedlist	*ft_lexer(char *line)
 					break ;
 			}
 			list_add_back(list, list_new_elem(elem.content, elem.len, elem.type, elem.state));
+		}
+		if (state != GENERAL)
+		{
+			if ((list->tail->type == DOUBLE_QUOTE && state == IN_DOUBLE_QUOTE) || (list->tail->type == QUOTE && state == IN_QUOTE))
+			{
+				list->tail->state = GENERAL;
+				state = GENERAL;
+			}
+		}
+		else
+		{
+			if (list->tail->type == DOUBLE_QUOTE)
+				state = IN_DOUBLE_QUOTE;
+			if (list->tail->type == QUOTE)
+				state = IN_QUOTE;	
 		}
 	}
 	return (list);
@@ -307,6 +314,7 @@ void	print_linkedlist(t_linkedlist *list)
 void	bash_promt(void)
 {
 	char	*line;
+	t_linkedlist	*lexer;
 
 	line = readline(PROMPT_TEXT);
 	if (!line)
@@ -314,19 +322,19 @@ void	bash_promt(void)
 	if (ft_strlen(line))
 	{
 		add_history(line);
-		print_linkedlist(ft_lexer(line));
-		// cmd = parse_command(line);
-		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "echo", ft_strlen(cmd.cmd)))
-		// 	bsh_echo(&cmd);
-		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "cd", ft_strlen(cmd.cmd)))
+		lexer = ft_lexer(line);
+		print_linkedlist(lexer);
+		if (lexer->head->content && !ft_strncmp(lexer->head->content, "echo", ft_strlen(lexer->head->content)))
+			bsh_echo(lexer->head);
+		// if (lexer->head->content && !ft_strncmp(lexer->head->content, "cd", ft_strlen(lexer->head->content)))
 		// 	bsh_chdir(&cmd);
-		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "pwd", ft_strlen(cmd.cmd)))
-		// 	bsh_pwd();
-		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "env", ft_strlen(cmd.cmd)))
+		if (lexer->head->content && !ft_strncmp(lexer->head->content, "pwd", ft_strlen(lexer->head->content)))
+			bsh_pwd();
+		// if (lexer->head->content && !ft_strncmp(lexer->head->content, "env", ft_strlen(lexer->head->content)))
 		// 	bsh_env();
-		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "exit", ft_strlen(cmd.cmd)))
+		// if (lexer->head->content && !ft_strncmp(lexer->head->content, "exit", ft_strlen(lexer->head->content)))
 		// 	exit(!printf("exit\n"));
-		// if (cmd.cmd && !ft_strncmp(cmd.cmd, "dbg", ft_strlen(cmd.cmd)))
+		// if (lexer->head->content && !ft_strncmp(lexer->head->content, "dbg", ft_strlen(lexer->head->content)))
 		// 	get_env_variable(cmd.args[1]);
 	}
 	free(line);
