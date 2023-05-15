@@ -177,3 +177,5 @@
 ## Resources:
 
 [https://cmdse.github.io/pages/appendix/bash-grammar.html](https://cmdse.github.io/pages/appendix/bash-grammar.html)
+
+[https://github.com/fraqioui/minishell](https://github.com/fraqioui/minishell)
