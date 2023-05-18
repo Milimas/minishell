@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/03/23 06:06:02 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/18 17:27:43 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,10 +311,127 @@ void	print_linkedlist(t_linkedlist *list)
 	printf("=================================================================\n");
 }
 
+int		count_args(t_elem *elem)
+{
+	int	count;
+
+	count = 0;
+	while (elem && elem->type != PIPE_LINE)
+	{
+		elem = elem->next;
+		count++;
+	}
+	return (count);
+}
+
+t_redir_elem	*create_redir(t_elem **elem)
+{
+	t_redir_elem	*redir;
+
+	redir = ft_calloc(sizeof(t_redir_elem), 1);
+	redir->type = (*elem)->type;
+	*elem = (*elem)->next;
+	while ((*elem) && (*elem)->type == WHITE_SPACE)
+		*elem = (*elem)->next;
+	if ((*elem) && (*elem)->type == WORD)
+	{
+		redir->arg = (*elem)->content;
+		(*elem) = (*elem)->next;
+	}
+	else
+		printf("Error: redir");
+	return (redir);
+}
+
+t_cmd	*create_cmd(t_elem **elem)
+{
+	t_cmd	*cmd;
+	char	**tmp_args;
+
+	cmd = ft_calloc(sizeof(t_cmd), 1);
+	cmd->args = ft_calloc(sizeof(char *), count_args((*elem)) + 1);
+	tmp_args = cmd->args;
+	cmd->redir = ft_calloc(sizeof(t_redir_list), 1); // fill this only if there is a redirection else set it to null
+	while ((*elem) && (*elem)->type != PIPE_LINE)
+	{
+		if ((*elem) && ((*elem)->type == REDIRECTION_IN || (*elem)->type == REDIRECTION_OUT || (*elem)->type == HERE_DOC || (*elem)->type == DOUBLE_REDIRECTION_OUT))
+		{
+			cmd->redir->tail = create_redir(elem);
+			if (!cmd->redir->head)
+				cmd->redir->head = cmd->redir->tail;
+			else
+				cmd->redir->head->next = cmd->redir->tail;
+			cmd->redir->size++;
+		}
+		if ((*elem) && ((*elem)->type != WHITE_SPACE || (*elem)->state == IN_QUOTE || (*elem)->state == IN_DOUBLE_QUOTE))
+			*tmp_args++ = ft_strdup((*elem)->content);
+		if ((*elem))
+			(*elem) = (*elem)->next;
+	}
+	if (*elem)
+		printf("=====> %s\n", (*elem)->content);
+	cmd->fd.in = 0;
+	cmd->fd.out = 1;
+	return (cmd);
+}
+
+void	ft_parser(t_elem *elem, t_ast_node **ast)
+{
+	t_ast_node	*tmp_ast_node;
+
+	while (elem->type == WHITE_SPACE)
+		elem = elem->next;
+	if (elem && elem->type == WORD) // its a command
+	{
+		if (!(*ast))
+		{
+			(*ast) = ft_calloc(sizeof(t_ast_node), 1);
+		}
+		(*ast)->type = CMD;
+		(*ast)->content = ft_calloc(sizeof(t_union), 1);
+		(*ast)->content->cmd = create_cmd(&elem);
+	}
+	if (elem && elem->type == PIPE_LINE && ast) // only if a command is before the pipe
+	{
+		printf("elem : ====>>> %s\n", elem->content);
+		tmp_ast_node = ft_calloc(sizeof(t_ast_node), 1);
+		tmp_ast_node->type = PIPE;
+		tmp_ast_node->content = ft_calloc(sizeof(t_union), 1);
+		tmp_ast_node->content->pipe = ft_calloc(sizeof(t_pipe), 1);
+		tmp_ast_node->content->pipe->first = *ast;
+		*ast = tmp_ast_node;
+		(*ast)->content->pipe->second = ft_calloc(sizeof(t_ast_node), 1);
+		ft_parser(elem->next, &(*ast)->content->pipe->second);
+	}
+
+}
+
+void	print_ast(t_ast_node *ast)
+{
+	char	**args;
+
+	if (ast && ast->type == CMD)
+	{
+		args = ast->content->cmd->args;
+		printf("cmd: %s\n", *args);
+		while (*++args)
+		{
+			printf("arg: %s\n", *args);
+		}
+	}
+	if (ast && ast->type == PIPE)
+	{
+		print_ast(ast->content->pipe->first);
+		printf("pipe\n");
+		print_ast(ast->content->pipe->second);
+	}
+}
+
 void	bash_promt(void)
 {
 	char	*line;
 	t_linkedlist	*lexer;
+	t_ast			ast;
 
 	line = readline(PROMPT_TEXT);
 	if (!line)
@@ -324,6 +441,9 @@ void	bash_promt(void)
 		add_history(line);
 		lexer = ft_lexer(line);
 		print_linkedlist(lexer);
+		ast.root = NULL;
+		ft_parser(lexer->head, &ast.root);
+		print_ast(ast.root);
 		if (lexer->head->content && !ft_strncmp(lexer->head->content, "echo", ft_strlen(lexer->head->content)))
 			bsh_echo(lexer->head);
 		// if (lexer->head->content && !ft_strncmp(lexer->head->content, "cd", ft_strlen(lexer->head->content)))

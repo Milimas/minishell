@@ -122,6 +122,12 @@ typedef struct s_redir_elem
 	t_redir_elem	*next;
 }	t_redir_elem;
 
+typedef union u_union
+{
+	t_pipe	*pipe;
+	t_cmd	*cmd;
+}	t_union;
+
 // list.c
 int				list_is_empty(t_linkedlist *list);
 t_linkedlist	*list_init(t_linkedlist *list);
