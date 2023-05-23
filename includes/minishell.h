@@ -34,8 +34,8 @@ enum e_node_type
 
 enum e_state
 {
-	IN_DOUBLE_QUOTE,
-	IN_QUOTE,
+	IN_DOUBLE_QUOTE = '"',
+	IN_QUOTE = '\'',
 	GENERAL,
 	IN_PARENTASIS,
 };

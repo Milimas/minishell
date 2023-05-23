@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/18 17:27:43 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/22 04:41:41 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,9 +169,14 @@ char	**bsh_split(char const *s, char c)
 	return (arr);
 }
 
+int		ft_isspace(char c)
+{
+	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r' || c == ' ');
+}
+
 int	is_token(char c)
 {
-	return (c == WHITE_SPACE || c == NEW_LINE || c == QUOTE
+	return (ft_isspace(c) || c == NEW_LINE || c == QUOTE
 		|| c == DOUBLE_QUOTE || c == ESCAPE || c == ENV
 		|| c == PIPE_LINE || c == REDIRECTION_IN
 		|| c == REDIRECTION_OUT || c == WILDCARD
@@ -192,6 +197,38 @@ enum e_state	get_previous_state(t_elem *elem, enum e_state current_state)
 	return (current_state);
 }
 
+int		is_double_redirection(char *line)
+{
+	if ((*line == REDIRECTION_OUT && *(line + 1) == REDIRECTION_OUT))
+		return (DOUBLE_REDIRECTION_OUT);
+	if ((*line == REDIRECTION_IN && *(line + 1) == REDIRECTION_IN))
+		return (HERE_DOC);
+	return (0);
+}
+
+void		lexer_escape(t_linkedlist *list, char **line, int state)
+{
+	list_add_back(list, list_new_elem(*line + 1, 1, **line, state));
+	*line += 2;
+}
+
+void		lexer_double_redirection(t_linkedlist *list, char **line, int state)
+{
+	list_add_back(list, list_new_elem(*line, 2, is_double_redirection(*line), state));
+	*line += 2;
+}
+
+void		lexer_quotes(t_linkedlist *list, char **line, int *state)
+{
+	if (*state == GENERAL)
+		*state = **line;
+	else if (*state == **line)
+		*state = GENERAL;
+	else
+		list_add_back(list, list_new_elem(*line, 1, **line, *state));
+	(*line)++;
+}
+
 t_linkedlist	*ft_lexer(char *line)
 {
 	t_linkedlist	*list;
@@ -202,10 +239,21 @@ t_linkedlist	*ft_lexer(char *line)
 	state = GENERAL;
 	while (line && *line)
 	{
+		if (ft_isspace(*line))
+			*line = WHITE_SPACE;
 		if (is_token(*line) && *line != ENV)
 		{
-			list_add_back(list, list_new_elem(line, 1, *line, state));
-			line++;
+			if (is_double_redirection(line))
+				lexer_double_redirection(list, &line, state);
+			else if (*line == ESCAPE)
+				lexer_escape(list, &line, state);
+			else if (*line == QUOTE || *line == DOUBLE_QUOTE)
+				lexer_quotes(list, &line, &state);
+			else
+			{
+				list_add_back(list, list_new_elem(line, 1, *line, state));
+				line++;
+			}
 		}
 		else
 		{
@@ -221,26 +269,30 @@ t_linkedlist	*ft_lexer(char *line)
 			{
 				line++;
 				elem.len++;
-				if (is_token(*line))
+				if (is_token(*line) && *line != ENV)
 					break ;
 			}
 			list_add_back(list, list_new_elem(elem.content, elem.len, elem.type, elem.state));
-		}
-		if (state != GENERAL)
-		{
-			if ((list->tail->type == DOUBLE_QUOTE && state == IN_DOUBLE_QUOTE) || (list->tail->type == QUOTE && state == IN_QUOTE))
+			if (list->head->type == ENV)
 			{
-				list->tail->state = GENERAL;
-				state = GENERAL;
+				list->head->content = ft_strdup(get_env_variable(list->head->content + 1));
 			}
 		}
-		else
-		{
-			if (list->tail->type == DOUBLE_QUOTE)
-				state = IN_DOUBLE_QUOTE;
-			if (list->tail->type == QUOTE)
-				state = IN_QUOTE;	
-		}
+		// if (state != GENERAL)
+		// {
+		// 	if ((list->tail->type == DOUBLE_QUOTE && state == IN_DOUBLE_QUOTE) || (list->tail->type == QUOTE && state == IN_QUOTE))
+		// 	{
+		// 		list->tail->state = GENERAL;
+		// 		state = GENERAL;
+		// 	}
+		// }
+		// else
+		// {
+		// 	if (list->tail->type == DOUBLE_QUOTE)
+		// 		state = IN_DOUBLE_QUOTE;
+		// 	if (list->tail->type == QUOTE)
+		// 		state = IN_QUOTE;	
+		// }
 	}
 	return (list);
 }
@@ -352,7 +404,7 @@ t_cmd	*create_cmd(t_elem **elem)
 	cmd->args = ft_calloc(sizeof(char *), count_args((*elem)) + 1);
 	tmp_args = cmd->args;
 	cmd->redir = ft_calloc(sizeof(t_redir_list), 1); // fill this only if there is a redirection else set it to null
-	while ((*elem) && (*elem)->type != PIPE_LINE)
+	while ((*elem))
 	{
 		if ((*elem) && ((*elem)->type == REDIRECTION_IN || (*elem)->type == REDIRECTION_OUT || (*elem)->type == HERE_DOC || (*elem)->type == DOUBLE_REDIRECTION_OUT))
 		{
@@ -363,13 +415,13 @@ t_cmd	*create_cmd(t_elem **elem)
 				cmd->redir->head->next = cmd->redir->tail;
 			cmd->redir->size++;
 		}
-		if ((*elem) && ((*elem)->type != WHITE_SPACE || (*elem)->state == IN_QUOTE || (*elem)->state == IN_DOUBLE_QUOTE))
+		if ((*elem) && ((*elem)->type != WHITE_SPACE))
 			*tmp_args++ = ft_strdup((*elem)->content);
 		if ((*elem))
 			(*elem) = (*elem)->next;
+		if ((*elem) && (*elem)->type == PIPE_LINE && (*elem)->state == GENERAL)
+			break;
 	}
-	if (*elem)
-		printf("=====> %s\n", (*elem)->content);
 	cmd->fd.in = 0;
 	cmd->fd.out = 1;
 	return (cmd);
@@ -391,9 +443,8 @@ void	ft_parser(t_elem *elem, t_ast_node **ast)
 		(*ast)->content = ft_calloc(sizeof(t_union), 1);
 		(*ast)->content->cmd = create_cmd(&elem);
 	}
-	if (elem && elem->type == PIPE_LINE && ast) // only if a command is before the pipe
+	if (elem && elem->type == PIPE_LINE && elem->state == GENERAL && ast) // only if a command is before the pipe
 	{
-		printf("elem : ====>>> %s\n", elem->content);
 		tmp_ast_node = ft_calloc(sizeof(t_ast_node), 1);
 		tmp_ast_node->type = PIPE;
 		tmp_ast_node->content = ft_calloc(sizeof(t_union), 1);
@@ -408,7 +459,8 @@ void	ft_parser(t_elem *elem, t_ast_node **ast)
 
 void	print_ast(t_ast_node *ast)
 {
-	char	**args;
+	char			**args;
+	t_redir_elem	*redir;
 
 	if (ast && ast->type == CMD)
 	{
@@ -417,6 +469,19 @@ void	print_ast(t_ast_node *ast)
 		while (*++args)
 		{
 			printf("arg: %s\n", *args);
+		}
+		if (ast->content->cmd->redir && ast->content->cmd->redir->head)
+		{
+			redir = ast->content->cmd->redir->head;
+			while (redir)
+			{
+				printf("redir: %s %d\n", redir->arg, redir->type);
+				redir = redir->next;
+			}
+		}
+		else
+		{
+			printf("no redir\n");
 		}
 	}
 	if (ast && ast->type == PIPE)
