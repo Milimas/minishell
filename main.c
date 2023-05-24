@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/22 04:41:41 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/24 07:27:09 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,6 +399,7 @@ t_cmd	*create_cmd(t_elem **elem)
 {
 	t_cmd	*cmd;
 	char	**tmp_args;
+	t_redir_elem	*redir;
 
 	cmd = ft_calloc(sizeof(t_cmd), 1);
 	cmd->args = ft_calloc(sizeof(char *), count_args((*elem)) + 1);
@@ -412,7 +413,12 @@ t_cmd	*create_cmd(t_elem **elem)
 			if (!cmd->redir->head)
 				cmd->redir->head = cmd->redir->tail;
 			else
-				cmd->redir->head->next = cmd->redir->tail;
+			{
+				redir = cmd->redir->head;
+				while (redir->next)
+					redir = redir->next;
+				redir->next = cmd->redir->tail;
+			}
 			cmd->redir->size++;
 		}
 		if ((*elem) && ((*elem)->type != WHITE_SPACE))
