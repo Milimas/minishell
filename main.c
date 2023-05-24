@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/24 07:27:09 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/24 07:47:38 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,11 +395,22 @@ t_redir_elem	*create_redir(t_elem **elem)
 	return (redir);
 }
 
+void	append_redir(t_redir_list *redir, t_redir_elem *new)
+{
+	if (!new)
+		return ;
+	if (!redir->head)
+		redir->head = new;
+	else
+		redir->tail->next = new;
+	redir->tail = new;
+	redir->size++;
+}
+
 t_cmd	*create_cmd(t_elem **elem)
 {
 	t_cmd	*cmd;
 	char	**tmp_args;
-	t_redir_elem	*redir;
 
 	cmd = ft_calloc(sizeof(t_cmd), 1);
 	cmd->args = ft_calloc(sizeof(char *), count_args((*elem)) + 1);
@@ -408,19 +419,7 @@ t_cmd	*create_cmd(t_elem **elem)
 	while ((*elem))
 	{
 		if ((*elem) && ((*elem)->type == REDIRECTION_IN || (*elem)->type == REDIRECTION_OUT || (*elem)->type == HERE_DOC || (*elem)->type == DOUBLE_REDIRECTION_OUT))
-		{
-			cmd->redir->tail = create_redir(elem);
-			if (!cmd->redir->head)
-				cmd->redir->head = cmd->redir->tail;
-			else
-			{
-				redir = cmd->redir->head;
-				while (redir->next)
-					redir = redir->next;
-				redir->next = cmd->redir->tail;
-			}
-			cmd->redir->size++;
-		}
+			append_redir(cmd->redir, create_redir(elem));
 		if ((*elem) && ((*elem)->type != WHITE_SPACE))
 			*tmp_args++ = ft_strdup((*elem)->content);
 		if ((*elem))
@@ -493,7 +492,7 @@ void	print_ast(t_ast_node *ast)
 	if (ast && ast->type == PIPE)
 	{
 		print_ast(ast->content->pipe->first);
-		printf("pipe\n");
+		printf("--------------------------------\n");
 		print_ast(ast->content->pipe->second);
 	}
 }
