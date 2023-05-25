@@ -6,88 +6,13 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 07:14:30 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/25 08:39:26 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
 void		sig_ign_handler(int signum);
-
-static size_t	bsh_wordcount(char const *s, char c)
-{
-	int	wc;
-
-	wc = 0;
-	while (*s)
-	{
-		while (*s && !ft_memcmp(s, &c, 1))
-			s++;
-		if (*s)
-		{
-			if (*s == '"' && ft_strchr(s + 1, '"'))
-				s = (ft_strchr(s + 1, '"')) + 1;
-			if (*s == '\'' && ft_strchr(s + 1, '\''))
-				s = (ft_strchr(s + 1, '\'')) + 1;
-			wc++;
-		}
-		while (*s && ft_memcmp(s, &c, 1))
-			s++;
-	}
-	return (wc);
-}
-
-char	**bsh_split(char const *s, char c)
-{
-	char	**arr;
-	char	**a;
-	size_t	size;
-
-	if (!s)
-		return (NULL);
-	size = bsh_wordcount(s, c) + 1;
-	arr = (char **)malloc(size * sizeof(char *));
-	if (!arr)
-		return (NULL);
-	a = arr;
-	while (*s)
-	{
-		while (*s && !ft_memcmp(s, &c, 1))
-			s++;
-		if (*s == '"' && ft_strchr(s + 1, '"'))
-		{
-			*a++ = ft_substr(s, 1, ft_strrchr(s, '"') - s - 1);
-			s = ft_strchr(s + 1, '"') + 1;
-		}
-		if (*s == '\'' && ft_strchr(s + 1, '\''))
-		{
-			*a++ = ft_substr(s, 1, ft_strrchr(s, '\'') - s - 1);
-			s = ft_strchr(s + 1, '\'') + 1;
-		}
-		if (*s && ft_strchr(s, c))
-			*a++ = ft_substr(s, 0, ft_strchr(s, c) - s);
-		else if (*s)
-			*a++ = ft_substr(s, 0, ft_strchr(s, 0) - s);
-		while (*s && ft_memcmp(s, &c, 1))
-			s++;
-	}
-	*a = 0;
-	return (arr);
-}
-
-enum e_state	get_previous_state(t_elem *elem, enum e_state current_state)
-{
-	t_elem	*tmp;
-
-	tmp = elem;
-	while (tmp)
-	{
-		if (tmp->state != current_state)
-			return (tmp->state);
-		tmp = tmp->prev;
-	}
-	return (current_state);
-}
 
 char	*state_to_text(int state)
 {
@@ -285,18 +210,6 @@ void	bash_promt(void)
 		ast.root = NULL;
 		ft_parser(lexer->head, &ast.root);
 		print_ast(ast.root);
-		if (lexer->head->content && !ft_strncmp(lexer->head->content, "echo", ft_strlen(lexer->head->content)))
-			bsh_echo(lexer->head);
-		// if (lexer->head->content && !ft_strncmp(lexer->head->content, "cd", ft_strlen(lexer->head->content)))
-		// 	bsh_chdir(&cmd);
-		if (lexer->head->content && !ft_strncmp(lexer->head->content, "pwd", ft_strlen(lexer->head->content)))
-			bsh_pwd();
-		// if (lexer->head->content && !ft_strncmp(lexer->head->content, "env", ft_strlen(lexer->head->content)))
-		// 	bsh_env();
-		// if (lexer->head->content && !ft_strncmp(lexer->head->content, "exit", ft_strlen(lexer->head->content)))
-		// 	exit(!printf("exit\n"));
-		// if (lexer->head->content && !ft_strncmp(lexer->head->content, "dbg", ft_strlen(lexer->head->content)))
-		// 	get_env_variable(cmd.args[1]);
 	}
 	free(line);
 }
