@@ -25,7 +25,7 @@ all: $(NAME)
 $(NAME):$(OBJS)
 	$(AR) rcs $(NAME) $(OBJS)
 
-%.c:%.o
+%.o:%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean: 
