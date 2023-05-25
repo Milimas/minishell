@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:54:21 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 06:56:14 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/25 10:02:03 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	bsh_echo(t_elem *lexer)
 	char	*flag;
 
 	n = 1;
-	// if (lexer->next)
-		lexer = lexer->next;
+	lexer = lexer->next;
 	while ((lexer && ft_strnstr(lexer->content, "-", ft_strlen(lexer->content) + 1)) || (lexer && *lexer->content == ' '))
 	{
 		if (*lexer->content == ' ')
@@ -45,7 +44,6 @@ void	bsh_echo(t_elem *lexer)
 	{
 		ft_putstr_fd(lexer->content, 1);
 		lexer = lexer->next;
-		// write(1, " ", !!(lexer));
 	}
 	write(1, "\n", 1 * n);
 }

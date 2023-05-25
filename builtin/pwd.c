@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:56:25 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 06:56:42 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/25 10:02:18 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	bsh_pwd(void)
 {
-	char *buf;
+	char	*buf;
 
 	buf = getcwd(0, 0);
 	printf("%s\n", buf);

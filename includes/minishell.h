@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
+/*   Updated: 2023/05/25 10:02:51 by abeihaqi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -24,7 +36,7 @@ typedef struct s_fd			t_fd;
 typedef struct s_redir_list	t_redir_list;
 typedef struct s_redir_elem	t_redir_elem;
 typedef struct s_elem		t_elem;
-typedef struct s_linkedlist		t_linkedlist;
+typedef struct s_linkedlist	t_linkedlist;
 
 enum e_node_type
 {
@@ -132,7 +144,7 @@ typedef union u_union
 int				list_is_empty(t_linkedlist *list);
 t_linkedlist	*list_init(t_linkedlist *list);
 t_elem			*list_new_elem(char *content,
-						int len, enum e_token type, enum e_state state);
+					int len, enum e_token type, enum e_state state);
 void			list_add_back(t_linkedlist *list, t_elem *new);
 void			list_free(t_linkedlist *list);
 

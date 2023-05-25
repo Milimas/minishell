@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 06:58:58 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/25 10:03:05 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,6 @@ t_linkedlist	*ft_lexer(char *line)
 				list->head->content = ft_strdup(get_env_variable(list->head->content + 1));
 			}
 		}
-		// if (state != GENERAL)
-		// {
-		// 	if ((list->tail->type == DOUBLE_QUOTE && state == IN_DOUBLE_QUOTE) || (list->tail->type == QUOTE && state == IN_QUOTE))
-		// 	{
-		// 		list->tail->state = GENERAL;
-		// 		state = GENERAL;
-		// 	}
-		// }
-		// else
-		// {
-		// 	if (list->tail->type == DOUBLE_QUOTE)
-		// 		state = IN_DOUBLE_QUOTE;
-		// 	if (list->tail->type == QUOTE)
-		// 		state = IN_QUOTE;	
-		// }
 	}
 	return (list);
 }
