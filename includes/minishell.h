@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 10:02:51 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/25 10:20:11 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,10 @@ void			lexer_quotes(t_linkedlist *list, char **line, int *state);
 // parser
 void			ft_parser(t_elem *elem, t_ast_node **ast);
 t_cmd			*create_cmd(t_elem **elem);
+int				count_args(t_elem *elem);
+t_cmd			*create_cmd(t_elem **elem);
+t_redir_elem	*create_redir(t_elem **elem);
+void			append_redir(t_redir_list *redir, t_redir_elem *new);
 
 // builtin
 void			bsh_pwd(void);
@@ -169,5 +173,10 @@ void			bsh_chdir(t_cmd *cmd);
 // utils
 int				ft_isspace(char c);
 char			*get_env_variable(char *name);
+char			*ft_strconcat(char *s1, char *s2);
+
+// debug tools
+void			print_linkedlist(t_linkedlist *list);
+void			print_ast(t_ast_node *ast);
 
 #endif
