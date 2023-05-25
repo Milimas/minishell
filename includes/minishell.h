@@ -132,8 +132,30 @@ typedef union u_union
 int				list_is_empty(t_linkedlist *list);
 t_linkedlist	*list_init(t_linkedlist *list);
 t_elem			*list_new_elem(char *content,
-				int len, enum e_token type, enum e_state state);
+						int len, enum e_token type, enum e_state state);
 void			list_add_back(t_linkedlist *list, t_elem *new);
 void			list_free(t_linkedlist *list);
+
+// lexer
+t_linkedlist	*ft_lexer(char *line);
+int				is_token(char c);
+int				is_double_redirection(char *line);
+void			lexer_escape(t_linkedlist *list, char **line, int state);
+void			lexer_double_redirection(t_linkedlist *list,
+					char **line, int state);
+void			lexer_quotes(t_linkedlist *list, char **line, int *state);
+
+// parser
+void			ft_parser(t_elem *elem, t_ast_node **ast);
+t_cmd			*create_cmd(t_elem **elem);
+
+// builtin
+void			bsh_pwd(void);
+void			bsh_echo(t_elem *lexer);
+void			bsh_chdir(t_cmd *cmd);
+
+// utils
+int				ft_isspace(char c);
+char			*get_env_variable(char *name);
 
 #endif

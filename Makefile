@@ -11,8 +11,19 @@ NAME = minishell
 LIBFT = libft.a
 LIBFT_DIR = libft/
 
-SRC =	main.c			\
-		lexer/list.c	\
+SRC =	main.c					\
+		lexer/list.c			\
+		lexer/lexer.c			\
+		lexer/append_token.c	\
+		lexer/is_redirection.c	\
+		lexer/is_token.c		\
+		parser/parser.c			\
+		builtin/chdir.c			\
+		builtin/echo.c			\
+		builtin/pwd.c			\
+		utils/ft_isspace.c		\
+		utils/get_env.c			\
+		
 
 OBJ = $(SRC:.c=.o)
 

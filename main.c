@@ -6,107 +6,13 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/24 07:47:38 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/25 07:14:30 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
 void		sig_ign_handler(int signum);
-
-char	*get_env_variable(char *name)
-{
-	char	**env;
-
-	env = environ;
-	while (*env)
-	{
-		if (!ft_strncmp(name, *env, ft_strlen(name))
-			&& (*env)[ft_strlen(name)] == '=')
-			return (ft_strchr(*env, '=') + 1);
-		env++;
-	}
-	return (NULL);
-}
-
-void	bsh_echo(t_elem *lexer)
-{
-	int		n;
-	char	*flag;
-
-	n = 1;
-	// if (lexer->next)
-		lexer = lexer->next;
-	while ((lexer && ft_strnstr(lexer->content, "-", ft_strlen(lexer->content) + 1)) || (lexer && *lexer->content == ' '))
-	{
-		if (*lexer->content == ' ')
-		{
-			lexer = lexer->next;
-			continue ;
-		}
-		flag = lexer->content;
-		while (++flag && *flag)
-		{
-			if (!ft_strchr("neE", *flag))
-			{
-				flag = NULL;
-				break ;
-			}
-		}
-		if (!flag)
-			break ;
-		lexer = lexer->next;
-		n = 0;
-	}
-	while (lexer)
-	{
-		ft_putstr_fd(lexer->content, 1);
-		lexer = lexer->next;
-		// write(1, " ", !!(lexer));
-	}
-	write(1, "\n", 1 * n);
-}
-
-void	bsh_chdir(t_cmd *cmd)
-{
-	char	*dir;
-	DIR		*dirp;
-
-	dir = *(++cmd->args);
-	if (!cmd->args)
-	{
-		chdir(NULL);
-		return ;
-	}
-	dirp = opendir(*cmd->args);
-	if (!dirp)
-		perror("bash: cd");
-	else
-		closedir(dirp);
-	chdir(dir);
-}
-
-void	bsh_pwd(void)
-{
-	char *buf;
-
-	buf = getcwd(0, 0);
-	printf("%s\n", buf);
-	free(buf);
-}
-
-void	bsh_env(void)
-{
-	char	**env;
-
-	env = environ;
-	while (*env)
-	{
-		if (ft_strchr(*env, '='))
-			printf("%s\n", *env);
-		env++;
-	}	
-}
 
 static size_t	bsh_wordcount(char const *s, char c)
 {
@@ -169,20 +75,6 @@ char	**bsh_split(char const *s, char c)
 	return (arr);
 }
 
-int		ft_isspace(char c)
-{
-	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r' || c == ' ');
-}
-
-int	is_token(char c)
-{
-	return (ft_isspace(c) || c == NEW_LINE || c == QUOTE
-		|| c == DOUBLE_QUOTE || c == ESCAPE || c == ENV
-		|| c == PIPE_LINE || c == REDIRECTION_IN
-		|| c == REDIRECTION_OUT || c == WILDCARD
-		|| c == PARENTASIS_OPEN || c == PARENTASIS_CLOSE);
-}
-
 enum e_state	get_previous_state(t_elem *elem, enum e_state current_state)
 {
 	t_elem	*tmp;
@@ -195,106 +87,6 @@ enum e_state	get_previous_state(t_elem *elem, enum e_state current_state)
 		tmp = tmp->prev;
 	}
 	return (current_state);
-}
-
-int		is_double_redirection(char *line)
-{
-	if ((*line == REDIRECTION_OUT && *(line + 1) == REDIRECTION_OUT))
-		return (DOUBLE_REDIRECTION_OUT);
-	if ((*line == REDIRECTION_IN && *(line + 1) == REDIRECTION_IN))
-		return (HERE_DOC);
-	return (0);
-}
-
-void		lexer_escape(t_linkedlist *list, char **line, int state)
-{
-	list_add_back(list, list_new_elem(*line + 1, 1, **line, state));
-	*line += 2;
-}
-
-void		lexer_double_redirection(t_linkedlist *list, char **line, int state)
-{
-	list_add_back(list, list_new_elem(*line, 2, is_double_redirection(*line), state));
-	*line += 2;
-}
-
-void		lexer_quotes(t_linkedlist *list, char **line, int *state)
-{
-	if (*state == GENERAL)
-		*state = **line;
-	else if (*state == **line)
-		*state = GENERAL;
-	else
-		list_add_back(list, list_new_elem(*line, 1, **line, *state));
-	(*line)++;
-}
-
-t_linkedlist	*ft_lexer(char *line)
-{
-	t_linkedlist	*list;
-	t_elem			elem;
-	int				state;
-
-	list = list_init(NULL);
-	state = GENERAL;
-	while (line && *line)
-	{
-		if (ft_isspace(*line))
-			*line = WHITE_SPACE;
-		if (is_token(*line) && *line != ENV)
-		{
-			if (is_double_redirection(line))
-				lexer_double_redirection(list, &line, state);
-			else if (*line == ESCAPE)
-				lexer_escape(list, &line, state);
-			else if (*line == QUOTE || *line == DOUBLE_QUOTE)
-				lexer_quotes(list, &line, &state);
-			else
-			{
-				list_add_back(list, list_new_elem(line, 1, *line, state));
-				line++;
-			}
-		}
-		else
-		{
-			elem.content = line;
-			elem.len = 0;
-			elem.type = WORD;
-			if (*line == ENV)
-			{
-				elem.type = ENV;
-			}
-			elem.state = state;
-			while (*line)
-			{
-				line++;
-				elem.len++;
-				if (is_token(*line) && *line != ENV)
-					break ;
-			}
-			list_add_back(list, list_new_elem(elem.content, elem.len, elem.type, elem.state));
-			if (list->head->type == ENV)
-			{
-				list->head->content = ft_strdup(get_env_variable(list->head->content + 1));
-			}
-		}
-		// if (state != GENERAL)
-		// {
-		// 	if ((list->tail->type == DOUBLE_QUOTE && state == IN_DOUBLE_QUOTE) || (list->tail->type == QUOTE && state == IN_QUOTE))
-		// 	{
-		// 		list->tail->state = GENERAL;
-		// 		state = GENERAL;
-		// 	}
-		// }
-		// else
-		// {
-		// 	if (list->tail->type == DOUBLE_QUOTE)
-		// 		state = IN_DOUBLE_QUOTE;
-		// 	if (list->tail->type == QUOTE)
-		// 		state = IN_QUOTE;	
-		// }
-	}
-	return (list);
 }
 
 char	*state_to_text(int state)
@@ -387,8 +179,17 @@ t_redir_elem	*create_redir(t_elem **elem)
 		*elem = (*elem)->next;
 	if ((*elem) && (*elem)->type == WORD)
 	{
-		redir->arg = (*elem)->content;
-		(*elem) = (*elem)->next;
+		redir->arg = "";
+		if ((*elem)->state != GENERAL)
+			while ((*elem) && (*elem)->state != GENERAL)
+			{
+				redir->arg = ft_strjoin(redir->arg, (*elem)->content);
+				(*elem) = (*elem)->next;
+			}
+		else
+			redir->arg = (*elem)->content;
+		if ((*elem))
+			(*elem) = (*elem)->next;
 	}
 	else
 		printf("Error: redir");
@@ -430,36 +231,6 @@ t_cmd	*create_cmd(t_elem **elem)
 	cmd->fd.in = 0;
 	cmd->fd.out = 1;
 	return (cmd);
-}
-
-void	ft_parser(t_elem *elem, t_ast_node **ast)
-{
-	t_ast_node	*tmp_ast_node;
-
-	while (elem->type == WHITE_SPACE)
-		elem = elem->next;
-	if (elem && elem->type == WORD) // its a command
-	{
-		if (!(*ast))
-		{
-			(*ast) = ft_calloc(sizeof(t_ast_node), 1);
-		}
-		(*ast)->type = CMD;
-		(*ast)->content = ft_calloc(sizeof(t_union), 1);
-		(*ast)->content->cmd = create_cmd(&elem);
-	}
-	if (elem && elem->type == PIPE_LINE && elem->state == GENERAL && ast) // only if a command is before the pipe
-	{
-		tmp_ast_node = ft_calloc(sizeof(t_ast_node), 1);
-		tmp_ast_node->type = PIPE;
-		tmp_ast_node->content = ft_calloc(sizeof(t_union), 1);
-		tmp_ast_node->content->pipe = ft_calloc(sizeof(t_pipe), 1);
-		tmp_ast_node->content->pipe->first = *ast;
-		*ast = tmp_ast_node;
-		(*ast)->content->pipe->second = ft_calloc(sizeof(t_ast_node), 1);
-		ft_parser(elem->next, &(*ast)->content->pipe->second);
-	}
-
 }
 
 void	print_ast(t_ast_node *ast)
