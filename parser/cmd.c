@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:11:32 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 10:12:00 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/26 21:12:08 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,24 @@ t_cmd	*create_cmd(t_elem **elem)
 	{
 		if ((*elem) && ((*elem)->type == REDIRECTION_IN || (*elem)->type == REDIRECTION_OUT || (*elem)->type == HERE_DOC || (*elem)->type == DOUBLE_REDIRECTION_OUT))
 			append_redir(cmd->redir, create_redir(elem));
-		if ((*elem) && ((*elem)->type != WHITE_SPACE))
-			*tmp_args++ = ft_strdup((*elem)->content);
+		else if ((*elem))
+		{
+			if ((*elem)->state == GENERAL && (*elem)->type != WHITE_SPACE)
+				*tmp_args++ = ft_strdup((*elem)->content);
+			else if ((*elem)->state != GENERAL)
+			{
+				while ((*elem) && (*elem)->state != GENERAL)
+				{
+					*(tmp_args) = ft_strconcat(*(tmp_args), (*elem)->content);
+					(*elem) = (*elem)->next;
+				}
+				tmp_args++;
+			}
+		}
 		if ((*elem))
 			(*elem) = (*elem)->next;
 		if ((*elem) && (*elem)->type == PIPE_LINE && (*elem)->state == GENERAL)
-			break;
+			break ;
 	}
 	cmd->fd.in = 0;
 	cmd->fd.out = 1;
