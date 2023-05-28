@@ -2,9 +2,9 @@ CC = cc
 
 CFLAGS += -Wall -Werror -Wextra -fsanitize=address -g
 
-LDFLAGS += -lreadline -L/goinfre/abeihaqi/homebrew/opt/readline/lib
+LDFLAGS += -lreadline -L/goinfre/$(USER)/homebrew/opt/readline/lib
 
-INCLUDES += -I /goinfre/abeihaqi/homebrew/opt/readline/include
+INCLUDES += -I /goinfre/$(USER)/homebrew/opt/readline/include
 
 NAME = minishell
 
