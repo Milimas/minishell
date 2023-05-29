@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:14:35 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 07:14:53 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/29 08:52:15 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,5 @@ char	*get_env_variable(char *name)
 			return (ft_strchr(*env, '=') + 1);
 		env++;
 	}
-	return (NULL);
+	return (name);
 }

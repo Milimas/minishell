@@ -6,16 +6,42 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 10:03:05 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/29 10:03:13 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+int	word_len(char *line)
+{
+	char	*_line;
+
+	_line = line;
+	while (*line && !is_token(*line))
+		line++;
+	return (line - _line);
+}
+
+void	lexer_env(t_linkedlist *list, char **line, int state)
+{
+	list_add_back(list, list_new_elem(*line, word_len((*line) + 1) + 1, ENV, state));
+	*line += word_len((*line) + 1) + 1;
+	if (list->tail->type == ENV && get_env_variable(list->tail->content + 1) && list->tail->state != IN_QUOTE)
+	{
+		list->tail->content = ft_strdup(get_env_variable(list->tail->content + 1));
+		list->tail->len = ft_strlen(list->tail->content);
+	}
+}
+
+void	lexer_word(t_linkedlist *list, char **line, int state)
+{
+	list_add_back(list, list_new_elem(*line, word_len(*line), WORD, state));
+	*line += word_len(*line);
+}
+
 t_linkedlist	*ft_lexer(char *line)
 {
 	t_linkedlist	*list;
-	t_elem			elem;
 	int				state;
 
 	list = list_init(NULL);
@@ -38,29 +64,10 @@ t_linkedlist	*ft_lexer(char *line)
 				line++;
 			}
 		}
+		else if (*line == ENV)
+			lexer_env(list, &line, state);
 		else
-		{
-			elem.content = line;
-			elem.len = 0;
-			elem.type = WORD;
-			if (*line == ENV)
-			{
-				elem.type = ENV;
-			}
-			elem.state = state;
-			while (*line)
-			{
-				line++;
-				elem.len++;
-				if (is_token(*line) && *line != ENV)
-					break ;
-			}
-			list_add_back(list, list_new_elem(elem.content, elem.len, elem.type, elem.state));
-			if (list->head->type == ENV)
-			{
-				list->head->content = ft_strdup(get_env_variable(list->head->content + 1));
-			}
-		}
+			lexer_word(list, &line, state);
 	}
 	return (list);
 }

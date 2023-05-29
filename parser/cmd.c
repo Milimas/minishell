@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:11:32 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/26 21:12:08 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/29 10:18:19 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,15 @@ t_cmd	*create_cmd(t_elem **elem)
 		else if ((*elem))
 		{
 			if ((*elem)->state == GENERAL && (*elem)->type != WHITE_SPACE)
-				*tmp_args++ = ft_strdup((*elem)->content);
-			else if ((*elem)->state != GENERAL)
+			{
+				while ((*elem) && (*elem)->type != WHITE_SPACE)
+				{
+					*tmp_args = ft_strconcat(*(tmp_args), (*elem)->content);
+					(*elem) = (*elem)->next;
+				}
+				tmp_args++;
+			}
+			else
 			{
 				while ((*elem) && (*elem)->state != GENERAL)
 				{
