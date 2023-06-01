@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:11:32 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/29 10:18:19 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/29 11:35:37 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_cmd	*create_cmd(t_elem **elem)
 				}
 				tmp_args++;
 			}
-			else
+			else if ((*elem) && (*elem)->state != GENERAL)
 			{
 				while ((*elem) && (*elem)->state != GENERAL)
 				{

@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/29 10:03:13 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/05/29 11:31:08 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,23 @@ int	word_len(char *line)
 	return (line - _line);
 }
 
+void	lexer_expand_env(t_elem **elem)
+{
+	if (get_env_variable((*elem)->content + 1))
+	{
+		(*elem)->content = ft_strdup(
+				get_env_variable((*elem)->content + 1));
+		(*elem)->len = ft_strlen((*elem)->content);
+		(*elem)->type = WORD;
+	}
+}
+
 void	lexer_env(t_linkedlist *list, char **line, int state)
 {
 	list_add_back(list, list_new_elem(*line, word_len((*line) + 1) + 1, ENV, state));
 	*line += word_len((*line) + 1) + 1;
-	if (list->tail->type == ENV && get_env_variable(list->tail->content + 1) && list->tail->state != IN_QUOTE)
-	{
-		list->tail->content = ft_strdup(get_env_variable(list->tail->content + 1));
-		list->tail->len = ft_strlen(list->tail->content);
-	}
+	if (list->tail->state != IN_QUOTE && *(list->tail->content + 1))
+		lexer_expand_env(&list->tail);
 }
 
 void	lexer_word(t_linkedlist *list, char **line, int state)
