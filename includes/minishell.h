@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/04 20:53:09 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:15:49 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ enum e_token
 typedef struct s_data
 {
 	int			exit_status;
+	int			pid;
 	char		**env;
 }	t_data;
 
