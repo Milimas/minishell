@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 10:20:11 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/04 06:40:06 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,10 @@ void			append_redir(t_redir_list *redir, t_redir_elem *new);
 void			bsh_pwd(void);
 void			bsh_echo(t_elem *lexer);
 void			bsh_chdir(t_cmd *cmd);
+void			bsh_exit(t_cmd *cmd);
+
+// execution
+void    exec(t_linkedlist *lexer, t_ast ast);
 
 // utils
 int				ft_isspace(char c);

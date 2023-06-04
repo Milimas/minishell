@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/26 15:09:10 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/04 06:42:56 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ void	bash_promt(void)
 		ast.root = NULL;
 		ft_parser(lexer->head, &ast.root);
 		print_ast(ast.root);
+
+		//tests
+		exec(lexer,ast);
 	}
 	free(line);
 }

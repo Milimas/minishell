@@ -23,6 +23,8 @@ SRC =	main.c					\
 		builtin/chdir.c			\
 		builtin/echo.c			\
 		builtin/pwd.c			\
+		builtin/exit.c			\
+		exec/cmd.c			\
 		utils/ft_isspace.c		\
 		utils/get_env.c			\
 		utils/debug_tools.c		\
