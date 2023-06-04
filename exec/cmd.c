@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/04 23:34:14 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/04 23:40:05 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ void	exec(t_cmd *cmd)
 	exit(g_data.exit_status);
 }
 
+/*
+* had function ktkhdam recursive batexecuti ga3 les command li f tree
+* ra ktb9a tsarkal ftree ila l9at pipe ktexecuti ga3 commands li fpipe 
+* ila l9at command ra ktexecutiha
+*/
 void	exec_ast(t_ast_node *ast_elem)
 {
 	if (ast_elem->type == CMD)
