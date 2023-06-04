@@ -6,27 +6,23 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:54:21 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 10:02:03 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/04 23:32:57 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	bsh_echo(t_elem *lexer)
+void	bsh_echo(t_cmd *cmd)
 {
 	int		n;
 	char	*flag;
+	char	**args;
 
 	n = 1;
-	lexer = lexer->next;
-	while ((lexer && ft_strnstr(lexer->content, "-", ft_strlen(lexer->content) + 1)) || (lexer && *lexer->content == ' '))
+	args = cmd->args + 1;
+	while (*args && ft_strnstr(*args, "-", ft_strlen(*args) + 1))
 	{
-		if (*lexer->content == ' ')
-		{
-			lexer = lexer->next;
-			continue ;
-		}
-		flag = lexer->content;
+		flag = *args;
 		while (++flag && *flag)
 		{
 			if (!ft_strchr("neE", *flag))
@@ -37,13 +33,13 @@ void	bsh_echo(t_elem *lexer)
 		}
 		if (!flag)
 			break ;
-		lexer = lexer->next;
+		args++;
 		n = 0;
 	}
-	while (lexer)
+	while (*args)
 	{
-		ft_putstr_fd(lexer->content, 1);
-		lexer = lexer->next;
+		ft_putstr_fd(*args, 1);
+		args++;
 	}
 	write(1, "\n", 1 * n);
 }

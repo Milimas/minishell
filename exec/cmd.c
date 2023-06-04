@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/04 21:17:05 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/04 23:34:14 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,29 @@ char	*cmd_file(char **paths, char *cmd)
 	return (NULL);
 }
 
-void	exec(t_linkedlist *lexer, t_ast ast)
+void	exec(t_cmd *cmd)
 {
-	t_cmd			*cmd;
-
-	cmd = ast.root->content->cmd;
 	if (!ft_strncmp("exit", cmd->args[0], 5))
 		bsh_exit(cmd);
 	else if (!ft_strncmp("echo", cmd->args[0], 5))
-		bsh_echo(lexer->head);
+		bsh_echo(cmd);
 	else
 		execve(cmd_file(get_paths(), cmd->args[0]), cmd->args, g_data.env);
-	perror("");
 	exit(g_data.exit_status);
+}
+
+void	exec_ast(t_ast_node *ast_elem)
+{
+	if (ast_elem->type == CMD)
+	{
+		g_data.pid = fork();
+		if (!g_data.pid)
+			exec(ast_elem->content->cmd);
+		waitpid(g_data.pid, NULL, 0);
+	}
+	else if (ast_elem->type == PIPE)
+	{
+		exec_ast(ast_elem->content->pipe->first);
+		exec_ast(ast_elem->content->pipe->second);
+	}
 }
