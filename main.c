@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/04 20:52:36 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/04 20:56:33 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	bash_promt(void)
 		ft_parser(lexer->head, &ast.root);
 		print_ast(ast.root);
 		//tests
-		exec(lexer,ast);
+		exec(lexer, ast);
 	}
 	free(line);
 }
