@@ -19,16 +19,17 @@ SRC =	main.c					\
 		lexer/is_token.c		\
 		parser/parser.c			\
 		parser/cmd.c			\
+		parser/global.c			\
 		parser/redir.c			\
 		builtin/chdir.c			\
 		builtin/echo.c			\
 		builtin/pwd.c			\
 		builtin/exit.c			\
-		exec/cmd.c			\
+		exec/cmd.c				\
 		utils/ft_isspace.c		\
 		utils/get_env.c			\
 		utils/debug_tools.c		\
-		utils/ft_strconcat.c
+		utils/ft_strconcat.c	\
 		
 
 OBJ = $(SRC:.c=.o)

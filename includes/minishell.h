@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/04 14:42:36 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/04 20:53:09 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,14 @@ enum e_token
 	DOUBLE_AMPERSAND,
 	LOGOCAL_OR_OPERATOR,
 };
+
+typedef struct s_data
+{
+	int			exit_status;
+	char		**env;
+}	t_data;
+
+t_data						g_data;
 
 typedef struct s_linkedlist
 {
@@ -164,6 +172,7 @@ int				count_args(t_elem *elem);
 t_cmd			*create_cmd(t_elem **elem);
 t_redir_elem	*create_redir(t_elem **elem);
 void			append_redir(t_redir_list *redir, t_redir_elem *new);
+void			init_global_data(void);
 
 // builtin
 void			bsh_pwd(void);

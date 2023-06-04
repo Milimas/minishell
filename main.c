@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/04 16:10:35 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/04 20:52:36 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	disable_sigint_char();
 	// enable_sigint_char();
+	init_global_data();
 	while (1)
 	{
 		signal(SIGINT, sig_ign_handler);
