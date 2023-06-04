@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:10:42 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/04 16:13:03 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/04 16:18:58 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	lexer_escape(t_linkedlist *list, char **line, int state)
 {
-	if (state != IN_QUOTE)
+	if (state == GENERAL || (*(*line + 1) == ESCAPE && state == IN_DOUBLE_QUOTE))
 		list_add_back(list, list_new_elem(*line + 1, 1, **line, state));
 	else
 		list_add_back(list, list_new_elem(*line, 2, **line, state));
