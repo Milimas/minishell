@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/04 23:33:31 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 12:01:03 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,8 @@ void			init_global_data(void);
 // builtin
 void			bsh_pwd(void);
 void			bsh_echo(t_cmd *cmd);
-void			bsh_chdir(t_cmd *cmd);
 void			bsh_exit(t_cmd *cmd);
+void			bsh_cd(t_cmd *cmd);
 
 // execution
 void			exec(t_cmd *cmd);

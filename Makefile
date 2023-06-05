@@ -21,10 +21,10 @@ SRC =	main.c					\
 		parser/cmd.c			\
 		parser/global.c			\
 		parser/redir.c			\
-		builtin/chdir.c			\
 		builtin/echo.c			\
 		builtin/pwd.c			\
 		builtin/exit.c			\
+		builtin/cd.c			\
 		exec/cmd.c				\
 		utils/ft_isspace.c		\
 		utils/get_env.c			\
