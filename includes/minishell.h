@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 14:21:10 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 15:08:32 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_data
 {
 	int			exit_status;
 	int			pid;
+	char		**envp;
 	t_env		*env;
 }	t_data;
 

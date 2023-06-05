@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:51:07 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 14:29:43 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 15:10:21 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,11 @@ void	init_global_data(void)
 	char	**env;
 
 	env = environ;
+	g_data.envp = environ;
 	while (env && *env)
 	{
 		envadd_back(&g_data.env, envnew(*env));
+		env++;
 	}
 	g_data.exit_status = -1;
 }

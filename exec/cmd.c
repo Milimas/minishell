@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/05 10:47:59 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/05 15:09:27 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	**get_paths(void)
 {
 	char	**envp;
 
-	envp = g_data.env;
+	envp = g_data.envp;
 	while (*envp)
 	{
 		if (ft_strncmp(*envp, "PATH=", 5) == 0)
@@ -81,7 +81,7 @@ void	builts(t_cmd *cmd)
 
 void	exec(t_cmd *cmd)
 {
-	execve(cmd_file(get_paths(), cmd->args[0]), cmd->args, g_data.env);
+	execve(cmd_file(get_paths(), cmd->args[0]), cmd->args, g_data.envp);
 	exit(g_data.exit_status);
 }
 
@@ -94,7 +94,7 @@ void	exec_ast(t_ast_node *ast_elem)
 {
 	if (ast_elem->type == CMD)
 	{
-		if(is_builts(ast_elem->content->cmd))
+		if (is_builts(ast_elem->content->cmd))
 			builts(ast_elem->content->cmd);
 		else
 		{

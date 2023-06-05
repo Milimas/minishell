@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:51:57 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/05 13:59:16 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 15:08:00 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@ void	bsh_cd(t_cmd *cmd)
 {
 	char	*dir;
 	DIR		*dirp;
-	int		i;
+	t_env	*env;
 
 	dir = *(++cmd->args);
+	env = g_data.env;
 	if (!dir)
 	{
-		i = 0;
-		while (g_data.env[i])
+		while (env)
 		{
-			if (!ft_strncmp("HOME=", g_data.env[i],5))
+			if (!ft_strncmp("HOME=", env->value, 5))
 			{
-				dir = g_data.env[i] + 5;
+				dir = env->value + 5;
 				break ;
 			}
-			i++;
+			env = env->next;
 		}
 	}
 	dirp = opendir(dir);
