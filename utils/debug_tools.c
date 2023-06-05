@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:05:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 17:41:22 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 18:00:18 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	print_ast(t_ast_node *ast)
 	char			**args;
 	t_redir_elem	*redir;
 
-	if (ast && ast->type == CMD && ast->content->cmd->args)
+	if (ast && ast->type == CMD && ast->content && ast->content->cmd && ast->content->cmd->args)
 	{
 		args = ast->content->cmd->args;
 		printf("cmd: %s\n", *args);
