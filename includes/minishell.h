@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 15:08:32 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:06:31 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,5 +201,8 @@ char			*ft_strconcat(char *s1, char *s2);
 // debug tools
 void			print_linkedlist(t_linkedlist *list);
 void			print_ast(t_ast_node *ast);
+
+// main
+void			sig_ign_handler(int signum);
 
 #endif

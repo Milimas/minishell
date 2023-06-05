@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/05 15:09:27 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:05:41 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,11 @@ void	exec_ast(t_ast_node *ast_elem)
 		{
 			g_data.pid = fork();
 			if (!g_data.pid)
+			{
+				signal(SIGQUIT, SIG_IGN);
+				signal(SIGINT, sig_ign_handler);
 				exec(ast_elem->content->cmd);
+			}
 			waitpid(g_data.pid, NULL, 0);
 		}
 	}

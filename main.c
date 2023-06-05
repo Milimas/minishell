@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/04 23:26:26 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:11:48 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	bash_promt(void)
 	t_ast			ast;
 
 	line = readline(PROMPT_TEXT);
+	signal(SIGINT, SIG_IGN);
 	if (!line)
 		exit(!!printf("exit\n"));
 	if (ft_strlen(line))
@@ -38,11 +39,13 @@ void	bash_promt(void)
 
 void	sig_ign_handler(int signum)
 {
-	(void)signum;
-	rl_on_new_line();
-	write(1, "\n", 1);
-	rl_replace_line("", 1);
-	rl_redisplay();
+	if (signum == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
 void	disable_sigint_char(void)
@@ -73,8 +76,8 @@ int	main(int argc, char **argv, char **envp)
 	init_global_data();
 	while (1)
 	{
-		signal(SIGINT, sig_ign_handler);
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, sig_ign_handler);
 		bash_promt();
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:14:35 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/04 20:55:09 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 15:13:20 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*get_env_variable(char *name)
 {
 	char	**env;
 
-	env = g_data.env;
+	env = g_data.envp;
 	while (*env)
 	{
 		if (!ft_strncmp(name, *env, ft_strlen(name))
