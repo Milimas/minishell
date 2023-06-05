@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/05 16:05:41 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:15:13 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ void	exec(t_cmd *cmd)
 */
 void	exec_ast(t_ast_node *ast_elem)
 {
-	if (ast_elem->type == CMD)
+	
+	if (ast_elem && ast_elem->type == CMD)
 	{
 		if (is_builts(ast_elem->content->cmd))
 			builts(ast_elem->content->cmd);
@@ -108,7 +109,7 @@ void	exec_ast(t_ast_node *ast_elem)
 			waitpid(g_data.pid, NULL, 0);
 		}
 	}
-	else if (ast_elem->type == PIPE)
+	else if (ast_elem && ast_elem->type == PIPE)
 	{
 		exec_ast(ast_elem->content->pipe->first);
 		exec_ast(ast_elem->content->pipe->second);

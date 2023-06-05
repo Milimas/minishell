@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:02 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/04 05:57:43 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:14:22 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_parser(t_elem *elem, t_ast_node **ast)
 		(*ast)->content = ft_calloc(sizeof(t_union), 1);
 		(*ast)->content->cmd = create_cmd(&elem);
 	}
-	if (elem && elem->type == PIPE_LINE && elem->state == GENERAL && ast)
+	if (elem && elem->type == PIPE_LINE && elem->state == GENERAL && ast && *ast)
 	{
 		tmp_ast_node = ft_calloc(sizeof(t_ast_node), 1);
 		tmp_ast_node->type = PIPE;
