@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:05:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/26 21:23:56 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:41:22 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ char	*type_to_text(int type)
 		return ("QUOTE");
 	if (type == DOUBLE_QUOTE)
 		return ("DOUBLE_QUOTE");
-	if (type == ESCAPE)
-		return ("ESCAPE");
 	if (type == ENV)
 		return ("ENV");
 	if (type == PIPE_LINE)

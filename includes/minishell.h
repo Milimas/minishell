@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 16:06:31 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:36:53 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ enum e_token
 	NEW_LINE = '\n',
 	QUOTE = '\'',
 	DOUBLE_QUOTE = '\"',
-	ESCAPE = '\\',
 	ENV = '$',
 	PIPE_LINE = '|',
 	REDIRECTION_IN = '<',
