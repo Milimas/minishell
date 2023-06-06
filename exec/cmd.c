@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/05 17:59:54 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 19:44:09 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	is_builts(t_cmd *cmd)
 		return (1);
 	else if (!ft_strncmp("cd", cmd->args[0], 3))
 		return (1);
+	else if (!ft_strncmp("export", cmd->args[0], 7))
+		return (1);
 	else
 		return (0);
 }
@@ -75,6 +77,8 @@ void	builts(t_cmd *cmd)
 		bsh_pwd();
 	else if (!ft_strncmp("cd", cmd->args[0], 3))
 		bsh_cd(cmd);
+	else if (!ft_strncmp("export", cmd->args[0], 7))
+		bsh_export(cmd);
 	else
 		return ;
 }

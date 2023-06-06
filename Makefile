@@ -25,6 +25,7 @@ SRC =	main.c					\
 		builtin/pwd.c			\
 		builtin/exit.c			\
 		builtin/cd.c			\
+		builtin/export.c		\
 		exec/cmd.c				\
 		utils/ft_isspace.c		\
 		utils/get_env.c			\

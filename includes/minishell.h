@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 17:36:53 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/05 19:40:29 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,12 +181,16 @@ t_cmd			*create_cmd(t_elem **elem);
 t_redir_elem	*create_redir(t_elem **elem);
 void			append_redir(t_redir_list *redir, t_redir_elem *new);
 void			init_global_data(void);
+t_env			*envlast(t_env *env);
+void			envadd_back(t_env **env, t_env *new);
+t_env			*envnew(char *value);
 
 // builtin
 void			bsh_pwd(void);
 void			bsh_echo(t_cmd *cmd);
 void			bsh_exit(t_cmd *cmd);
 void			bsh_cd(t_cmd *cmd);
+void			bsh_export(t_cmd *cmd);
 
 // execution
 void			exec(t_cmd *cmd);
