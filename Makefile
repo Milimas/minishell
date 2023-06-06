@@ -17,6 +17,7 @@ SRC =	main.c					\
 		lexer/append_token.c	\
 		lexer/is_redirection.c	\
 		lexer/is_token.c		\
+		lexer/syntax.c		\
 		parser/parser.c			\
 		parser/cmd.c			\
 		parser/global.c			\

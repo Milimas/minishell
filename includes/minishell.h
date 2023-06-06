@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 19:40:29 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/07 00:12:57 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ enum e_token
 	PARENTASIS_OPEN = '(',
 	PARENTASIS_CLOSE = ')',
 	DOUBLE_AMPERSAND,
-	LOGOCAL_OR_OPERATOR,
+	LOGICAL_OR_OPERATOR,
 };
 
 typedef struct s_data
@@ -171,7 +171,10 @@ int				is_double_redirection(char *line);
 void			lexer_escape(t_linkedlist *list, char **line, int state);
 void			lexer_double_redirection(t_linkedlist *list,
 					char **line, int state);
+void			lexer_double_pipe(t_linkedlist *list,
+					char **line, int state);
 void			lexer_quotes(t_linkedlist *list, char **line, int *state);
+void			check_syntax(t_elem *elem);
 
 // parser
 void			ft_parser(t_elem *elem, t_ast_node **ast);

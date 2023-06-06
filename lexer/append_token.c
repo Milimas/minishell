@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:10:42 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 17:37:05 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/07 00:11:23 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@
 // 		list_add_back(list, list_new_elem(*line, 2, **line, state));
 // 	*line += 2 - !*(*line + 1);
 // }
+
+void	lexer_double_pipe(t_linkedlist *list, char **line, int state)
+{
+	list_add_back(list, list_new_elem(*line, 2,
+			LOGICAL_OR_OPERATOR, state));
+	*line += 2;
+}
 
 void	lexer_double_redirection(t_linkedlist *list, char **line, int state)
 {
