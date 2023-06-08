@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:51:07 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 15:10:21 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/09 00:32:03 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,13 @@ void	envadd_back(t_env **env, t_env *new)
 t_env	*envnew(char *value)
 {
 	t_env	*env;
-
-	env = (t_env *)malloc(sizeof(t_env));
+	
+	env = (t_env *)ft_calloc(sizeof(t_env), 1);
 	if (!env)
 		return (NULL);
-	env->value = value;
+	env->key = ft_substr(value, 0, ft_strchr(value, '=') - value);
+	if (ft_strchr(value, '='))
+		env->value = ft_substr(value, (ft_strchr(value, '=') - value) + 1, ft_strlen(value));
 	env->next = NULL;
 	return (env);
 }
