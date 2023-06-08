@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/05 19:44:09 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/08 22:53:28 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ int	is_builts(t_cmd *cmd)
 		return (1);
 	else if (!ft_strncmp("export", cmd->args[0], 7))
 		return (1);
+	else if (!ft_strncmp("unset", cmd->args[0], 6))
+		return (1);
+	else if (!ft_strncmp("env", cmd->args[0], 4))
+		return (1);
 	else
 		return (0);
 }
@@ -79,6 +83,10 @@ void	builts(t_cmd *cmd)
 		bsh_cd(cmd);
 	else if (!ft_strncmp("export", cmd->args[0], 7))
 		bsh_export(cmd);
+	else if (!ft_strncmp("unset", cmd->args[0], 6))
+		bsh_unset(cmd);
+	else if (!ft_strncmp("env", cmd->args[0], 4))
+		bsh_env();
 	else
 		return ;
 }

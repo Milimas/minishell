@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:56:25 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/05 09:37:49 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/08 20:08:43 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,4 @@ void	bsh_pwd(void)
 	buf = getcwd(0, 0);
 	printf("%s\n", buf);
 	free(buf);
-}
-
-void	bsh_env(void)
-{
-	char	**env;
-
-	env = environ;
-	while (*env)
-	{
-		if (ft_strchr(*env, '='))
-			printf("%s\n", *env);
-		env++;
-	}	
 }

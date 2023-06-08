@@ -27,6 +27,8 @@ SRC =	main.c					\
 		builtin/exit.c			\
 		builtin/cd.c			\
 		builtin/export.c		\
+		builtin/env.c			\
+		builtin/unset.c			\
 		exec/cmd.c				\
 		utils/ft_isspace.c		\
 		utils/get_env.c			\

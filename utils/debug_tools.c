@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:05:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 18:00:18 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/08 20:07:33 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*type_to_text(int type)
 		return ("PARENTASIS_CLOSE");
 	if (type == DOUBLE_AMPERSAND)
 		return ("DOUBLE_AMPERSAND");
-	if (type == LOGOCAL_OR_OPERATOR)
+	if (type == LOGICAL_OR_OPERATOR)
 		return ("LOGOCAL_OR_OPERATOR");
 	return (NULL);
 }
