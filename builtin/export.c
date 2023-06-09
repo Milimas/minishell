@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/05 19:23:49 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/09 00:37:57 by abeihaqi         ###   ########.fr       */
+/*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
+/*   Updated: 2023/06/09 02:04:04 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ex_ist(char *cmd)
 	env = g_data.env;
 	while (env)
 	{
-		if (!ft_strncmp(env->value , cmd, ft_strchr(env->value, '=') - env->value))
+		if (!ft_strncmp(env->key , cmd, ft_strchr(cmd, '=') - cmd))
 			return (1);
 		env = env->next;
 	}
@@ -33,9 +33,30 @@ void	ex_modify(char	*cmd)
 	env = g_data.env;
 	while(env)
 	{
-		if (!ft_strncmp(env->value , cmd, ft_strchr(env->value, '=') - env->value))
-			env->value = cmd;
+		if (!ft_strncmp(env->key , cmd, ft_strchr(cmd, '=') - cmd))
+			env->value = ft_strchr(cmd, '=') + 1;
 		env = env->next;
+	}
+}
+
+void	isvalid(char *args)
+{
+	int	i;
+	
+	i = 1;
+	if (!ft_isalpha(args[0]) && args[0] != '_')
+	{
+		printf("export: `%s': not a valid identifier\n", args);
+		exit (1);
+	}
+	while (args[i])
+	{
+		if (!ft_isalnum(args[i]) && args[i] != '_' && args[i] != '=' && args[i] != '+')
+		{
+			printf("export: `%s': not a valid identifier\n", args);
+			exit (1);
+		}
+		i++;
 	}
 }
 
@@ -57,12 +78,16 @@ void	bsh_export(t_cmd *cmd)
 			env = env->next;
 		}
 	}
-	while (*args)
-	{
-		if (ex_ist(*args))
-			ex_modify(*args);
-		else
-			envadd_back(&g_data.env, envnew(*args));
-		args++;
+	else
+	{		
+		isvalid(*args);	 
+		while (*args)
+		{
+			if (ex_ist(*args) && ft_strchr(*args,'='))
+				ex_modify(*args);
+			else if (!ex_ist(*args))
+				envadd_back(&g_data.env, envnew(*args));
+			args++;
+		}
 	}
 }
