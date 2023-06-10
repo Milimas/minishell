@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/07 00:03:29 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 04:18:33 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	bash_promt(void)
 	{
 		add_history(line);
 		lexer = ft_lexer(line);
-		check_syntax(lexer->head);
+		if (check_syntax(lexer->head))
+			return ;
 		print_linkedlist(lexer);
 		ast.root = NULL;
 		ft_parser(lexer->head, &ast.root);

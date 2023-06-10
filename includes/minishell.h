@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 04:10:27 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 04:17:44 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ void			lexer_double_pipe(t_linkedlist *list,
 void			lexer_double_ampersand(t_linkedlist *list,
 					char **line, int state);
 void			lexer_quotes(t_linkedlist *list, char **line, int *state);
-void			check_syntax(t_elem *elem);
+int				check_syntax(t_elem *elem);
 
 // parser
 void			ft_parser(t_elem *elem, t_ast_node **ast);
