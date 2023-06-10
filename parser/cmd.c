@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:11:32 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 04:00:46 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 04:31:47 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 			append_redir(cmd->redir, create_redir(elem));
 		else if ((*elem))
 		{
-			if ((*elem)->state == GENERAL && (*elem)->type != WHITE_SPACE && (*elem)->type != QUOTE && (*elem)->type != DOUBLE_QUOTE)
+			if ((*elem)->state == GENERAL && (*elem)->type != WHITE_SPACE && !is_quote(*elem))
 			{
-				while ((*elem) && (*elem)->type != WHITE_SPACE)
+				while ((*elem) && (*elem)->type != WHITE_SPACE && !is_logical_operator(*elem))
 				{
 					*tmp_args = ft_strconcat(*(tmp_args), (*elem)->content);
 					(*elem) = (*elem)->next;
@@ -55,10 +55,10 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 				tmp_args++;
 			}
 		}
-		if ((*elem))
-			(*elem) = (*elem)->next;
 		if ((*elem) && is_logical_operator(*elem) && (*elem)->state == GENERAL)
 			break ;
+		if ((*elem))
+			(*elem) = (*elem)->next;
 	}
 }
 

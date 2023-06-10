@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 04:17:44 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 04:47:44 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ int				is_redirection(t_elem *elem);
 int				is_quote(t_elem *elem);
 int				is_in_quote(t_elem *elem);
 int				is_logical_operator(t_elem *elem);
+int				is_ast_logical(t_ast_node *ast);
 
 // builtin
 void			bsh_pwd(void);
@@ -208,7 +209,7 @@ void			bsh_env(void);
 
 // execution
 void			exec(t_cmd *cmd);
-void			exec_ast(t_ast_node *ast_elem);
+void			exec_ast(t_ast_node *ast_elem, int wait);
 
 // utils
 int				ft_isspace(char c);

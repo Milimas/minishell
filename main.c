@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 04:18:33 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 04:52:19 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	bash_promt(void)
 		ast.root = NULL;
 		ft_parser(lexer->head, &ast.root);
 		print_ast(ast.root);
-		exec_ast(ast.root);
+		exec_ast(ast.root, ast.root->type == CMD);
 	}
 	free(line);
 }

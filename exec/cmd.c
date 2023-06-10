@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/10 03:02:13 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 05:04:20 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	exec(t_cmd *cmd)
 * ra ktb9a tsarkal ftree ila l9at pipe ktexecuti ga3 commands li fpipe 
 * ila l9at command ra ktexecutiha
 */
-void	exec_ast(t_ast_node *ast_elem)
+void	exec_ast(t_ast_node *ast_elem, int wait)
 {
 	if (ast_elem && ast_elem->type == CMD && ast_elem->content)
 	{
@@ -118,12 +118,17 @@ void	exec_ast(t_ast_node *ast_elem)
 				signal(SIGINT, sig_ign_handler);
 				exec(ast_elem->content->cmd);
 			}
-			waitpid(g_data.pid, &g_data.exit_status, 0);
 		}
 	}
-	else if (ast_elem && ast_elem->type == PIPE)
+	else if (ast_elem && is_ast_logical(ast_elem))
 	{
-		exec_ast(ast_elem->content->pipe->first);
-		exec_ast(ast_elem->content->pipe->second);
+		exec_ast(ast_elem->content->pipe->first, ast_elem->type != PIPE);
+		if (ast_elem->type == AND && g_data.exit_status)
+			return ;
+		if (ast_elem->type == OR && !g_data.exit_status)
+			return ;
+		exec_ast(ast_elem->content->pipe->second, 1);
 	}
+	if (wait)
+		waitpid(-1, &g_data.exit_status, 0);
 }

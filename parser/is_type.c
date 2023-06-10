@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 02:35:50 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 02:41:35 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 04:37:33 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,11 @@ int	is_logical_operator(t_elem *elem)
 	return (elem->type == PIPE_LINE
 		|| elem->type == DOUBLE_AMPERSAND
 		|| elem->type == LOGICAL_OR_OPERATOR);
+}
+
+int	is_ast_logical(t_ast_node *ast)
+{
+	return (ast->type == PIPE
+		|| ast->type == OR
+		|| ast->type == AND);
 }
