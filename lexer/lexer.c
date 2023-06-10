@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/07 00:14:33 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 04:10:24 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ t_linkedlist	*ft_lexer(char *line)
 		{
 			if (*line == PIPE_LINE && *(line + 1) == PIPE_LINE)
 				lexer_double_pipe(list, &line, state);
+			else if (*line == '&' && *(line + 1) == '&')
+				lexer_double_ampersand(list, &line, state);
 			else if (is_double_redirection(line))
 				lexer_double_redirection(list, &line, state);
 			else if (*line == QUOTE || *line == DOUBLE_QUOTE)

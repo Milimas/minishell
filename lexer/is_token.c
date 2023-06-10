@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:07:16 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/05 17:37:47 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 04:07:20 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	is_token(char c)
 {
 	return (ft_isspace(c) || c == NEW_LINE || c == QUOTE
-		|| c == DOUBLE_QUOTE || c == ENV
+		|| c == DOUBLE_QUOTE || c == ENV || c == '&'
 		|| c == PIPE_LINE || c == REDIRECTION_IN
 		|| c == REDIRECTION_OUT || c == WILDCARD
 		|| c == PARENTASIS_OPEN || c == PARENTASIS_CLOSE);

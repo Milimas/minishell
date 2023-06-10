@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:11:32 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 03:45:03 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 04:00:46 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	count_args(t_elem *elem)
 	int	count;
 
 	count = 0;
-	while (elem && elem->type != PIPE_LINE)
+	while (elem && !is_logical_operator(elem))
 	{
 		elem = elem->next;
 		count++;
@@ -57,7 +57,7 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 		}
 		if ((*elem))
 			(*elem) = (*elem)->next;
-		if ((*elem) && (*elem)->type == PIPE_LINE && (*elem)->state == GENERAL)
+		if ((*elem) && is_logical_operator(*elem) && (*elem)->state == GENERAL)
 			break ;
 	}
 }

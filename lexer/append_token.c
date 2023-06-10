@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:10:42 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 00:38:53 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 04:08:46 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ void	lexer_double_pipe(t_linkedlist *list, char **line, int state)
 {
 	list_add_back(list, list_new_elem(*line, 2,
 			LOGICAL_OR_OPERATOR, state));
+	*line += 2;
+}
+
+void	lexer_double_ampersand(t_linkedlist *list, char **line, int state)
+{
+	list_add_back(list, list_new_elem(*line, 2,
+			DOUBLE_AMPERSAND, state));
 	*line += 2;
 }
 
