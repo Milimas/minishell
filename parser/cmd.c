@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:11:32 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 02:31:34 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 03:45:03 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 	tmp_args = cmd->args;
 	while ((*elem))
 	{
-		if ((*elem) && ((*elem)->type == REDIRECTION_IN || (*elem)->type == REDIRECTION_OUT || (*elem)->type == HERE_DOC || (*elem)->type == DOUBLE_REDIRECTION_OUT))
+		if ((*elem) && is_redirection(*elem) && (*elem)->state == GENERAL)
 			append_redir(cmd->redir, create_redir(elem));
 		else if ((*elem))
 		{
