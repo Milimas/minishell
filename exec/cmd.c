@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/10 02:44:41 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/10 03:02:13 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	exec_ast(t_ast_node *ast_elem)
 				signal(SIGINT, sig_ign_handler);
 				exec(ast_elem->content->cmd);
 			}
-			waitpid(g_data.pid, NULL, 0);
+			waitpid(g_data.pid, &g_data.exit_status, 0);
 		}
 	}
 	else if (ast_elem && ast_elem->type == PIPE)
