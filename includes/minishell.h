@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/09 02:10:30 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/10 02:42:29 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,10 @@ void			init_global_data(void);
 t_env			*envlast(t_env *env);
 void			envadd_back(t_env **env, t_env *new);
 t_env			*envnew(char *value);
+int				is_redirection(t_elem *elem);
+int				is_quote(t_elem *elem);
+int				is_in_quote(t_elem *elem);
+int				is_logical_operator(t_elem *elem);
 
 // builtin
 void			bsh_pwd(void);

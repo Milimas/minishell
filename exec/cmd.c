@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/08 22:53:28 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/10 02:44:41 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char	*cmd_file(char **paths, char *cmd)
 
 int	is_builts(t_cmd *cmd)
 {
+	if (!cmd->args[0])
+		return (0);
 	if (!ft_strncmp("exit", cmd->args[0], 5))
 		return (1);
 	else if (!ft_strncmp("echo", cmd->args[0], 5))
@@ -67,8 +69,7 @@ int	is_builts(t_cmd *cmd)
 		return (1);
 	else if (!ft_strncmp("env", cmd->args[0], 4))
 		return (1);
-	else
-		return (0);
+	return (0);
 }
 
 void	builts(t_cmd *cmd)
