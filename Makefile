@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS += -Wall -Werror -Wextra -fsanitize=address -g
+CFLAGS += -Wall -Werror -Wextra -fsanitize=address -g3
 
 LDFLAGS += -lreadline -L/goinfre/$(USER)/homebrew/opt/readline/lib
 

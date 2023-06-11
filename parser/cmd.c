@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:11:32 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 04:31:47 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/11 06:38:23 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,21 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 	char	**tmp_args;
 
 	tmp_args = cmd->args;
-	while ((*elem))
+	while (*elem)
 	{
 		if ((*elem) && is_redirection(*elem) && (*elem)->state == GENERAL)
 			append_redir(cmd->redir, create_redir(elem));
 		else if ((*elem))
 		{
-			if ((*elem)->state == GENERAL && (*elem)->type != WHITE_SPACE && !is_quote(*elem))
+			if (!((*elem)->type == WHITE_SPACE && (*elem)->state == GENERAL))
 			{
-				while ((*elem) && (*elem)->type != WHITE_SPACE && !is_logical_operator(*elem))
+				while ((*elem) && !(((*elem)->type == WHITE_SPACE || is_logical_operator(*elem)) && (*elem)->state == GENERAL))
 				{
+					while (*elem && is_quote(*elem) && (*elem)->state == GENERAL)
+						*elem = (*elem)->next;
+					if (!*elem)
+						break ;
 					*tmp_args = ft_strconcat(*(tmp_args), (*elem)->content);
-					(*elem) = (*elem)->next;
-				}
-				tmp_args++;
-			}
-			else if ((*elem) && (*elem)->state != GENERAL)
-			{
-				while ((*elem) && (*elem)->state != GENERAL)
-				{
-					*(tmp_args) = ft_strconcat(*(tmp_args), (*elem)->content);
 					(*elem) = (*elem)->next;
 				}
 				tmp_args++;

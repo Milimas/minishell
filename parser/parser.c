@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:02 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 04:05:45 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/11 06:39:09 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_parser(t_elem *elem, t_ast_node **ast)
 
 	while (elem->type == WHITE_SPACE && elem->next)
 		elem = elem->next;
-	if (elem && (elem->type == WORD || is_redirection(elem)))
+	if (elem)
 	{
 		if (!(*ast))
 		{
