@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/10 05:04:20 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/11 22:37:20 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void	exec(t_cmd *cmd)
 */
 void	exec_ast(t_ast_node *ast_elem, int wait)
 {
+	int	status;
+	
 	if (ast_elem && ast_elem->type == CMD && ast_elem->content)
 	{
 		if (is_builts(ast_elem->content->cmd))
@@ -122,7 +124,7 @@ void	exec_ast(t_ast_node *ast_elem, int wait)
 	}
 	else if (ast_elem && is_ast_logical(ast_elem))
 	{
-		exec_ast(ast_elem->content->pipe->first, ast_elem->type != PIPE);
+		exec_ast(ast_elem->content->pipe->first, 1);
 		if (ast_elem->type == AND && g_data.exit_status)
 			return ;
 		if (ast_elem->type == OR && !g_data.exit_status)
@@ -130,5 +132,9 @@ void	exec_ast(t_ast_node *ast_elem, int wait)
 		exec_ast(ast_elem->content->pipe->second, 1);
 	}
 	if (wait)
-		waitpid(-1, &g_data.exit_status, 0);
+	{
+		waitpid(g_data.pid, &status, 0);
+		g_data.exit_status = WEXITSTATUS(status);
+		printf("------>Waiting %s...\n", ast_elem->content->cmd->args[0]);
+	}
 }
