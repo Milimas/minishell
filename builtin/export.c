@@ -6,25 +6,48 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/09 02:04:04 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/12 10:34:59 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+int	plus_check(char *args)
+{
+	int	i;
+	int cpt;
+
+	i = 0;
+	cpt = 0;
+	while(args[i] && args[i] != '=')
+		i++;
+	i--;
+	while (args[i] && args[i] == '+')
+	{
+		i--;
+		cpt++;
+	}
+	return (cpt);
+}
+
 int	ex_ist(char *cmd)
 {
 	t_env	*env;
+	int		plus;
 
+	plus = plus_check(cmd);
 	env = g_data.env;
 	while (env)
 	{
-		if (!ft_strncmp(env->key , cmd, ft_strchr(cmd, '=') - cmd))
+		if (plus == 1 && (!ft_strncmp(env->key , cmd, ft_strchr(cmd, '+') - cmd)))
+			return (1);
+		else if (!ft_strncmp(env->key , cmd, ft_strchr(cmd, '=') - cmd))
 			return (1);
 		env = env->next;
 	}
 	return (0);
 }
+
 
 void	ex_modify(char	*cmd)
 {
@@ -33,32 +56,43 @@ void	ex_modify(char	*cmd)
 	env = g_data.env;
 	while(env)
 	{
-		if (!ft_strncmp(env->key , cmd, ft_strchr(cmd, '=') - cmd))
+		if (!ft_strncmp(ft_strjoin(env->key, "="), cmd, ft_strchr(cmd, '=') - cmd +1))
 			env->value = ft_strchr(cmd, '=') + 1;
+		else if (!ft_strncmp(env->key , cmd, ft_strchr(cmd, '+') - cmd) )
+		{
+			env->value = ft_strjoin(env->value, ft_strchr(cmd, '=') + 1);
+			if (!env->value)
+				env->value = ft_strchr(cmd, '=') + 1;
+		}
 		env = env->next;
 	}
 }
 
-void	isvalid(char *args)
+int	isvalid(char *args)
 {
 	int	i;
-	
-	i = 1;
-	if (!ft_isalpha(args[0]) && args[0] != '_')
+	int plus;
+
+	i = 0;
+	plus = 0;
+	if (*args == '=' || *args == '+' || (!ft_isalpha(*args) && *args != '_'))
 	{
 		printf("export: `%s': not a valid identifier\n", args);
-		exit (1);
+		return (1);
 	}
-	while (args[i])
+	while (args[i] && args[i] != '=')
 	{
-		if (!ft_isalnum(args[i]) && args[i] != '_' && args[i] != '=' && args[i] != '+')
+		if ((!ft_isalnum(args[i]) && args[i] != '_' && args[i] != '=' && args[i] != '+') 
+		 || plus_check(args) > 1)
 		{
 			printf("export: `%s': not a valid identifier\n", args);
-			exit (1);
+			return (1);
 		}
 		i++;
 	}
+	return (0);
 }
+
 
 void	bsh_export(t_cmd *cmd)
 {
@@ -80,7 +114,8 @@ void	bsh_export(t_cmd *cmd)
 	}
 	else
 	{		
-		isvalid(*args);	 
+		if (isvalid(*args))
+			return ;	 
 		while (*args)
 		{
 			if (ex_ist(*args) && ft_strchr(*args,'='))
