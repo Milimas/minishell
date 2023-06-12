@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/12 10:34:59 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/12 10:52:58 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int	ex_ist(char *cmd)
 	env = g_data.env;
 	while (env)
 	{
-		if (plus == 1 && (!ft_strncmp(env->key , cmd, ft_strchr(cmd, '+') - cmd)))
+		if (plus == 1 && (!ft_strncmp(env->key , cmd, ft_strlen(env->key))))
 			return (1);
-		else if (!ft_strncmp(env->key , cmd, ft_strchr(cmd, '=') - cmd))
+		else if (!ft_strncmp(env->key , cmd, ft_strlen(env->key)))
 			return (1);
 		env = env->next;
 	}
