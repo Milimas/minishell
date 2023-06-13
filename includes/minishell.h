@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 04:47:44 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/12 03:44:19 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <dirent.h>
 # include <termios.h>
 # include "libft.h"
+
 
 # define PROMPT_TEXT "\033[0;31mbash-0.1$ \033[0m"
 
@@ -71,8 +72,8 @@ enum e_token
 	WILDCARD = '*',
 	PARENTASIS_OPEN = '(',
 	PARENTASIS_CLOSE = ')',
-	DOUBLE_AMPERSAND,
-	LOGICAL_OR_OPERATOR,
+	DOUBLE_AMPERSAND = -2,
+	LOGICAL_OR_OPERATOR = -3,
 };
 
 typedef struct s_data
@@ -179,6 +180,7 @@ void			lexer_double_pipe(t_linkedlist *list,
 void			lexer_double_ampersand(t_linkedlist *list,
 					char **line, int state);
 void			lexer_quotes(t_linkedlist *list, char **line, int *state);
+void			lexer_wildcard(t_linkedlist *list, t_elem *elem, int state);
 int				check_syntax(t_elem *elem);
 
 // parser

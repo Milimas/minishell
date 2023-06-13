@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:10:42 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 04:08:46 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/13 05:53:24 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ void	lexer_double_redirection(t_linkedlist *list, char **line, int state)
 	list_add_back(list, list_new_elem(*line, 2,
 			is_double_redirection(*line), state));
 	*line += 2;
+}
+
+void	lexer_wildcard(t_linkedlist *list, t_elem *elem, int state)
+{
+	(void)list;
+	if (state != GENERAL || !elem)
+		return ;
+
 }
 
 void	lexer_quotes(t_linkedlist *list, char **line, int *state)

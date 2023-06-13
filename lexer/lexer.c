@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 04:10:24 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/12 03:44:55 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,10 @@ t_linkedlist	*ft_lexer(char *line)
 			lexer_env(list, &line, state);
 		else
 			lexer_word(list, &line, state);
+		if (ft_strchr(list->tail->content, WILDCARD))
+			list->tail->type = WILDCARD;
+		if (list->tail->type == WILDCARD)
+			lexer_wildcard(list, list->tail, state);
 	}
 	return (list);
 }

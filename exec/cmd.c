@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/11 22:37:20 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/11 23:49:57 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,5 @@ void	exec_ast(t_ast_node *ast_elem, int wait)
 	{
 		waitpid(g_data.pid, &status, 0);
 		g_data.exit_status = WEXITSTATUS(status);
-		printf("------>Waiting %s...\n", ast_elem->content->cmd->args[0]);
 	}
 }
