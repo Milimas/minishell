@@ -34,6 +34,7 @@ SRC =	main.c					\
 		utils/ft_isspace.c		\
 		utils/get_env.c			\
 		utils/debug_tools.c		\
+		utils/check_plus.c		\
 		utils/ft_strconcat.c	\
 		
 

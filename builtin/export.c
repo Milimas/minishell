@@ -6,29 +6,11 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/12 10:52:58 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/16 15:04:01 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	plus_check(char *args)
-{
-	int	i;
-	int cpt;
-
-	i = 0;
-	cpt = 0;
-	while(args[i] && args[i] != '=')
-		i++;
-	i--;
-	while (args[i] && args[i] == '+')
-	{
-		i--;
-		cpt++;
-	}
-	return (cpt);
-}
 
 int	ex_ist(char *cmd)
 {
@@ -68,7 +50,7 @@ void	ex_modify(char	*cmd)
 	}
 }
 
-int	isvalid(char *args)
+static int	isvalid(char *args)
 {
 	int	i;
 	int plus;
@@ -77,7 +59,7 @@ int	isvalid(char *args)
 	plus = 0;
 	if (*args == '=' || *args == '+' || (!ft_isalpha(*args) && *args != '_'))
 	{
-		printf("export: `%s': not a valid identifier\n", args);
+		printf("bash: export: `%s': not a valid identifier\n", args);
 		return (1);
 	}
 	while (args[i] && args[i] != '=')
@@ -85,7 +67,7 @@ int	isvalid(char *args)
 		if ((!ft_isalnum(args[i]) && args[i] != '_' && args[i] != '=' && args[i] != '+') 
 		 || plus_check(args) > 1)
 		{
-			printf("export: `%s': not a valid identifier\n", args);
+			printf("bash: export: `%s': not a valid identifier\n", args);
 			return (1);
 		}
 		i++;

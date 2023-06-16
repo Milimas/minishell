@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/11 23:49:57 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/16 17:29:18 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 char	**get_paths(void)
 {
-	char	**envp;
+	t_env	*envp;
 
-	envp = g_data.envp;
-	while (*envp)
+	envp = g_data.env;
+	while (envp)
 	{
-		if (ft_strncmp(*envp, "PATH=", 5) == 0)
-			return (ft_split(*envp + 5, ':'));
-		envp++;
+		if (ft_strncmp(envp->key, "PATH", 5) == 0)
+			return (ft_split(envp->value, ':'));
+		envp = envp->next;
 	}
 	return (NULL);
 }
@@ -33,7 +33,7 @@ char	*cmd_file(char **paths, char *cmd)
 
 	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
-	while (*paths && cmd)
+	while (paths && *paths && cmd)
 	{
 		path_tmp = ft_strjoin(*paths, "/");
 		file = ft_strjoin(path_tmp, cmd);
@@ -92,38 +92,61 @@ void	builts(t_cmd *cmd)
 		return ;
 }
 
-void	exec(t_cmd *cmd)
+void	handle_err(int pid)
 {
-	execve(cmd_file(get_paths(), cmd->args[0]), cmd->args, g_data.envp);
+	if (pid < 0)
+	{
+		perror("fork error");
+		exit(-1);
+	}
+}
+
+void	exevc(t_cmd *cmd)
+{
+	execve(cmd_file(get_paths(), cmd->args[0]), cmd->args, NULL);
 	exit(g_data.exit_status);
 }
 
-/*
-* had function ktkhdam recursive batexecuti ga3 les command li f tree
-* ra ktb9a tsarkal ftree ila l9at pipe ktexecuti ga3 commands li fpipe 
-* ila l9at command ra ktexecutiha
-*/
 void	exec_ast(t_ast_node *ast_elem, int wait)
 {
 	int	status;
-	
+	int	pipe_fd[2];
+
 	if (ast_elem && ast_elem->type == CMD && ast_elem->content)
 	{
-		if (is_builts(ast_elem->content->cmd))
-			builts(ast_elem->content->cmd);
-		else
-		{
-			g_data.pid = fork();
-			if (!g_data.pid)
-			{
-				signal(SIGQUIT, SIG_IGN);
-				signal(SIGINT, sig_ign_handler);
-				exec(ast_elem->content->cmd);
-			}
+		g_data.pid = fork();
+		if (g_data.pid == -1) {
+			ft_putendl_fd("bash: fork: Resource temporarily unavailable", 2);
+			return ;
 		}
+		if (!g_data.pid)
+		{
+			signal(SIGQUIT, SIG_IGN);
+			signal(SIGINT, sig_ign_handler);
+			dup2(ast_elem->content->cmd->fd.in, STDIN_FILENO);
+			dup2(ast_elem->content->cmd->fd.out, STDOUT_FILENO);
+			close(ast_elem->content->cmd->fd.in);
+			if (is_builts(ast_elem->content->cmd))
+				builts(ast_elem->content->cmd);
+			else
+				exevc(ast_elem->content->cmd);
+			exit(g_data.exit_status);
+		}
+		if (ast_elem->content->cmd->fd.out != STDOUT_FILENO)
+			close(ast_elem->content->cmd->fd.out);
+		if (ast_elem->content->cmd->fd.in != STDIN_FILENO)
+			close(ast_elem->content->cmd->fd.in);
 	}
 	else if (ast_elem && is_ast_logical(ast_elem))
 	{
+		if (pipe(pipe_fd) == -1)
+			return ;
+		if (ast_elem->content->pipe->first->type == CMD)
+			ast_elem->content->pipe->first->content->cmd->fd.out = pipe_fd[1];
+		if (ast_elem->content->pipe->second->type == CMD)
+			ast_elem->content->pipe->second->content->cmd->fd.in = pipe_fd[0];
+		if (ast_elem->content->pipe->second->type == PIPE)
+			ast_elem->content->pipe->second->content->pipe->first->content->cmd->fd.in = pipe_fd[0];
 		exec_ast(ast_elem->content->pipe->first, 1);
 		if (ast_elem->type == AND && g_data.exit_status)
 			return ;

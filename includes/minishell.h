@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/12 03:44:19 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/16 15:02:00 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,8 +210,10 @@ void			bsh_unset(t_cmd *cmd);
 void			bsh_env(void);
 
 // execution
-void			exec(t_cmd *cmd);
+void			exevc(t_cmd *cmd);
 void			exec_ast(t_ast_node *ast_elem, int wait);
+int				is_builts(t_cmd *cmd);
+void			builts(t_cmd *cmd);
 
 // utils
 int				ft_isspace(char c);
@@ -219,6 +221,7 @@ char			*get_env_variable(char *name);
 char			*ft_strconcat(char *s1, char *s2);
 int				ex_ist(char *cmd);
 void			ex_modify(char	*cmd);
+int				plus_check(char *args);
 
 // debug tools
 void			print_linkedlist(t_linkedlist *list);

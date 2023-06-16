@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/12 02:12:55 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/16 17:11:14 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,17 @@ void	bash_promt(void)
 	{
 		add_history(line);
 		lexer = ft_lexer(line);
-		print_linkedlist(lexer);
+		// print_linkedlist(lexer);
 		if (check_syntax(lexer->head))
 			return ;
 		ast.root = NULL;
 		ft_parser(lexer->head, &ast.root);
-		print_ast(ast.root);
-		exec_ast(ast.root, ast.root->type == CMD);
+		// print_ast(ast.root);
+		if (ast.root->type == CMD && is_builts(ast.root->content->cmd))
+			builts(ast.root->content->cmd);
+		else
+			exec_ast(ast.root, ast.root->type == CMD);
+		
 	}
 	free(line);
 }

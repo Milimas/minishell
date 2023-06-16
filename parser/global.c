@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:51:07 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/12 10:38:07 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/16 14:28:21 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	init_global_data(void)
 	g_data.envp = environ;
 	while (env && *env)
 	{
-		envadd_back(&g_data.env, envnew(*env));
+		if (ft_strncmp(*env, "OLDPWD=", 7))
+			envadd_back(&g_data.env, envnew(*env));
 		env++;
 	}
 	g_data.exit_status = -1;
