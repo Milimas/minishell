@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 04:21:22 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/03/20 20:13:13 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/18 19:28:03 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,25 @@ void	list_add_back(t_linkedlist *list, t_elem *new)
 	}
 	list->tail = new;
 	list->size++;
+}
+
+void	list_remove(t_linkedlist *list, t_elem *node)
+{
+	if (list_is_empty(list))
+		return ;
+	if (node == list->tail)
+		list->tail = node->prev;
+	if (node == list->head)
+		list->head = node->next;
+	if (node != list->head && node != list->tail)
+	{
+		node->prev->next = node->next;
+		node->next->prev = node->prev;
+	}
+	list->tail->next = NULL;
+	list->head->prev = NULL;
+	list->size--;
+	free(node);
 }
 
 void	list_free(t_linkedlist *list)

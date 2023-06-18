@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/18 15:39:44 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/18 19:29:11 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,7 @@ t_linkedlist	*list_init(t_linkedlist *list);
 t_elem			*list_new_elem(char *content,
 					int len, enum e_token type, enum e_state state);
 void			list_add_back(t_linkedlist *list, t_elem *new);
+void			list_remove(t_linkedlist *list, t_elem *node);
 void			list_free(t_linkedlist *list);
 
 // lexer
