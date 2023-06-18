@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/17 14:00:57 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:39:44 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,5 +230,6 @@ void			print_ast(t_ast_node *ast);
 
 // main
 void			sig_ign_handler(int signum);
+void			proccess_line(char *line);
 
 #endif

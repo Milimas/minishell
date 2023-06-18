@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/16 17:11:14 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:41:41 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,18 @@
 
 void		sig_ign_handler(int signum);
 
-void	bash_promt(void)
+void	proccess_line(char *line)
 {
-	char			*line;
 	t_linkedlist	*lexer;
 	t_ast			ast;
 
-	line = readline(PROMPT_TEXT);
-	signal(SIGINT, SIG_IGN);
 	if (!line)
 		exit(!!printf("exit\n"));
 	if (ft_strlen(line))
 	{
 		add_history(line);
 		lexer = ft_lexer(line);
-		// print_linkedlist(lexer);
+		print_linkedlist(lexer);
 		if (check_syntax(lexer->head))
 			return ;
 		ast.root = NULL;
@@ -40,6 +37,15 @@ void	bash_promt(void)
 			exec_ast(ast.root, ast.root->type == CMD);
 		
 	}
+}
+
+void	bash_promt(void)
+{
+	char			*line;
+
+	line = readline(PROMPT_TEXT);
+	signal(SIGINT, SIG_IGN);
+	proccess_line(line);
 	free(line);
 }
 
