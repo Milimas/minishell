@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:10:42 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/18 11:31:26 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/18 18:12:54 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,19 +89,21 @@ int	is_regular_file(const char *path)
 	return (S_ISREG(path_stat.st_mode));
 }
 
-void	get_files(char *path, char **pattern, unsigned char d_type)
+t_list	*get_files(char *path, char **pattern, unsigned char d_type)
 {
 	DIR				*dirp;
 	struct dirent	*dir;
 	char			*npath;
+	t_list			*list;
 
+	list = NULL;
 	dirp = opendir(path);
 	if (!dirp)
-		return ;
+		return (NULL);
 	dir = readdir(dirp);
 	while (dir)
 	{
-		if (!ft_strncmp(dir->d_name, ".", 2) || !ft_strncmp(dir->d_name, "..", 3))
+		if (**pattern != '.' && (!ft_strncmp(dir->d_name, ".", 2) || !ft_strncmp(dir->d_name, "..", 3)))
 		{
 			dir = readdir(dirp);
 			continue ;
@@ -112,25 +114,66 @@ void	get_files(char *path, char **pattern, unsigned char d_type)
 			{
 				npath = ft_strjoin(path, "/");
 				npath = ft_strjoin(npath, dir->d_name);
-				get_files(npath, pattern + 1, d_type);
+				return (get_files(npath, pattern + 1, d_type));
 			}
 			if (((d_type == DT_DIR && dir->d_type == d_type) || d_type == DT_REG) && !*(pattern + 1))
-				printf("%s\n", dir->d_name);
+				ft_lstadd_back(&list, ft_lstnew(dir->d_name));
 		}
 		dir = readdir(dirp);
+	}
+	return (list);
+}
+
+void	sort_list(t_list *list)
+{
+	t_list	*tmp;
+	char	*ctmp;
+
+	printf("sorting\n");
+	while (list)
+	{
+		tmp = list;
+		while (tmp)
+		{
+			if (ft_strcmp(list->content, tmp->content) > 0)
+			{
+				ctmp = list->content;
+				list->content = tmp->content;
+				tmp->content = ctmp;
+			}
+			tmp = tmp->next;
+		}
+		list = list->next;
 	}
 }
 
 void	lexer_wildcard(t_linkedlist *list, t_elem *elem, int state)
 {
+	t_list	*files;
+	t_list	*files_tmp;
+	
 	(void)list;
+	files = NULL;
 	if (state != GENERAL || !elem)
 		return ;
 	if (ft_strrchr(elem->content, '/') && *(ft_strrchr(elem->content, '/') + 1) == 0)
-		get_files(".", ft_split(elem->content, '/'), DT_DIR);
+		files = get_files(".", ft_split(elem->content, '/'), DT_DIR);
 	else
-		get_files(".", ft_split(elem->content, '/'), DT_REG);
-	printf("\n");
+		files = get_files(".", ft_split(elem->content, '/'), DT_REG);
+	sort_list(files);
+	files_tmp = files->next;
+	if (files)
+	{
+		list->tail->content = files->content;
+		list->tail->len = ft_strlen(files->content);
+		list->tail->type = WORD;
+	}
+	while (files_tmp)
+	{
+		list_add_back(list, list_new_elem(ft_strdup(" "), 1, WHITE_SPACE, GENERAL));
+		list_add_back(list, list_new_elem(files_tmp->content, ft_strlen(files_tmp->content), WORD, GENERAL));
+		files_tmp = files_tmp->next;
+	}
 }
 
 void	lexer_quotes(t_linkedlist *list, char **line, int *state)
