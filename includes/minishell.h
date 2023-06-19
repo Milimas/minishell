@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/18 19:29:11 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:37:25 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_data
 	int			pid;
 	char		**envp;
 	t_env		*env;
+	t_ast		*ast;
 }	t_data;
 
 t_data						g_data;
@@ -213,7 +214,7 @@ void			bsh_env(void);
 
 // execution
 void			exevc(t_cmd *cmd);
-void			exec_ast(t_ast_node *ast_elem, int wait);
+void			exec_ast(t_ast_node *ast_elem);
 int				is_builts(t_cmd *cmd);
 void			builts(t_cmd *cmd);
 

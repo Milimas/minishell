@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/16 17:29:18 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:18:03 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,8 @@ void	exevc(t_cmd *cmd)
 	exit(g_data.exit_status);
 }
 
-void	exec_ast(t_ast_node *ast_elem, int wait)
+void	exec_ast(t_ast_node *ast_elem)
 {
-	int	status;
 	int	pipe_fd[2];
 
 	if (ast_elem && ast_elem->type == CMD && ast_elem->content)
@@ -124,8 +123,9 @@ void	exec_ast(t_ast_node *ast_elem, int wait)
 			signal(SIGQUIT, SIG_IGN);
 			signal(SIGINT, sig_ign_handler);
 			dup2(ast_elem->content->cmd->fd.in, STDIN_FILENO);
+			if (ast_elem->content->cmd->fd.in)
+				close(ast_elem->content->cmd->fd.in);
 			dup2(ast_elem->content->cmd->fd.out, STDOUT_FILENO);
-			close(ast_elem->content->cmd->fd.in);
 			if (is_builts(ast_elem->content->cmd))
 				builts(ast_elem->content->cmd);
 			else
@@ -147,16 +147,14 @@ void	exec_ast(t_ast_node *ast_elem, int wait)
 			ast_elem->content->pipe->second->content->cmd->fd.in = pipe_fd[0];
 		if (ast_elem->content->pipe->second->type == PIPE)
 			ast_elem->content->pipe->second->content->pipe->first->content->cmd->fd.in = pipe_fd[0];
-		exec_ast(ast_elem->content->pipe->first, 1);
+		printf("%s: in:%d out:%d\n", ast_elem->content->pipe->first->content->cmd->args[0], ast_elem->content->pipe->first->content->cmd->fd.in, ast_elem->content->pipe->first->content->cmd->fd.out);
+		printf("%s: in:%d out:%d\n", ast_elem->content->pipe->second->content->cmd->args[0], ast_elem->content->pipe->second->content->cmd->fd.in, ast_elem->content->pipe->second->content->cmd->fd.out);
+		exec_ast(ast_elem->content->pipe->first);
 		if (ast_elem->type == AND && g_data.exit_status)
 			return ;
 		if (ast_elem->type == OR && !g_data.exit_status)
 			return ;
-		exec_ast(ast_elem->content->pipe->second, 1);
-	}
-	if (wait)
-	{
-		waitpid(g_data.pid, &status, 0);
-		g_data.exit_status = WEXITSTATUS(status);
+		close(pipe_fd[0]);
+		exec_ast(ast_elem->content->pipe->second);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/18 15:41:41 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:02:02 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	proccess_line(char *line)
 {
 	t_linkedlist	*lexer;
 	t_ast			ast;
+	int				status;
+	pid_t			wait_pid;
 
 	if (!line)
 		exit(!!printf("exit\n"));
@@ -29,13 +31,20 @@ void	proccess_line(char *line)
 		if (check_syntax(lexer->head))
 			return ;
 		ast.root = NULL;
+		g_data.ast = &ast;
 		ft_parser(lexer->head, &ast.root);
 		// print_ast(ast.root);
 		if (ast.root->type == CMD && is_builts(ast.root->content->cmd))
 			builts(ast.root->content->cmd);
 		else
-			exec_ast(ast.root, ast.root->type == CMD);
-		
+			exec_ast(ast.root);
+		wait_pid = waitpid(-1, &status, 0);
+		while (wait_pid != -1)
+		{
+			wait_pid = waitpid(-1, &status, 0);
+			if (wait_pid == g_data.pid)
+				g_data.exit_status = WEXITSTATUS(status);
+		}
 	}
 }
 
