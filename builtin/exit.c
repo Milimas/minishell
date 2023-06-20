@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 05:21:33 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/05 09:34:33 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/20 05:37:34 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	bsh_exit(t_cmd *cmd)
 		printf("exit\n");
 		exit(ft_atoi(cmd->args[1]));
 	}
-	else
+	if (!is_int(cmd->args[1]))
 	{
 		printf("exit\nbash: exit: %s: numeric argument required\n", cmd->args[1]);
 		exit (255);
