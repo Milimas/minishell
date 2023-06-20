@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:51:07 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/16 14:28:21 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/20 03:16:26 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ void	init_global_data(void)
 			envadd_back(&g_data.env, envnew(*env));
 		env++;
 	}
+	g_data.first_pipe = -1;
 	g_data.exit_status = -1;
 }

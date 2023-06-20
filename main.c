@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/19 20:02:02 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/20 03:36:36 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	proccess_line(char *line)
 		else
 			exec_ast(ast.root);
 		wait_pid = waitpid(-1, &status, 0);
+		if (wait_pid == g_data.pid)
+				g_data.exit_status = WEXITSTATUS(status);
 		while (wait_pid != -1)
 		{
 			wait_pid = waitpid(-1, &status, 0);

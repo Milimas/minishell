@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/19 19:37:25 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/20 03:37:17 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_data
 	char		**envp;
 	t_env		*env;
 	t_ast		*ast;
+	int			first_pipe;
 }	t_data;
 
 t_data						g_data;
