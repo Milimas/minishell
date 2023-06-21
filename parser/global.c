@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   global.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:51:07 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/20 03:16:26 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/20 23:53:58 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ void	envadd_back(t_env **env, t_env *new)
 t_env	*envnew(char *value)
 {
 	t_env	*env;
-	
+
 	env = (t_env *)ft_calloc(sizeof(t_env), 1);
 	if (!env)
 		return (NULL);
-	if (ft_strchr(value,'+'))
+	if (ft_strchr(value, '+'))
 		env->key = ft_substr(value, 0, ft_strchr(value, '+') - value);
 	else
 		env->key = ft_substr(value, 0, ft_strchr(value, '=') - value);
@@ -60,4 +60,17 @@ void	init_global_data(void)
 	}
 	g_data.first_pipe = -1;
 	g_data.exit_status = -1;
+	g_data.ast.root = NULL;
+	g_data.lexer.head = NULL;
+	g_data.lexer.tail = NULL;
+	g_data.lexer.size = 0;
+}
+
+void	reset_global_data(void)
+{
+	g_data.first_pipe = -1;
+	g_data.ast.root = NULL;
+	g_data.lexer.head = NULL;
+	g_data.lexer.tail = NULL;
+	g_data.lexer.size = 0;
 }

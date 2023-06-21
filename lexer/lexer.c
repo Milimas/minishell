@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/18 15:35:36 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/21 03:55:12 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,8 @@ void	lexer_word(t_linkedlist *list, char **line, int state)
 
 t_linkedlist	*ft_lexer(char *line)
 {
-	t_linkedlist	*list;
 	int				state;
 
-	list = list_init(NULL);
 	state = GENERAL;
 	while (line && *line)
 	{
@@ -78,27 +76,27 @@ t_linkedlist	*ft_lexer(char *line)
 		if (is_token(*line) && *line != ENV)
 		{
 			if (*line == PIPE_LINE && *(line + 1) == PIPE_LINE)
-				lexer_double_pipe(list, &line, state);
+				lexer_double_pipe(&g_data.lexer, &line, state);
 			else if (*line == '&' && *(line + 1) == '&')
-				lexer_double_ampersand(list, &line, state);
+				lexer_double_ampersand(&g_data.lexer, &line, state);
 			else if (is_double_redirection(line))
-				lexer_double_redirection(list, &line, state);
+				lexer_double_redirection(&g_data.lexer, &line, state);
 			else if (*line == QUOTE || *line == DOUBLE_QUOTE)
-				lexer_quotes(list, &line, &state);
+				lexer_quotes(&g_data.lexer, &line, &state);
 			else
 			{
-				list_add_back(list, list_new_elem(line, 1, *line, state));
+				list_add_back(&g_data.lexer, list_new_elem(line, 1, *line, state));
 				line++;
 			}
 		}
 		else if (*line == ENV)
-			lexer_env(list, &line, state);
+			lexer_env(&g_data.lexer, &line, state);
 		else
-			lexer_word(list, &line, state);
-		if (ft_strchr(list->tail->content, WILDCARD))
-			list->tail->type = WILDCARD;
-		if (list->tail->type == WILDCARD)
-			lexer_wildcard(list, list->tail, state);
+			lexer_word(&g_data.lexer, &line, state);
+		if (ft_strchr(g_data.lexer.tail->content, WILDCARD))
+			g_data.lexer.tail->type = WILDCARD;
+		if (g_data.lexer.tail->type == WILDCARD)
+			lexer_wildcard(&g_data.lexer, g_data.lexer.tail, state);
 	}
-	return (list);
+	return (&g_data.lexer);
 }

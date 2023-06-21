@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/20 03:37:47 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/21 04:16:06 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,22 @@ void	exevc(t_cmd *cmd)
 void	exec_ast(t_ast_node *ast_elem)
 {
 	int	pipe_fd[2];
+	int	status;
 
+	if (ast_elem && ast_elem->type == SUB)
+	{
+		g_data.pid = fork();
+		if (g_data.pid == -1)
+		{
+			ft_putendl_fd("bash: fork: Resource temporarily unavailable", 2);
+			return ;
+		}
+		if (!g_data.pid)
+		{
+			exec_ast(ast_elem->content->ast);
+			exit(g_data.exit_status);
+		}
+	}
 	if (ast_elem && ast_elem->type == CMD && ast_elem->content)
 	{
 		g_data.pid = fork();
@@ -131,6 +146,8 @@ void	exec_ast(t_ast_node *ast_elem)
 				exevc(ast_elem->content->cmd);
 			exit(g_data.exit_status);
 		}
+		waitpid(g_data.pid, &status, 0);
+		g_data.exit_status = WEXITSTATUS(status);
 		if (ast_elem->content->cmd->fd.out != STDOUT_FILENO)
 			close(ast_elem->content->cmd->fd.out);
 		if (ast_elem->content->cmd->fd.in != STDIN_FILENO)
@@ -141,12 +158,15 @@ void	exec_ast(t_ast_node *ast_elem)
 		if (pipe(pipe_fd) == -1)
 			return ;
 		g_data.first_pipe = pipe_fd[0];
-		if (ast_elem->content->pipe->first->type == CMD)
-			ast_elem->content->pipe->first->content->cmd->fd.out = pipe_fd[1];
-		if (ast_elem->content->pipe->second->type == CMD)
-			ast_elem->content->pipe->second->content->cmd->fd.in = pipe_fd[0];
-		if (ast_elem->content->pipe->second->type == PIPE)
-			ast_elem->content->pipe->second->content->pipe->first->content->cmd->fd.in = pipe_fd[0];
+		if (ast_elem->type == PIPE)
+		{
+			if (ast_elem->content->pipe->first->type == CMD)
+				ast_elem->content->pipe->first->content->cmd->fd.out = pipe_fd[1];
+			if (ast_elem->content->pipe->second->type == CMD)
+				ast_elem->content->pipe->second->content->cmd->fd.in = pipe_fd[0];
+			if (ast_elem->content->pipe->second->type == PIPE)
+				ast_elem->content->pipe->second->content->pipe->first->content->cmd->fd.in = pipe_fd[0];
+		}
 		exec_ast(ast_elem->content->pipe->first);
 		if (ast_elem->type == AND && g_data.exit_status)
 			return ;

@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:11:32 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/11 06:38:23 by abeihaqi         ###   ########.fr       */
+ /*   Updated: 2023/06/19 23:23:04 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 				{
 					while (*elem && is_quote(*elem) && (*elem)->state == GENERAL)
 						*elem = (*elem)->next;
-					if (!*elem)
-						break ;
+					if (!*elem || (*elem)->type == PARENTASIS_CLOSE)
+						return ;
 					*tmp_args = ft_strconcat(*(tmp_args), (*elem)->content);
 					(*elem) = (*elem)->next;
 				}

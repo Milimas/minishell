@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:05:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/10 03:59:27 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/21 03:37:38 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ char	*ast_type(t_ast_node *ast)
 		return ("AND");
 	if (ast->type == OR)
 		return ("OR");
+	if (ast->type == SUB)
+		return ("SUB");
 	return (NULL);
 }
 
@@ -120,8 +122,29 @@ void	print_ast(t_ast_node *ast)
 	}
 	if (ast && (ast->type == PIPE || ast->type == AND || ast->type == OR))
 	{
-		print_ast(ast->content->pipe->first);
 		printf("%s\n", ast_type(ast));
+		print_ast(ast->content->pipe->first);
 		print_ast(ast->content->pipe->second);
 	}
+	if (ast && ast->type == SUB)
+	{
+		printf("STR SUB\n");
+		print_ast(ast->content->ast);
+	}
 }
+
+// void	print_ast(t_ast_node *ast)
+// {
+// 	if (ast && ast->type == CMD)
+// 		printf("%s ", *ast->content->cmd->args);
+// 	printf("%s\n", ast_type(ast));
+// 	if (ast && ast->type == SUB)
+// 		print_ast(ast->content->ast);
+// 	if (ast && (ast->type == PIPE || ast->type == AND || ast->type == OR))
+// 	{
+// 		printf("first: ");
+// 		print_ast(ast->content->pipe->first);
+// 		printf("second: ");
+// 		print_ast(ast->content->pipe->second);
+// 	}
+// }

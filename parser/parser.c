@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:02 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/11 06:39:09 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/21 04:04:00 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,47 @@ enum e_node_type	node_type(t_elem *elem)
 	return (CMD);
 }
 
-void	ft_parser(t_elem *elem, t_ast_node **ast)
+void	ft_parser(t_elem **elem, t_ast_node **ast)
 {
 	t_ast_node	*tmp_ast_node;
+	static int	run = 0;
 
-	while (elem->type == WHITE_SPACE && elem->next)
-		elem = elem->next;
-	if (elem)
+	run++;
+	if (!*elem || (*elem && (*elem)->type == PARENTASIS_CLOSE))
 	{
-		if (!(*ast))
-		{
-			(*ast) = ft_calloc(sizeof(t_ast_node), 1);
-		}
-		(*ast)->type = node_type(elem);
-		(*ast)->content = ft_calloc(sizeof(t_union), 1);
-		(*ast)->content->cmd = create_cmd(&elem);
+		return ;
 	}
-	if (elem && is_logical_operator(elem) && elem->state == GENERAL && ast && *ast && elem->next)
+	while ((*elem) && (*elem)->type == WHITE_SPACE && (*elem)->next)
+		(*elem) = (*elem)->next;
+	if (!(*ast))
+		(*ast) = ft_calloc(sizeof(t_ast_node), 1);
+	if ((*elem) && !is_logical_operator((*elem)) && (*elem)->type != PARENTASIS_OPEN)
+	{
+		(*ast)->type = node_type((*elem));
+		(*ast)->content = ft_calloc(sizeof(t_union), 1);
+		(*ast)->content->cmd = create_cmd(&(*elem));
+	}
+	if ((*elem) && is_logical_operator((*elem)) && (*elem)->state == GENERAL && ast && *ast && (*elem)->next)
 	{
 		tmp_ast_node = ft_calloc(sizeof(t_ast_node), 1);
-		tmp_ast_node->type = node_type(elem);
+		tmp_ast_node->type = node_type((*elem));
 		tmp_ast_node->content = ft_calloc(sizeof(t_union), 1);
 		tmp_ast_node->content->pipe = ft_calloc(sizeof(t_pipe), 1);
 		tmp_ast_node->content->pipe->first = *ast;
 		*ast = tmp_ast_node;
 		(*ast)->content->pipe->second = ft_calloc(sizeof(t_ast_node), 1);
-		ft_parser(elem->next, &(*ast)->content->pipe->second);
+		(*elem) = (*elem)->next;
+		ft_parser(elem, &(*ast)->content->pipe->second);
+		return ;
+	}
+	if (*elem && (*elem)->type == PARENTASIS_OPEN)
+	{
+		(*ast)->type = SUB;
+		(*ast)->content = ft_calloc(sizeof(t_union), 1);
+		(*ast)->content->ast = ft_calloc(sizeof(t_ast_node), 1);
+		(*elem) = (*elem)->next;
+		ft_parser(elem, &(*ast)->content->ast);
+		(*elem) = (*elem)->next;
+		ft_parser(elem, ast);
 	}
 }

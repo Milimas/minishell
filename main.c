@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/20 03:36:36 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/21 03:42:10 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void		sig_ign_handler(int signum);
 
 void	proccess_line(char *line)
 {
-	t_linkedlist	*lexer;
-	t_ast			ast;
 	int				status;
 	pid_t			wait_pid;
 
@@ -26,18 +24,16 @@ void	proccess_line(char *line)
 	if (ft_strlen(line))
 	{
 		add_history(line);
-		lexer = ft_lexer(line);
-		print_linkedlist(lexer);
-		if (check_syntax(lexer->head))
+		g_data.lexer = *ft_lexer(line);
+		// print_linkedlist(&g_data.lexer);
+		if (check_syntax(g_data.lexer.head))
 			return ;
-		ast.root = NULL;
-		g_data.ast = &ast;
-		ft_parser(lexer->head, &ast.root);
-		// print_ast(ast.root);
-		if (ast.root->type == CMD && is_builts(ast.root->content->cmd))
-			builts(ast.root->content->cmd);
+		ft_parser(&g_data.lexer.head, &g_data.ast.root);
+		// print_ast(g_data.ast.root);
+		if (g_data.ast.root->type == CMD && is_builts(g_data.ast.root->content->cmd))
+			builts(g_data.ast.root->content->cmd);
 		else
-			exec_ast(ast.root);
+			exec_ast(g_data.ast.root);
 		wait_pid = waitpid(-1, &status, 0);
 		if (wait_pid == g_data.pid)
 				g_data.exit_status = WEXITSTATUS(status);
@@ -57,6 +53,7 @@ void	bash_promt(void)
 	line = readline(PROMPT_TEXT);
 	signal(SIGINT, SIG_IGN);
 	proccess_line(line);
+	reset_global_data();
 	free(line);
 }
 

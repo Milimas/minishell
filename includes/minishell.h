@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/20 03:37:17 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/21 02:57:05 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ enum e_node_type
 	PIPE,
 	AND,
 	OR,
+	SUB,
 };
 
 enum e_state
@@ -76,18 +77,6 @@ enum e_token
 	DOUBLE_AMPERSAND = -2,
 	LOGICAL_OR_OPERATOR = -3,
 };
-
-typedef struct s_data
-{
-	int			exit_status;
-	int			pid;
-	char		**envp;
-	t_env		*env;
-	t_ast		*ast;
-	int			first_pipe;
-}	t_data;
-
-t_data						g_data;
 
 typedef struct s_linkedlist
 {
@@ -152,8 +141,9 @@ typedef struct s_redir_elem
 
 typedef union u_union
 {
-	t_pipe	*pipe;
-	t_cmd	*cmd;
+	t_pipe		*pipe;
+	t_cmd		*cmd;
+	t_ast_node	*ast;
 }	t_union;
 
 typedef struct s_env
@@ -162,6 +152,19 @@ typedef struct s_env
 	char			*value;
 	t_env			*next;
 }	t_env;
+
+typedef struct s_data
+{
+	int				exit_status;
+	int				pid;
+	char			**envp;
+	t_env			*env;
+	t_ast			ast;
+	t_linkedlist	lexer;
+	int				first_pipe;
+}	t_data;
+
+t_data						g_data;
 
 // list.c
 int				list_is_empty(t_linkedlist *list);
@@ -188,13 +191,14 @@ void			lexer_wildcard(t_linkedlist *list, t_elem *elem, int state);
 int				check_syntax(t_elem *elem);
 
 // parser
-void			ft_parser(t_elem *elem, t_ast_node **ast);
+void			ft_parser(t_elem **elem, t_ast_node **ast);
 t_cmd			*create_cmd(t_elem **elem);
 int				count_args(t_elem *elem);
 t_cmd			*create_cmd(t_elem **elem);
 t_redir_elem	*create_redir(t_elem **elem);
 void			append_redir(t_redir_list *redir, t_redir_elem *new);
 void			init_global_data(void);
+void			reset_global_data(void);
 t_env			*envlast(t_env *env);
 void			envadd_back(t_env **env, t_env *new);
 t_env			*envnew(char *value);
@@ -230,6 +234,7 @@ int				plus_check(char *args);
 // debug tools
 void			print_linkedlist(t_linkedlist *list);
 void			print_ast(t_ast_node *ast);
+char			*ast_type(t_ast_node *ast);
 
 // main
 void			sig_ign_handler(int signum);
