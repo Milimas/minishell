@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/21 14:38:41 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:25:02 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	proccess_line(char *line)
 			builts(g_data.ast.root->content->cmd);
 		}
 		else
-			exec_ast(g_data.ast.root);
+			exec_ast(g_data.ast.root, g_data.ast.root->type);
 		wait_pid = waitpid(-1, &status, 0);
 		if (wait_pid == g_data.pid)
 				g_data.exit_status = WEXITSTATUS(status);
