@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/21 04:20:30 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/21 04:48:17 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void			print_export(char **tab, int size);
 
 // execution
 void			exevc(t_cmd *cmd);
-void			exec_ast(t_ast_node *ast_elem);
+void			exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type);
 int				is_builts(t_cmd *cmd);
 void			builts(t_cmd *cmd);
 

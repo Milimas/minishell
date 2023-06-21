@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/21 03:42:10 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/21 04:48:41 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	proccess_line(char *line)
 		if (g_data.ast.root->type == CMD && is_builts(g_data.ast.root->content->cmd))
 			builts(g_data.ast.root->content->cmd);
 		else
-			exec_ast(g_data.ast.root);
+			exec_ast(g_data.ast.root, g_data.ast.root->type);
 		wait_pid = waitpid(-1, &status, 0);
 		if (wait_pid == g_data.pid)
 				g_data.exit_status = WEXITSTATUS(status);

@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/21 04:16:06 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/21 04:53:22 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	exevc(t_cmd *cmd)
 	exit(g_data.exit_status);
 }
 
-void	exec_ast(t_ast_node *ast_elem)
+void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 {
 	int	pipe_fd[2];
 	int	status;
@@ -122,12 +122,17 @@ void	exec_ast(t_ast_node *ast_elem)
 		}
 		if (!g_data.pid)
 		{
-			exec_ast(ast_elem->content->ast);
+			exec_ast(ast_elem->content->ast, ast_elem->type);
 			exit(g_data.exit_status);
 		}
 	}
-	if (ast_elem && ast_elem->type == CMD && ast_elem->content)
+	else if (ast_elem && ast_elem->type == CMD && ast_elem->content)
 	{
+		if (is_builts(ast_elem->content->cmd) && parent_type != PIPE)
+		{
+			builts(ast_elem->content->cmd);
+			return ;
+		}
 		g_data.pid = fork();
 		if (g_data.pid == -1) {
 			ft_putendl_fd("bash: fork: Resource temporarily unavailable", 2);
@@ -167,11 +172,11 @@ void	exec_ast(t_ast_node *ast_elem)
 			if (ast_elem->content->pipe->second->type == PIPE)
 				ast_elem->content->pipe->second->content->pipe->first->content->cmd->fd.in = pipe_fd[0];
 		}
-		exec_ast(ast_elem->content->pipe->first);
+		exec_ast(ast_elem->content->pipe->first, ast_elem->type);
 		if (ast_elem->type == AND && g_data.exit_status)
 			return ;
 		if (ast_elem->type == OR && !g_data.exit_status)
 			return ;
-		exec_ast(ast_elem->content->pipe->second);
+		exec_ast(ast_elem->content->pipe->second, ast_elem->type);
 	}
 }
