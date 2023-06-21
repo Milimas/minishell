@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/21 04:16:06 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/21 14:37:31 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void	exec_ast(t_ast_node *ast_elem)
 		{
 			signal(SIGQUIT, SIG_IGN);
 			signal(SIGINT, sig_ign_handler);
+			rediring(ast_elem->content->cmd->redir->head, ast_elem->content->cmd);
 			dup2(ast_elem->content->cmd->fd.in, STDIN_FILENO);
 			dup2(ast_elem->content->cmd->fd.out, STDOUT_FILENO);
 			close(g_data.first_pipe);

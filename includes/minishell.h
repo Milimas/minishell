@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/21 04:20:30 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/21 14:37:15 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,10 @@ void			exevc(t_cmd *cmd);
 void			exec_ast(t_ast_node *ast_elem);
 int				is_builts(t_cmd *cmd);
 void			builts(t_cmd *cmd);
+
+//heredoc
+void			putfilefd(char *av, int fd);
+void			rediring(t_redir_elem *redir, t_cmd *cmd);
 
 // utils
 int				ft_isspace(char c);

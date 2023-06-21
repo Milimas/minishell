@@ -30,13 +30,14 @@ SRC =	main.c					\
 		builtin/export.c		\
 		builtin/env.c			\
 		builtin/unset.c			\
-		builtin/export_sort.c			\
+		builtin/export_sort.c	\
 		exec/cmd.c				\
 		utils/ft_isspace.c		\
 		utils/get_env.c			\
 		utils/debug_tools.c		\
 		utils/check_plus.c		\
 		utils/ft_strconcat.c	\
+		heredoc/doc.c			\
 		
 
 OBJ = $(SRC:.c=.o)

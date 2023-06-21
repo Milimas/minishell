@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/21 03:42:18 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/21 14:59:14 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static int	isvalid(char *args)
 	if (*args == '=' || *args == '+' || (!ft_isalpha(*args) && *args != '_'))
 	{
 		printf("bash: export: `%s': not a valid identifier\n", args);
-		return (1);
+		g_data.exit_status = 1;
+		return(1);;
 	}
 	while (args[i] && args[i] != '=')
 	{
@@ -68,7 +69,8 @@ static int	isvalid(char *args)
 				&& args[i] != '+') || plus_check(args) > 1)
 		{
 			printf("bash: export: `%s': not a valid identifier\n", args);
-			return (1);
+			g_data.exit_status = 1;
+			return(1);
 		}
 		i++;
 	}

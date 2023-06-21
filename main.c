@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/21 03:42:10 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/21 14:38:41 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,16 @@ void	proccess_line(char *line)
 	{
 		add_history(line);
 		g_data.lexer = *ft_lexer(line);
-		// print_linkedlist(&g_data.lexer);
+		print_linkedlist(&g_data.lexer);
 		if (check_syntax(g_data.lexer.head))
 			return ;
 		ft_parser(&g_data.lexer.head, &g_data.ast.root);
-		// print_ast(g_data.ast.root);
+		print_ast(g_data.ast.root);
 		if (g_data.ast.root->type == CMD && is_builts(g_data.ast.root->content->cmd))
+		{
+			rediring(g_data.ast.root->content->cmd->redir->head, g_data.ast.root->content->cmd);
 			builts(g_data.ast.root->content->cmd);
+		}
 		else
 			exec_ast(g_data.ast.root);
 		wait_pid = waitpid(-1, &status, 0);
@@ -91,9 +94,10 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	(void)envp;
-	disable_sigint_char();
+	// disable_sigint_char();
 	// enable_sigint_char();
 	init_global_data();
+	// putfilefd("mok",1);
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
