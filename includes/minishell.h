@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/21 17:24:45 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/22 18:53:27 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,7 @@ void			builts(t_cmd *cmd);
 //heredoc
 void			putfilefd(char *av, int fd);
 void			rediring(t_redir_elem *redir, t_cmd *cmd);
+char			*rm_quotes(char *str);
 
 // utils
 int				ft_isspace(char c);

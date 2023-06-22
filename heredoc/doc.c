@@ -6,37 +6,78 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/22 16:15:09 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/22 18:52:56 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+char	*rm_quotes(char *str)
+{
+	int	nb;
+	int	i;
+	int	j;
+	int len;
+	char *res;
+	
+	nb = 0;
+	i = 0;
+	res = NULL;
+	len = ft_strlen(str);
+	while(str[i])
+	{
+		if (str[i] == '\"')
+			nb++;
+		i++;
+	}
+	if (nb % 2 == 0)
+	{
+		len = len - nb;
+		res = malloc( len+1  * sizeof(char));
+
+		i = 0;
+		j = 0;
+		while (str[i])
+		{
+			if (j < len && str[i] != '\"')
+			{
+				res[j] = str[i];
+				j++;
+			}
+			i++;
+		}
+		res[j] = '\0';
+	}
+	return (res);
+}
+
 void	putfilefd(char *av, int fd)
 {
 	char	*str;
+	char	*limiter;
 	
-	printf("AA: %s\n",  av);
 	if (av)
 	{
-		while (1)
+		limiter = rm_quotes(av);
+		if (limiter)
 		{
-			str = readline(">");
-			if (!str)
-				break ;
-			if (ft_strcmp(str, av) == 0)
+			while (1)
+			{
+				str = readline(">");
+				if (!str)
 					break ;
-			ft_putstr_fd(str, fd);
-			ft_putstr_fd("\n", fd);
-			free(str);
+				if (ft_strcmp(str, limiter) == 0)
+				{
+					free (limiter);
+					break ;
+				}
+				ft_putstr_fd(str, fd);
+				ft_putstr_fd("\n", fd);
+				free(str);
+			}		
 		}
 	}
 }
-
-// void    ft_heredoc()
-// {
-    
-// }
 
 void	rediring(t_redir_elem *redir, t_cmd *cmd)
 {
