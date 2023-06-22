@@ -49,11 +49,11 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 				}
 				tmp_args++;
 			}
+			if ((*elem) && is_logical_operator(*elem) && (*elem)->state == GENERAL)
+				break ;
+			if ((*elem))
+				(*elem) = (*elem)->next;
 		}
-		if ((*elem) && is_logical_operator(*elem) && (*elem)->state == GENERAL)
-			break ;
-		if ((*elem))
-			(*elem) = (*elem)->next;
 	}
 }
 
