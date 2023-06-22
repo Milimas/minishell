@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:10:20 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/05/25 10:21:19 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:40:15 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ t_redir_elem	*create_redir(t_elem **elem)
 	*elem = (*elem)->next;
 	while ((*elem) && (*elem)->type == WHITE_SPACE)
 		*elem = (*elem)->next;
-	if ((*elem) && (*elem)->type == WORD)
+	if ((*elem) && ((*elem)->type == WORD || is_quote((*elem))))
 	{
-		redir->arg = "";
-		if ((*elem)->state != GENERAL)
+		redir->arg = NULL;
+		printf("%s\n", (*elem)->content);
+		if ((*elem) && is_quote((*elem)))
 		{
-			while ((*elem) && (*elem)->state != GENERAL)
+			while ((*elem) && ((*elem)->state != GENERAL || is_quote(*elem)))
 			{
 				redir->arg = ft_strconcat(redir->arg, (*elem)->content);
 				(*elem) = (*elem)->next;
