@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/21 14:37:37 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:15:09 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,21 @@
 void	putfilefd(char *av, int fd)
 {
 	char	*str;
-    (void)av;
-	while (1)
+	
+	printf("AA: %s\n",  av);
+	if (av)
 	{
-		str = readline(">");
-		if (!str)
-			break ;
-		if (ft_strcmp(str, av) == 0)
+		while (1)
+		{
+			str = readline(">");
+			if (!str)
 				break ;
-		ft_putstr_fd(str, fd);
-		ft_putstr_fd("\n", fd);
-		free(str);
+			if (ft_strcmp(str, av) == 0)
+					break ;
+			ft_putstr_fd(str, fd);
+			ft_putstr_fd("\n", fd);
+			free(str);
+		}
 	}
 }
 
@@ -33,6 +37,7 @@ void	putfilefd(char *av, int fd)
 // {
     
 // }
+
 void	rediring(t_redir_elem *redir, t_cmd *cmd)
 {
 	int pipe_hd[2];
@@ -40,6 +45,7 @@ void	rediring(t_redir_elem *redir, t_cmd *cmd)
 	while (redir)
 	{
 		pipe(pipe_hd);
+
 		if (redir->type == HERE_DOC)
 		{	
 			putfilefd(redir->arg, pipe_hd[1]);

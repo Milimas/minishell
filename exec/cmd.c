@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/21 17:24:27 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:55:27 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@
 char	**get_paths(void)
 {
 	t_env	*envp;
+	// char	**pth;
 
 	envp = g_data.env;
 	while (envp)
 	{
 		if (ft_strncmp(envp->key, "PATH", 5) == 0)
+		{
+			// pth = ft_split(envp->value, ':');
 			return (ft_split(envp->value, ':'));
+		}
 		envp = envp->next;
 	}
 	return (NULL);
