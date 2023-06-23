@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:05:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/23 07:17:02 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/23 20:32:08 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,13 @@ void	print_ast(t_ast_node *ast)
 
 	if (ast && ast->type == CMD && ast->content && ast->content->cmd && ast->content->cmd->args)
 	{
-		// printf("****************************\n");
+		printf("****************************\n");
 		args = ast->content->cmd->args;
 		printf("cmd: %s\n", *args);
-		// while (*++args)
-		// {
-		// 	printf("arg: %s\n", *args);
-		// }
+		while (*++args)
+		{
+			printf("arg: %s\n", *args);
+		}
 		// if (ast->content->cmd->redir && ast->content->cmd->redir->head)
 		// {
 		// 	redir = ast->content->cmd->redir->head;
@@ -118,9 +118,9 @@ void	print_ast(t_ast_node *ast)
 		// {
 		// 	printf("no redir\n");
 		// }
-		// printf("in:  %d\n", ast->content->cmd->fd.in);
-		// printf("out: %d\n", ast->content->cmd->fd.out);
-		// printf("****************************\n");
+		printf("fd\nin:  %d\n", ast->content->cmd->fd.in);
+		printf("out: %d\n", ast->content->cmd->fd.out);
+		printf("****************************\n");
 	}
 	if (ast && (ast->type == PIPE || ast->type == AND || ast->type == OR))
 	{
