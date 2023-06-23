@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/22 18:53:27 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/23 20:01:48 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,10 +191,10 @@ void			lexer_wildcard(t_linkedlist *list, t_elem *elem, int state);
 int				check_syntax(t_elem *elem);
 
 // parser
-void			ft_parser(t_elem **elem, t_ast_node **ast);
-t_cmd			*create_cmd(t_elem **elem);
+t_ast_node		*ft_parser(t_elem **elem, t_ast_node *ast);
+// void			ft_parser(t_elem **elem, t_ast_node **ast);
 int				count_args(t_elem *elem);
-t_cmd			*create_cmd(t_elem **elem);
+t_ast_node		*create_cmd(t_elem **elem);
 t_redir_elem	*create_redir(t_elem **elem);
 void			append_redir(t_redir_list *redir, t_redir_elem *new);
 void			init_global_data(void);

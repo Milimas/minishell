@@ -16,161 +16,38 @@
 <WORD-LIST> ::= <WORD>
              |  <WORD-LIST> <WORD>
 
-<ASSIGNMENT-WORD> ::= <WORD> '=' <WORD>
-
 
 <REDIRECTION> ::=  '>' <WORD>
                 |  '<' <WORD>
-                |  <NUMBER> '>' <WORD>
-                |  <NUMBER> '<' <WORD>
                 |  '>>' <WORD>
-                |  <NUMBER> '>>' <WORD>
                 |  '<<' <WORD>
-                |  <NUMBER> '<<' <WORD>
-                |  '<&' <NUMBER>
-                |  <NUMBER> '<&' <NUMBER>
-                |  '>&' <NUMBER>
-                |  <NUMBER> '>&' <NUMBER>
-                |  '<&' <WORD>
-                |  <NUMBER> '<&' <WORD>
-                |  '>&' <WORD>
-                |  <NUMBER> '>&' <WORD>
-                |  '<<-' <WORD>
-                |  <NUMBER> '<<-' <WORD>
-                |  '>&' '-'
-                |  <NUMBER> '>&' '-'
-                |  '<&' '-'
-                |  <NUMBER> '<&' '-'
-                |  '&>' <WORD>
-                |  <NUMBER> '<>' <WORD>
-                |  '<>' <WORD>
-                |  '>|' <WORD>
-                |  <NUMBER> '>|' <WORD>
-
-<SIMPLE-COMMAND-ELEMENT> ::= <WORD>
-                          |  <ASSIGNMENT-WORD>
-                          |  <REDIRECTION>
 
 <REDIRECTION-LIST> ::= <REDIRECTION>
                     |  <REDIRECTION-LIST> <REDIRECTION>
 
+<SIMPLE-COMMAND-ELEMENT> ::= <WORD>
+                          |  <REDIRECTION>
+
 <SIMPLE-COMMAND> ::=  <SIMPLE-COMMAND-ELEMENT>
                    |  <SIMPLE-COMMAND> <SIMPLE-COMMAND-ELEMENT>
+
+<SUBSHELL> ::=  '(' <LIST>')'
+
+<SHELL-COMMAND> ::=  <SUBSHELL>
 
 <COMMAND> ::=  <SIMPLE-COMMAND>
             |  <SHELL-COMMAND>
             |  <SHELL-COMMAND> <REDIRECTION-LIST>
+            |  <PIPELINE>
 
-<SHELL-COMMAND> ::=  <FOR-COMMAND>
-                  |  <CASE-COMMAND>
-                  |  while <COMPOUND-LIST> do <COMPOUND-LIST> done
-                  |  until <COMPOUND-LIST> do <COMPOUND-LIST> done
-                  |  <SELECT-COMMAND>
-                  |  <IF-COMMAND>
-                  |  <SUBSHELL>
-                  |  <GROUP-COMMAND>
-                  |  <FUNCTION-DEF>
+<PIPELINE> ::=  <PIPELINE> '|' <COMMAND>
+             |  <COMMAND>
 
-<FOR-COMMAND> ::=  for <WORD> <NEWLINE-LIST> do <COMPOUND-LIST> done
-            |  for <WORD> <NEWLINE-LIST> '{' <COMPOUND-LIST> '}'
-            |  for <WORD> ';' <NEWLINE-LIST> do <COMPOUND-LIST> done
-            |  for <WORD> ';' <NEWLINE-LIST> '{' <COMPOUND-LIST> '}'
-            |  for <WORD> <NEWLINE-LIST> in <WORD-LIST> <LIST-TERMINATOR>
-                   <NEWLINE-LIST> do <COMPOUND-LIST> done
-            |  for <WORD> <NEWLINE-LIST> in <WORD-LIST> <LIST-TERMINATOR>
-                   <NEWLINE-LIST> '{' <COMPOUND-LIST> '}'
+<LIST> ::=  <COMMAND>
+         |  <LIST> '&&' <COMMAND>
+         |  <LIST> '||' <COMMAND>
+         |  <PIPELINE>
 
-<SELECT-COMMAND> ::=  select <WORD> <NEWLINE-LIST> do <LIST> done
-                   |  select <WORD> <NEWLINE-LIST> '{' <LIST> '}'
-                   |  select <WORD> ';' <NEWLINE-LIST> do <LIST> done
-                   |  select <WORD> ';' <NEWLINE-LIST> '{' LIST '}'
-                   |  select <WORD> <NEWLINE-LIST> in <WORD-LIST>
-                           <LIST-TERMINATOR> <NEWLINE-LIST> do <LIST> done
-                   |  select <WORD> <NEWLINE-LIST> in <WORD-LIST>
-                           <LIST-TERMINATOR> <NEWLINE-LIST> '{' <LIST> '}'
-
-<CASE-COMMAND> ::=  case <WORD> <NEWLINE-LIST> in <NEWLINE-LIST> esac
-                 |  case <WORD> <NEWLINE-LIST> in <CASE-CLAUSE-SEQUENCE>
-                         <NEWLINE-LIST> esac
-                 |  case <WORD> <NEWLINE-LIST> in <CASE-CLAUSE> esac
-
-<FUNCTION-DEF> ::=  <WORD> '(' ')' <NEWLINE-LIST> <GROUP-COMMAND>
-                 |  function <WORD> '(' ')' <NEWLINE-LIST> <GROUP-COMMAND>
-                 |  function <WORD> <NEWLINE-LIST> <GROUP-COMMAND>
-
-<SUBSHELL> ::=  '(' <COMPOUND-LIST> ')'
-
-<IF-COMMAND> ::= if <COMPOUND-LIST> then <COMPOUND-LIST> fi
-          | if <COMPOUND-LIST> then <COMPOUND-LIST> else <COMPOUND-LIST> fi
-          | if <COMPOUND-LIST> then <COMPOUND-LIST> <ELIF-CLAUSE> fi
-
-<GROUP-COMMAND> ::=  '{' <LIST> '}'
-
-<ELIF-CLAUSE> ::= elif <COMPOUND-LIST> then <COMPOUND-LIST>
-           | elif <COMPOUND-LIST> then <COMPOUND-LIST> else <COMPOUND-LIST>
-           | elif <COMPOUND-LIST> then <COMPOUND-LIST> <ELIF-CLAUSE>
-
-<CASE-CLAUSE> ::=  <PATTERN-LIST>
-                |  <CASE-CLAUSE-SEQUENCE> <PATTERN-LIST>
-
-<PATTERN-LIST> ::=  <NEWLINE-LIST> <PATTERN> ')' <COMPOUND-LIST>
-                 |  <NEWLINE-LIST> <PATTERN> ')' <NEWLINE-LIST>
-                 |  <NEWLINE-LIST> '(' <PATTERN> ')' <COMPOUND-LIST>
-                 |  <NEWLINE-LIST> '(' <PATTERN> ')' <NEWLINE-LIST>
-
-<CASE-CLAUSE-SEQUENCE> ::=  <PATTERN-LIST> ';;'
-                         |  <CASE-CLAUSE-SEQUENCE> <PATTERN-LIST> ';;'
-
-<PATTERN> ::=  <WORD>
-            |  <PATTERN> '|' <WORD>
-
-
-<LIST> ::=   <NEWLINE-LIST> <LIST0>
-
-<COMPOUND-LIST> ::=  <LIST>
-                  |  <NEWLINE-LIST> <LIST1>
-
-<LIST0> ::=   <LIST1> '\n' <NEWLINE-LIST>
-           |  <LIST1> '&' <NEWLINE-LIST>
-           |  <LIST1> ';' <NEWLINE-LIST>
-
-<LIST1> ::=   <LIST1> '&&' <NEWLINE-LIST> <LIST1>
-           |  <LIST1> '||' <NEWLINE-LIST> <LIST1>
-           |  <LIST1> '&' <NEWLINE-LIST> <LIST1>
-           |  <LIST1> ';' <NEWLINE-LIST> <LIST1>
-           |  <LIST1> '\n' <NEWLINE-LIST> <LIST1>
-           |  <PIPELINE-COMMAND>
-
-<LIST-TERMINATOR> ::= '\n'
-                   |  ';'
-
-<NEWLINE-LIST> ::=
-                  |  <NEWLINE-LIST> '\n'
-
-<SIMPLE-LIST> ::=  <SIMPLE-LIST1>
-                |  <SIMPLE-LIST1> '&'
-                |  <SIMPLE-LIST1> ';'
-
-<SIMPLE-LIST1> ::=  <SIMPLE-LIST1> '&&' <NEWLINE-LIST> <SIMPLE-LIST1>
-                 |  <SIMPLE-LIST1> '||' <NEWLINE-LIST> <SIMPLE-LIST1>
-                 |  <SIMPLE-LIST1> '&' <SIMPLE-LIST1>
-                 |  <SIMPLE-LIST1> ';' <SIMPLE-LIST1>
-                 |  <PIPELINE-COMMAND>
-
-<PIPELINE-COMMAND> ::= <PIPELINE>
-                    |  '!' <PIPELINE>
-                    |  <TIMESPEC> <PIPELINE>
-                    |  <TIMESPEC> '!' <PIPELINE>
-                    |  '!' <TIMESPEC> <PIPELINE>
-
-<PIPELINE> ::=
-          <PIPELINE> '|' <NEWLINE-LIST> <PIPELINE>
-       |  <COMMAND>
-
-<TIME-OPT> ::= '-p'
-
-<TIMESPEC> ::=  time
-             |  time <TIME-OPT>
 
 ```
 
@@ -179,3 +56,6 @@
 [https://cmdse.github.io/pages/appendix/bash-grammar.html](https://cmdse.github.io/pages/appendix/bash-grammar.html)
 
 [https://github.com/fraqioui/minishell](https://github.com/fraqioui/minishell)
+
+// test
+echo f << h word

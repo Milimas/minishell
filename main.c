@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/21 17:25:02 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/23 19:43:43 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,17 @@ void	proccess_line(char *line)
 		print_linkedlist(&g_data.lexer);
 		if (check_syntax(g_data.lexer.head))
 			return ;
-		ft_parser(&g_data.lexer.head, &g_data.ast.root);
+		// while (g_data.lexer.head)
+		// {
+		printf("===============================================================================================\n");
+		while (g_data.lexer.head)
+		{
+			g_data.ast.root = ft_parser(&g_data.lexer.head, g_data.ast.root);
+		}
 		print_ast(g_data.ast.root);
+		printf("===============================================================================================\n");
+		// }
+		// print_ast(g_data.ast.root);
 		if (g_data.ast.root->type == CMD && is_builts(g_data.ast.root->content->cmd))
 		{
 			rediring(g_data.ast.root->content->cmd->redir->head, g_data.ast.root->content->cmd);
@@ -46,6 +55,7 @@ void	proccess_line(char *line)
 			if (wait_pid == g_data.pid)
 				g_data.exit_status = WEXITSTATUS(status);
 		}
+		// print_ast(g_data.ast.root);
 	}
 }
 

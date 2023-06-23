@@ -57,15 +57,18 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 	}
 }
 
-t_cmd	*create_cmd(t_elem **elem)
+t_ast_node	*create_cmd(t_elem **elem)
 {
-	t_cmd	*cmd;
+	t_ast_node	*ast;
 
-	cmd = ft_calloc(sizeof(t_cmd), 1);
-	cmd->args = ft_calloc(sizeof(char *), count_args((*elem)) + 1);
-	cmd->redir = ft_calloc(sizeof(t_redir_list), 1);
-	init_cmd(cmd, elem);
-	cmd->fd.in = 0;
-	cmd->fd.out = 1;
-	return (cmd);
+	ast = ft_calloc(sizeof(t_ast_node), 1);
+	ast->type = CMD;
+	ast->content = ft_calloc(sizeof(t_union), 1);
+	ast->content->cmd = ft_calloc(sizeof(t_cmd), 1);
+	ast->content->cmd->args = ft_calloc(sizeof(char *), count_args((*elem)) + 1);
+	ast->content->cmd->redir = ft_calloc(sizeof(t_redir_list), 1);
+	init_cmd(ast->content->cmd, elem);
+	ast->content->cmd->fd.in = 0;
+	ast->content->cmd->fd.out = 1;
+	return (ast);
 }

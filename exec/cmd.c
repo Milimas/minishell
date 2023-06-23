@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/22 19:04:01 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:02:20 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,12 @@ void	exec_ast_pipe(t_ast_node *ast_elem)
 	g_data.first_pipe = pipe_fd[0];
 	if (ast_elem->type == PIPE)
 	{
+		if (ast_elem->content->pipe->first->type == PIPE)
+			ast_elem->content->pipe->second->content->cmd->fd.in = pipe_fd[0];
 		if (ast_elem->content->pipe->first->type == CMD)
 			ast_elem->content->pipe->first->content->cmd->fd.out = pipe_fd[1];
 		if (ast_elem->content->pipe->second->type == CMD)
 			ast_elem->content->pipe->second->content->cmd->fd.in = pipe_fd[0];
-		if (ast_elem->content->pipe->second->type == PIPE)
-			ast_elem->content->pipe->second->content->pipe->first->content->cmd->fd.in = pipe_fd[0];
 	}
 	exec_ast(ast_elem->content->pipe->first, ast_elem->type);
 	exec_ast(ast_elem->content->pipe->second, ast_elem->type);
@@ -136,29 +136,17 @@ void	exec_ast_pipe(t_ast_node *ast_elem)
 
 void	exec_ast_or(t_ast_node *ast_elem, enum e_node_type parent_type)
 {
-	if (parent_type == AND)
-	{
-		if (!g_data.exit_status)
-			exec_ast(ast_elem->content->pipe->first, ast_elem->type);
-		else if (g_data.exit_status || ast_elem->content->pipe->second->type == AND)
-			exec_ast(ast_elem->content->pipe->second, ast_elem->type);
-	}
-	else
-	{
-		exec_ast(ast_elem->content->pipe->first, ast_elem->type);
-		if (g_data.exit_status || ast_elem->content->pipe->second->type == AND)
-			exec_ast(ast_elem->content->pipe->second, ast_elem->type);
-	}
+	(void)parent_type;
+	exec_ast(ast_elem->content->pipe->first, ast_elem->type);
+	if (g_data.exit_status)
+		exec_ast(ast_elem->content->pipe->second, ast_elem->type);
 }
 
 void	exec_ast_and(t_ast_node *ast_elem, enum e_node_type parent_type)
 {
 	(void)parent_type;
-	if (!(parent_type == OR && !g_data.exit_status))
-		exec_ast(ast_elem->content->pipe->first, ast_elem->type);
-	if (!g_data.exit_status || (parent_type == OR && !g_data.exit_status))
-		exec_ast(ast_elem->content->pipe->second, ast_elem->type);
-	else if (ast_elem->content->pipe->second->type == OR)
+	exec_ast(ast_elem->content->pipe->first, ast_elem->type);
+	if (!g_data.exit_status)
 		exec_ast(ast_elem->content->pipe->second, ast_elem->type);
 }
 
