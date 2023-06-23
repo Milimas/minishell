@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/21 03:55:12 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/23 21:46:42 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	word_len(char *line)
 	char	*_line;
 
 	_line = line;
-	while (*line && !is_token(*line))
+	while (*line && ft_isalnum(*line))
 		line++;
 	return (line - _line);
 }
