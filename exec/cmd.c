@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/23 22:59:47 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/23 23:09:39 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,9 +191,10 @@ void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 			dup2(ast_elem->content->cmd->fd.in, STDIN_FILENO);
 			dup2(ast_elem->content->cmd->fd.out, STDOUT_FILENO);
 			close(g_data.first_pipe);
+			g_data.exit_status = 0;
 			if (is_builts(ast_elem->content->cmd))
 				builts(ast_elem->content->cmd);
-			else
+			else if (ast_elem->content->cmd->args[0])
 				exevc(ast_elem->content->cmd);
 			exit(g_data.exit_status);
 		}

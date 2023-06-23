@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/22 18:52:56 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:37:23 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,58 @@ char	*rm_quotes(char *str)
 	return (res);
 }
 
+char	*ex_ist2(char *cmd)
+{
+	t_env	*env;
+
+	env = g_data.env;
+	while (env)
+	{
+		if (!ft_strncmp(env->key, cmd, ft_strlen(env->key) + 1))
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}
+
+void	expanding(char *str, int fd, char *limiter)
+{
+	char	**tab1;
+	char	**tab2;
+	int		i;
+	int		j;
+	int		x;
+
+	i = 0;
+	if (!str || !ft_strcmp(str, limiter))
+		return;
+	tab1 = ft_split(str, ' ');
+	while (tab1[i])
+	{
+		x = 0;
+		if (i)
+			ft_putstr_fd(" ", fd);
+		while (tab1[i][x] && tab1[i][x] != '$')
+			ft_putchar_fd(tab1[i][x++], fd);
+		if (ft_strchr(tab1[i], '$'))
+		{
+			j = 0;
+			tab2 = ft_split(tab1[i], '$');
+			while (tab2[j])
+			{
+				if(j != 0)
+					ft_putstr_fd(" ", fd);
+				if (ex_ist2(tab2[j]))
+					ft_putstr_fd(ex_ist2(tab2[j]), fd);
+				else
+					ft_putstr_fd("", fd);
+				j++;
+			}
+		}
+		i++;
+	}
+}
+
 void	putfilefd(char *av, int fd)
 {
 	char	*str;
@@ -71,7 +123,11 @@ void	putfilefd(char *av, int fd)
 					free (limiter);
 					break ;
 				}
-				ft_putstr_fd(str, fd);
+				///
+				if (!ft_strchr(limiter, '\'') || !ft_strchr(limiter, '\"'))
+					expanding(str, fd, limiter);
+				else
+					ft_putstr_fd(str, fd);
 				ft_putstr_fd("\n", fd);
 				free(str);
 			}		
@@ -106,8 +162,8 @@ void	rediring(t_redir_elem *redir, t_cmd *cmd)
 				exit (1);
 			}
 		}
-		close(pipe_hd[0]);
+		// close(pipe_hd[0]);
 		close(pipe_hd[1]);
 		redir = redir->next;
 	}
-}
+}	
