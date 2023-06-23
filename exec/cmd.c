@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/23 21:30:48 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:59:47 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	exec_ast_pipe(t_ast_node *ast_elem)
 	g_data.first_pipe = pipe_fd[0];
 	if (ast_elem->type == PIPE)
 	{
-		if (ast_elem->content->pipe->first->type == PIPE)
+		if (ast_elem->content->pipe->first->type == PIPE || ast_elem->content->pipe->first->type == OR || ast_elem->content->pipe->first->type == AND)
 			ast_elem->content->pipe->first->content->pipe->second->content->cmd->fd.out = pipe_fd[1];
 		if (ast_elem->content->pipe->first->type == CMD)
 			ast_elem->content->pipe->first->content->cmd->fd.out = pipe_fd[1];
@@ -167,7 +167,8 @@ void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 			exec_ast(ast_elem->content->ast, ast_elem->type);
 			exit(g_data.exit_status);
 		}
-		waitpid(g_data.pid, NULL, 0);
+		waitpid(g_data.pid, &status, 0);
+		g_data.exit_status = WEXITSTATUS(status);
 	}
 	else if (ast_elem && ast_elem->type == CMD && ast_elem->content)
 	{
