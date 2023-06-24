@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/24 17:24:00 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/24 17:43:29 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	lexer_expand_env(t_linkedlist *list)
 
 void	lexer_env(t_linkedlist *list, char **line, int state)
 {
-	if ((is_token(*(*line + 1)) && *(*line + 1) != WHITE_SPACE) || *(*line + 1) == WILDCARD)
+	if (is_token(*(*line + 1)) && *(*line + 1) != WHITE_SPACE && state != IN_QUOTE)
 	{
 		(*line)++;
 		return ;
