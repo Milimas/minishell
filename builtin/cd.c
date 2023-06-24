@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:51:57 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/24 20:52:16 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/24 21:00:25 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	set_oldpwd(void)
 	t_env	*env;
 	t_env	*res;
 	char	*pwd;
-	
+
 	env = g_data.env;
 	while (env)
 	{
@@ -95,10 +95,12 @@ void	bsh_cd(t_cmd *cmd)
 		ft_putstr_fd("bash: cd: ", 2);
 		ft_putstr_fd(dir, 2);
 		perror(" ");
+		g_data.exit_status = 1;
 	}
 	else
 		closedir(dirp);
 	chdir(dir);
 	set_oldpwd();
 	set_pwd();
+	g_data.exit_status = 0;
 }
