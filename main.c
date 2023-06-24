@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/24 17:12:09 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:12:42 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	proccess_line(char *line)
 	{
 		add_history(line);
 		ft_lexer(line);
-		print_linkedlist(&g_data.lexer);
+		// print_linkedlist(&g_data.lexer);
 		if (check_syntax(g_data.lexer.head))
 			return ;
 		while (g_data.lexer.head)
@@ -48,7 +48,7 @@ void	proccess_line(char *line)
 			if (wait_pid == g_data.pid)
 				g_data.exit_status = WEXITSTATUS(status);
 		}
-		print_ast(g_data.ast.root);
+		// print_ast(g_data.ast.root);
 	}
 }
 
