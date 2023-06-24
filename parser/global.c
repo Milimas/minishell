@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:51:07 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/20 23:53:58 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/24 17:11:25 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	init_global_data(void)
 		env++;
 	}
 	g_data.first_pipe = -1;
-	g_data.exit_status = -1;
+	g_data.exit_status = 0;
 	g_data.ast.root = NULL;
 	g_data.lexer.head = NULL;
 	g_data.lexer.tail = NULL;

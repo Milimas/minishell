@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:14:35 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/23 21:45:59 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/24 04:26:38 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int		ft_strlen_alnum(char *str)
 {
 	char	*_str;
-	
+
 	_str = str;
-	while (*_str && ft_isalnum(*_str))
+	while (*_str && (ft_isalnum(*_str) || *_str == '_'))
 		_str++;
 	return (_str - str);
 }
@@ -31,9 +31,10 @@ char	*get_env_variable(char *name)
 		return (ft_itoa(g_data.exit_status));
 	while (env)
 	{
-		if (!ft_strncmp(name, env->key, ft_strlen_alnum(env->key)))
+		if (!ft_strncmp(name, env->key, ft_strlen_alnum(env->key))
+			&& env->value)
 			return (ft_strdup(env->value));
 		env = env->next;
 	}
-	return (name);
+	return (ft_strdup(""));
 }

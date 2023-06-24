@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/24 03:01:23 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/24 17:12:09 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,14 @@ void	proccess_line(char *line)
 	if (ft_strlen(line))
 	{
 		add_history(line);
-		g_data.lexer = *ft_lexer(line);
-		// print_linkedlist(&g_data.lexer);
+		ft_lexer(line);
+		print_linkedlist(&g_data.lexer);
 		if (check_syntax(g_data.lexer.head))
 			return ;
-		// printf("===============================================================================================\n");
 		while (g_data.lexer.head)
 		{
 			g_data.ast.root = ft_parser(&g_data.lexer.head, g_data.ast.root);
 		}
-		printf("===============================================================================================\n");
-		// print_ast(g_data.ast.root);
 		if (g_data.ast.root->type == CMD && is_builts(g_data.ast.root->content->cmd))
 		{
 			rediring(g_data.ast.root->content->cmd->redir->head, g_data.ast.root->content->cmd);
