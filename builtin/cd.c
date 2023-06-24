@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:51:57 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/24 21:00:25 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/24 22:19:48 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	set_pwd()
 		env = env->next;
 	}
 }
+
 void	bsh_cd(t_cmd *cmd)
 {
 	char	*dir;
@@ -71,7 +72,33 @@ void	bsh_cd(t_cmd *cmd)
 
 	dir = *(++cmd->args);
 	env = g_data.env;
-	if (!dir)
+	g_data.exit_status = 0;
+	if (dir && !ft_strcmp("-", dir))
+	{
+		while (env)
+		{
+			if (!ft_strncmp("OLDPWD", env->key, 7))
+			{
+				dir = env->value;
+				if (dir && !*dir)
+				{
+					printf("\n");
+					return;	
+				}
+				if (dir)
+					bsh_pwd();
+				break ;
+			}
+			env = env->next;
+		}
+		if (!dir || !ft_strcmp("-", dir))
+		{
+			ft_putstr_fd("bash: cd: OLDPWD not set\n", 2);
+			g_data.exit_status = 1;
+			return ;
+		}
+	}
+	else if (!dir)
 	{
 		while (env)
 		{
@@ -102,5 +129,4 @@ void	bsh_cd(t_cmd *cmd)
 	chdir(dir);
 	set_oldpwd();
 	set_pwd();
-	g_data.exit_status = 0;
 }
