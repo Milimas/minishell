@@ -60,4 +60,7 @@
 // test
 echo f << h word
 echo 1 && echo 2 | echo 3
+// segv whith int the second child bc its a subshell:
 echo 1 | (echo 2 && echo 3) | echo 4
+// problem with pipe :
+(echo 1 && echo 2) | echo 3 
