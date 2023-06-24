@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 23:52:36 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/23 06:56:58 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:46:35 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,46 @@ int	syntax_error(char *token)
 	return (EXIT_FAILURE);
 }
 
+int	redirection_syntax(t_elem *elem)
+{
+	if (elem && is_redirection(elem))
+	{
+		while (elem->next && elem->next->type == WHITE_SPACE)
+			elem = elem->next;
+		if (!elem->next || is_token(elem->next->type))
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	quote_syntax(t_elem *elem)
+{
+	enum e_token	quote_type;
+
+	if (elem && is_quote(elem))
+	{
+		quote_type = elem->type;
+		elem = elem->next;
+		while (elem && is_in_quote(elem))
+			elem = elem->next;
+		if (!elem)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	check_syntax(t_elem *elem)
 {
+	while (elem && elem->type == WHITE_SPACE)
+		elem = elem->next;
 	if (is_logical_operator(elem))
 		return (syntax_error(elem->content));
 	while (elem)
 	{
+		if (quote_syntax(elem))
+			return (syntax_error(elem->content));
+		if (redirection_syntax(elem))
+			return (syntax_error(elem->content));
 		if (elem->type == GENERAL && is_quote(elem) && !elem->next)
 			return (syntax_error("newline"));
 		if (is_in_quote(elem))

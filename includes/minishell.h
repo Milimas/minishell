@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/23 20:01:48 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:31:56 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ t_linkedlist	*ft_lexer(char *line);
 int				is_token(char c);
 int				is_double_redirection(char *line);
 void			lexer_escape(t_linkedlist *list, char **line, int state);
-void			lexer_double_redirection(t_linkedlist *list,
+void			lexer_redirection(t_linkedlist *list,
 					char **line, int state);
 void			lexer_double_pipe(t_linkedlist *list,
 					char **line, int state);
