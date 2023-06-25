@@ -39,7 +39,9 @@ SRC =	main.c					\
 		utils/ft_strconcat.c	\
 		heredoc/doc.c			\
 		signal/signals.c		\
-		
+		lexer/lexer_len.c		\
+        lexer/list_free.c		\
+        lexer/wildcard.c		\
 
 OBJ = $(SRC:.c=.o)
 

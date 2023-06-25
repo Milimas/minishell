@@ -6,50 +6,11 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/24 18:31:32 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/25 22:09:40 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	word_len(char *line)
-{
-	char	*_line;
-
-	_line = line;
-	while (*line && !is_token(*line))
-		line++;
-	return (line - _line);
-}
-
-int	env_len(char *line)
-{
-	char	*_line;
-
-	_line = line;
-	if (*line == '?')
-		return (1);
-	while (*line && (ft_isalnum(*line) || *line == '_'))
-		line++;
-	return (line - _line);
-}
-
-void	delete_from_list(t_linkedlist **list, t_elem *elem)
-{
-	if (!(*list)->head || !elem)
-		return ;
-	if ((*list)->head == elem) // first
-		(*list)->head = elem->next;
-	if ((*list)->tail == elem) // last
-		(*list)->tail = elem->prev;
-	if (elem->next != NULL)
-		elem->next->prev = elem->prev;
-	if (elem->prev != NULL)
-		elem->prev->next = elem->next;
-	free(elem->content);
-	free(elem);
-	elem = NULL;
-}
 
 void	lexer_expand_env(t_linkedlist *list)
 {

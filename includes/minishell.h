@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 08:18:40 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/25 22:15:41 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,17 @@ void			lexer_double_ampersand(t_linkedlist *list,
 void			lexer_quotes(t_linkedlist *list, char **line, int *state);
 void			lexer_wildcard(t_linkedlist *list, t_elem *elem, int state);
 int				check_syntax(t_elem *elem);
+int				word_len(char *line);
+int				env_len(char *line);
+void			delete_from_list(t_linkedlist **list, t_elem *elem);
+
+// wildcard
+int				match_f(char *d_name, char *pattern);
+int				is_regular_file(const char *path);
+int				is_regular_file(const char *path);
+void			lexer_wildcard(t_linkedlist *list, t_elem *elem, int state);
+void			sort_list(t_list *list);
+t_list			*get_files(char *path, char **pattern, unsigned char d_type);
 
 // parser
 t_ast_node		*ft_parser(t_elem **elem, t_ast_node *ast);
