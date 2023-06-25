@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 23:52:36 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/24 18:46:35 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/25 21:15:04 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	redirection_syntax(t_elem *elem)
 	{
 		while (elem->next && elem->next->type == WHITE_SPACE)
 			elem = elem->next;
-		if (!elem->next || is_token(elem->next->type))
+		if (!elem->next || (is_token(elem->next->type) && !is_quote(elem->next)))
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
