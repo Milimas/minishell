@@ -38,6 +38,7 @@ SRC =	main.c					\
 		utils/check_plus.c		\
 		utils/ft_strconcat.c	\
 		heredoc/doc.c			\
+		signal/signals.c		\
 		
 
 OBJ = $(SRC:.c=.o)

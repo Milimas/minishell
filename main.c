@@ -6,18 +6,15 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/24 19:12:42 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/25 21:45:24 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void		sig_ign_handler(int signum);
-
 void	proccess_line(char *line)
 {
 	int				status;
-	pid_t			wait_pid;
 
 	if (!line)
 		exit(!!printf("exit\n"));
@@ -25,13 +22,10 @@ void	proccess_line(char *line)
 	{
 		add_history(line);
 		ft_lexer(line);
-		// print_linkedlist(&g_data.lexer);
 		if (check_syntax(g_data.lexer.head))
 			return ;
 		while (g_data.lexer.head)
-		{
 			g_data.ast.root = ft_parser(&g_data.lexer.head, g_data.ast.root);
-		}
 		if (g_data.ast.root->type == CMD && is_builts(g_data.ast.root->content->cmd))
 		{
 			rediring(g_data.ast.root->content->cmd->redir->head, g_data.ast.root->content->cmd);
@@ -39,16 +33,9 @@ void	proccess_line(char *line)
 		}
 		else
 			exec_ast(g_data.ast.root, g_data.ast.root->type);
-		wait_pid = waitpid(-1, &status, 0);
-		if (wait_pid == g_data.pid)
+		while (waitpid(-1, &status, 0) != -1)
+			if (waitpid(-1, &status, 0) == g_data.pid)
 				g_data.exit_status = WEXITSTATUS(status);
-		while (wait_pid != -1)
-		{
-			wait_pid = waitpid(-1, &status, 0);
-			if (wait_pid == g_data.pid)
-				g_data.exit_status = WEXITSTATUS(status);
-		}
-		// print_ast(g_data.ast.root);
 	}
 }
 
@@ -63,44 +50,12 @@ void	bash_promt(void)
 	free(line);
 }
 
-void	sig_ign_handler(int signum)
-{
-	if (signum == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
-void	disable_sigint_char(void)
-{
-	struct termios	t;
-
-	tcgetattr(STDIN_FILENO, &t);
-	t.c_cflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &t);
-}
-
-void	enable_sigint_char(void)
-{
-	struct termios	t;
-
-	tcgetattr(STDIN_FILENO, &t);
-	t.c_cflag |= ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &t);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
 	(void)envp;
-	// disable_sigint_char();
-	// enable_sigint_char();
 	init_global_data();
-	// putfilefd("mok",1);
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
