@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:14:35 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/24 21:49:45 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 00:03:07 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		ft_strlen_alnum(char *str)
+int	ft_strlen_alnum(char *str)
 {
 	char	*_str;
 

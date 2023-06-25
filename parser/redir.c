@@ -6,8 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:10:20 by abeihaqi          #+#    #+#             */
-
-/*   Updated: 2023/06/22 20:26:52 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 00:04:44 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +24,8 @@ t_redir_elem	*create_redir(t_elem **elem)
 	if ((*elem) && ((*elem)->type == WORD || is_quote((*elem))))
 	{
 		redir->arg = NULL;
-		while ((*elem) && (!(is_token((*elem)->type) && (*elem)->state == GENERAL) || is_quote(*elem)))
+		while ((*elem) && (!(is_token((*elem)->type)
+					&& (*elem)->state == GENERAL) || is_quote(*elem)))
 		{
 			redir->arg = ft_strconcat(redir->arg, (*elem)->content);
 			(*elem) = (*elem)->next;
