@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:10:42 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 22:08:22 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/25 23:18:42 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ void	lexer_redirection(t_linkedlist *list, char **line, int state)
 		list_add_back(list, list_new_elem(*line, 2,
 				is_double_redirection(*line), state));
 		*line += 2;
+		if (list->tail->type == HERE_DOC)
+		{
+			while (**line == WHITE_SPACE)
+				(*line)++;
+			list_add_back(list, list_new_elem(*line, filename_len(*line), WORD, state));
+			*line += filename_len(*line);
+		}
 	}
 	else
 	{
@@ -40,6 +47,7 @@ void	lexer_redirection(t_linkedlist *list, char **line, int state)
 				**line, state));
 		(*line)++;
 	}
+	print_lexer(&g_data.lexer);
 }
 
 void	lexer_quotes(t_linkedlist *list, char **line, int *state)

@@ -6,11 +6,21 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 22:09:43 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 22:10:16 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/25 23:13:18 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	filename_len(char *line)
+{
+	char	*_line;
+
+	_line = line;
+	while (*line && *line != ' ')
+		line++;
+	return (line - _line);
+}
 
 int	word_len(char *line)
 {

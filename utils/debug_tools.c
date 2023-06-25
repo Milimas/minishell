@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:05:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/23 20:32:08 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/25 23:17:29 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*ast_type(t_ast_node *ast)
 	return (NULL);
 }
 
-void	print_linkedlist(t_linkedlist *list)
+void	print_lexer(t_linkedlist *list)
 {
 	t_elem	*elem;
 

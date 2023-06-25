@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 22:15:41 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/25 23:17:15 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ void			lexer_wildcard(t_linkedlist *list, t_elem *elem, int state);
 int				check_syntax(t_elem *elem);
 int				word_len(char *line);
 int				env_len(char *line);
+int				filename_len(char *line);
 void			delete_from_list(t_linkedlist **list, t_elem *elem);
 
 // wildcard
@@ -253,7 +254,7 @@ void			ex_modify(char	*cmd);
 int				plus_check(char *args);
 
 // debug tools
-void			print_linkedlist(t_linkedlist *list);
+void			print_lexer(t_linkedlist *list);
 void			print_ast(t_ast_node *ast);
 char			*ast_type(t_ast_node *ast);
 
