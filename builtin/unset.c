@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:19:39 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/22 16:41:52 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/25 08:07:53 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void    bsh_unset(t_cmd *cmd)
     char	**args;
     t_env   *env;
     t_env   *hold;
-    size_t  len;
 
     args = cmd->args + 1;
     if (!args && isvalid(*args))
@@ -50,16 +49,24 @@ void    bsh_unset(t_cmd *cmd)
     while (*args)
     {
         env = g_data.env;
-        len = ft_strlen(*args);
-        while(env)
+        if (!ft_strcmp(*args, env->key))
         {
-            if (env->next && !ft_strncmp(*args, env->next->key, len))
+            hold = env;
+            g_data.env = env->next;
+            free (hold);
+        }
+        else
+        {
+            while(env)
             {
-                hold = env->next;
-                env->next = hold->next;
-                free(hold);
+                if (env->next && !ft_strcmp(*args, env->next->key))
+                {
+                    hold = env->next;
+                    env->next = hold->next;
+                    free(hold);
+                }
+                env = env->next;
             }
-            env = env->next;
         }
         args++;
     }
