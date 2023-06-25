@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 03:15:22 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/21 04:02:07 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/25 08:21:31 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@ int	ft_envsize(t_env *lst)
 	return (size);
 }
 
-void    sort_chartab(char **tab, int size)
+void	sort_chartab(char **tab, int size)
 {
-    int i;
-    char *swap;
+	int		i;
+	char	*swap;
+
 	i = 0;
-	while (i + 1 <size)
+	while (i + 1 < size)
 	{
-		if(ft_strcmp(tab[i], tab[i + 1]) >= 0)
+		if (ft_strcmp(tab[i], tab[i + 1]) >= 0)
 		{
 			swap = tab[i];
 			tab[i] = tab[i + 1];
@@ -57,7 +58,7 @@ void	print_export(char **tab, int size)
 	i = 0;
 	while (env && i < size)
 	{
-		if(ft_strcmp(env->key, tab[i]) == 0)
+		if (ft_strcmp(env->key, tab[i]) == 0)
 		{	
 			printf("declare -x %s", env->key);
 			if (env->value)
@@ -70,6 +71,7 @@ void	print_export(char **tab, int size)
 			env = env->next;
 	}
 }
+
 void	exp_tab(t_env *env)
 {
 	char	**tab;
@@ -78,16 +80,14 @@ void	exp_tab(t_env *env)
 
 	i = 0;
 	size = ft_envsize(env);
-	tab = malloc(size * sizeof(char*));
+	tab = malloc(size * sizeof(char *));
 	while (env)
 	{
 		tab[i] = env->key;
 		env = env->next;
 		i++;
 	}
-	
-    sort_chartab(tab,size);
+	sort_chartab(tab, size);
 	print_export(tab, size);
-	
 	free(tab);
 }

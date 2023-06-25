@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:51:57 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/24 22:19:48 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/25 08:19:08 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int	in_env(char *key, char *pwd)
 	t_env	*env;
 
 	env = g_data.env;
-	while(env)
+	while (env)
 	{
 		if (!ft_strncmp(env->key, key, ft_strlen(key)))
 		{
 			env->value = pwd;
-			return(1);
+			return (1);
 		}
 		env = env->next;
 	}
@@ -51,12 +51,12 @@ void	set_oldpwd(void)
 	}
 }
 
-void	set_pwd()
+void	set_pwd(void)
 {
 	t_env	*env;
 
 	env = g_data.env;
-	while(env)
+	while (env)
 	{
 		if (!ft_strncmp("PWD", env->key, 4))
 			env->value = getcwd(NULL, 0);
@@ -83,7 +83,7 @@ void	bsh_cd(t_cmd *cmd)
 				if (dir && !*dir)
 				{
 					printf("\n");
-					return;	
+					return ;
 				}
 				if (dir)
 					bsh_pwd();

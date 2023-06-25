@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/24 18:31:56 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/25 08:18:40 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <dirent.h>
 # include <termios.h>
 # include "libft.h"
-
 
 # define PROMPT_TEXT "\033[0;31mbash-0.1$ \033[0m"
 

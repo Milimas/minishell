@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/23 22:37:23 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/25 08:23:44 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 char	*rm_quotes(char *str)
 {
-	int	nb;
-	int	i;
-	int	j;
-	int len;
-	char *res;
-	
+	int		nb;
+	int		i;
+	int		j;
+	int		len;
+	char	*res;
+
 	nb = 0;
 	i = 0;
 	res = NULL;
 	len = ft_strlen(str);
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == '\"')
 			nb++;
@@ -33,8 +33,7 @@ char	*rm_quotes(char *str)
 	if (nb % 2 == 0)
 	{
 		len = len - nb;
-		res = malloc( len+1  * sizeof(char));
-
+		res = malloc(len + 1 * sizeof(char));
 		i = 0;
 		j = 0;
 		while (str[i])
@@ -75,7 +74,7 @@ void	expanding(char *str, int fd, char *limiter)
 
 	i = 0;
 	if (!str || !ft_strcmp(str, limiter))
-		return;
+		return ;
 	tab1 = ft_split(str, ' ');
 	while (tab1[i])
 	{
@@ -90,7 +89,7 @@ void	expanding(char *str, int fd, char *limiter)
 			tab2 = ft_split(tab1[i], '$');
 			while (tab2[j])
 			{
-				if(j != 0)
+				if (j != 0)
 					ft_putstr_fd(" ", fd);
 				if (ex_ist2(tab2[j]))
 					ft_putstr_fd(ex_ist2(tab2[j]), fd);
@@ -107,7 +106,7 @@ void	putfilefd(char *av, int fd)
 {
 	char	*str;
 	char	*limiter;
-	
+
 	if (av)
 	{
 		limiter = rm_quotes(av);
@@ -123,7 +122,6 @@ void	putfilefd(char *av, int fd)
 					free (limiter);
 					break ;
 				}
-				///
 				if (!ft_strchr(limiter, '\'') || !ft_strchr(limiter, '\"'))
 					expanding(str, fd, limiter);
 				else
@@ -137,12 +135,11 @@ void	putfilefd(char *av, int fd)
 
 void	rediring(t_redir_elem *redir, t_cmd *cmd)
 {
-	int pipe_hd[2];
-	
+	int	pipe_hd[2];
+
 	while (redir)
 	{
 		pipe(pipe_hd);
-
 		if (redir->type == HERE_DOC)
 		{	
 			putfilefd(redir->arg, pipe_hd[1]);

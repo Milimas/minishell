@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/21 14:59:14 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/25 08:21:54 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	isvalid(char *args)
 	{
 		printf("bash: export: `%s': not a valid identifier\n", args);
 		g_data.exit_status = 1;
-		return(1);;
+		return (1);
 	}
 	while (args[i] && args[i] != '=')
 	{
@@ -70,7 +70,7 @@ static int	isvalid(char *args)
 		{
 			printf("bash: export: `%s': not a valid identifier\n", args);
 			g_data.exit_status = 1;
-			return(1);
+			return (1);
 		}
 		i++;
 	}

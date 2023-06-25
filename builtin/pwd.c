@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:56:25 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/16 21:39:17 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/25 08:22:10 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*fetch_env(void)
 	char	*res;
 
 	env = g_data.env;
-	while(env)
+	while (env)
 	{
 		if (!ft_strncmp(env->key, "PWD", 4))
 		{
@@ -29,6 +29,7 @@ char	*fetch_env(void)
 	}
 	return (NULL);
 }
+
 void	bsh_pwd(void)
 {
 	char	*buf;

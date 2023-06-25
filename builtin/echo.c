@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:54:21 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/21 14:40:10 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/25 08:19:46 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	bsh_echo(t_cmd *cmd)
 
 	n = 1;
 	args = cmd->args + 1;
-	if (*args && ft_strnstr(*args, "-n", 3 ))	
+	if (*args && ft_strnstr(*args, "-n", 3))
 	{
 		args++;
 		n = 0;
@@ -28,7 +28,7 @@ void	bsh_echo(t_cmd *cmd)
 	{
 		ft_putstr_fd(*args, cmd->fd.out);
 		if (*(args + 1))
-			ft_putstr_fd(" ",cmd->fd.out);
+			ft_putstr_fd(" ", cmd->fd.out);
 		args++;
 	}
 	write(cmd->fd.out, "\n", 1 * n);
