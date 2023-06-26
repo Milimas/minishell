@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 08:59:12 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 09:01:37 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 10:55:20 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,11 @@ void	set_pwd(void)
 			env->value = getcwd(NULL, 0);
 		env = env->next;
 	}
+}
+
+void	free_env(t_env *env)
+{
+	free(env->key);
+	free(env->value);
+	free(env);
 }

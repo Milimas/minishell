@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 07:26:40 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 09:03:02 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 10:55:42 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,7 @@ int				plus_check(char *args);
 int				in_env(char *key, char *pwd);
 void			set_oldpwd(void);
 void			set_pwd(void);
+void			free_env(t_env *env);
 
 // debug tools
 void			print_lexer(t_linkedlist *list);
