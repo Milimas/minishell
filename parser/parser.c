@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:02 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/23 20:01:29 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 00:34:49 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,15 @@ t_ast_node	*ft_parser(t_elem **elem, t_ast_node *ast)
 	{
 		return (create_cmd(elem));
 	}
-	if ((*elem) && is_logical_operator((*elem)) && (*elem)->state == GENERAL && ast && ast && (*elem)->next)
+	if ((*elem) && is_logical_operator((*elem)) && (*elem)->state == GENERAL && ast && ast)
 	{
 		ast_new->type = node_type((*elem));
 		(*elem) = (*elem)->next;
 		ast_new->content = ft_calloc(sizeof(t_union), 1);
 		ast_new->content->pipe = ft_calloc(sizeof(t_pipe), 1);
 		ast_new->content->pipe->first = ast;
-		ast_new->content->pipe->second = ft_parser(elem, ast_new->content->pipe->second);
+		if (*elem)
+			ast_new->content->pipe->second = ft_parser(elem, ast_new->content->pipe->second);
 	}
 	if (*elem && (*elem)->type == PARENTASIS_OPEN)
 	{

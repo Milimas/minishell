@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 23:52:36 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 22:01:43 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 01:49:20 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,48 @@ int	quote_syntax(t_elem **elem)
 	return (EXIT_SUCCESS);
 }
 
+int	logical_syntax(t_elem *elem)
+{
+	if (elem && elem->state == GENERAL
+		&& is_logical_operator(elem))
+	{
+		elem = elem->next;
+		while (elem && elem->type == WHITE_SPACE)
+			elem = elem->next;
+		if (!elem)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	parentasis_syntax(t_elem *elem)
+{
+	if (elem->type == PARENTASIS_OPEN)
+	{
+		elem = elem->next;
+		if (elem->type == PARENTASIS_CLOSE)
+			return (EXIT_FAILURE);
+		while (elem)
+		{
+			if (elem->type == PARENTASIS_OPEN)
+			{
+				if (parentasis_syntax(elem))
+					return (EXIT_FAILURE);
+				while (elem && elem->type != PARENTASIS_CLOSE)
+					elem = elem->next;
+				if (elem && elem->type == PARENTASIS_CLOSE)
+					elem = elem->next;
+			}
+			if (elem && elem->type == PARENTASIS_CLOSE)
+				return (EXIT_SUCCESS);
+			if (elem)
+				elem = elem->next;
+		}
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	check_syntax(t_elem *elem)
 {
 	while (elem && elem->type == WHITE_SPACE)
@@ -66,13 +108,10 @@ int	check_syntax(t_elem *elem)
 			return (syntax_error(elem));
 		if (redirection_syntax(elem))
 			return (syntax_error(elem));
-		if (elem && elem->state == GENERAL
-			&& is_logical_operator(elem))
-		{
-			while (elem && elem->type == WHITE_SPACE)
-				elem = elem->next;
+		if (logical_syntax(elem))
 			return (syntax_error(elem));
-		}
+		if (parentasis_syntax(elem))
+			return (syntax_error(elem));
 		if (elem)
 			elem = elem->next;
 	}
