@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 07:26:40 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 10:26:09 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 11:02:45 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
