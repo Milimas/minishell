@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 07:26:40 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 09:03:02 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 10:26:09 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,8 +274,11 @@ void			print_lexer(t_linkedlist *list);
 void			print_ast(t_ast_node *ast);
 char			*ast_type(t_ast_node *ast);
 
-// main
+// signals
+void			sig_quit_handler(int signum);
 void			sig_ign_handler(int signum);
+
+// main
 void			proccess_line(char *line);
 
 #endif

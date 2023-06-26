@@ -6,11 +6,21 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 21:33:56 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 21:44:00 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 10:25:39 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	sig_quit_handler(int signum)
+{
+	if (signum == SIGQUIT)
+	{
+		write(1, "Quit:", 6);
+		write(1, "\n", 1);
+		signal(SIGQUIT, SIG_DFL);
+	}
+}
 
 void	sig_ign_handler(int signum)
 {
