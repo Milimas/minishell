@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 07:30:09 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 10:32:04 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,9 +195,9 @@ void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 		}
 		if (!g_data.pid)
 		{
-			signal(SIGQUIT, SIG_IGN);
-			signal(SIGINT, sig_ign_handler);
+			signal(SIGINT, SIG_DFL);
 			rediring(ast_elem->content->cmd->redir->head, ast_elem->content->cmd);
+			signal(SIGQUIT, sig_quit_handler);
 			dup2(ast_elem->content->cmd->fd.in, STDIN_FILENO);
 			dup2(ast_elem->content->cmd->fd.out, STDOUT_FILENO);
 			close(g_data.first_pipe);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/25 08:21:54 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 11:09:02 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ void	ex_modify(char	*cmd)
 	{
 		if (!ft_strncmp(ft_strjoin(env->key, "="),
 				cmd, ft_strchr(cmd, '=') - cmd +1))
-			env->value = ft_strchr(cmd, '=') + 1;
+			env->value = ft_strdup(ft_strchr(cmd, '=') + 1);
 		else if (!ft_strncmp(env->key, cmd, ft_strchr(cmd, '+') - cmd))
 		{
 			env->value = ft_strjoin(env->value, ft_strchr(cmd, '=') + 1);
 			if (!env->value)
-				env->value = ft_strchr(cmd, '=') + 1;
+				env->value = ft_strdup(ft_strchr(cmd, '=') + 1);
 		}
 		env = env->next;
 	}

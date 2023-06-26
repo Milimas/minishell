@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/26 07:26:40 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 10:55:42 by rouarrak         ###   ########.fr       */
+/*   Created: 2023/06/26 11:12:19 by rouarrak          #+#    #+#             */
+/*   Updated: 2023/06/26 11:12:24 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -275,8 +276,11 @@ void			print_lexer(t_linkedlist *list);
 void			print_ast(t_ast_node *ast);
 char			*ast_type(t_ast_node *ast);
 
-// main
+// signals
+void			sig_quit_handler(int signum);
 void			sig_ign_handler(int signum);
+
+// main
 void			proccess_line(char *line);
 
 #endif
