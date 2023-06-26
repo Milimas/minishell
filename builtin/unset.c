@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 09:51:14 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 09:51:34 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 10:01:58 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	isvalid(char *args)
 {
 	int	i;
-	int plus;
+	int	plus;
 
 	i = 0;
 	plus = 0;
@@ -36,41 +36,38 @@ static int	isvalid(char *args)
 	return (0);
 }
 
-void    bsh_unset(t_cmd *cmd)
+void	bsh_unset(t_cmd *cmd)
 {
-    char	**args;
-    t_env   *env;
-    t_env   *hold;
+	char	**args;
+	t_env	*env;
+	t_env	*hold;
 
-    args = cmd->args ;
-    if (!args && isvalid(*args))
-    args = cmd->args;
-    if (!args)
+	args = cmd->args;
+	if (!args)
 		return ;
-    while (*(++args))
-    {
-        if (isvalid(*args))
-		    continue ;
-        env = g_data.env;
-        if (!ft_strcmp(*args, env->key))
-        {
-            hold = env;
-            g_data.env = env->next;
-            free (hold);
-        }
-        else
-        {
-            while(env)
-            {
-                if (env->next && !ft_strcmp(*args, env->next->key))
-                {
-                    hold = env->next;
-                    env->next = hold->next;
-                    free(hold);
-                }
-                env = env->next;
-            }
-        }
-    }
+	while (*(++args))
+	{
+		if (isvalid(*args))
+			continue ;
+		env = g_data.env;
+		if (!ft_strcmp(*args, env->key))
+		{
+			hold = env;
+			g_data.env = env->next;
+			free (hold);
+		}
+		else
+		{
+			while (env)
+			{
+				if (env->next && !ft_strcmp(*args, env->next->key))
+				{
+					hold = env->next;
+					env->next = hold->next;
+					free(hold);
+				}
+				env = env->next;
+			}
+		}
+	}
 }
-    
