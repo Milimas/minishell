@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 02:40:20 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 03:06:44 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ int				word_len(char *line);
 int				env_len(char *line);
 int				filename_len(char *line);
 void			delete_from_list(t_linkedlist **list, t_elem *elem);
+void			lexer_env(t_linkedlist *list, char **line, int state);
 // syntax
 int				check_syntax(t_elem *elem);
 int				syntax_error(t_elem *elem);

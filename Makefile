@@ -43,6 +43,7 @@ SRC =	main.c					\
         lexer/list_free.c		\
         lexer/wildcard.c		\
 		lexer/syntax_utils.c	\
+		lexer/lexer_env.c		\
 
 OBJ = $(SRC:.c=.o)
 
