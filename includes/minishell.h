@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 01:51:45 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 02:40:20 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,17 +187,19 @@ void			lexer_double_ampersand(t_linkedlist *list,
 					char **line, int state);
 void			lexer_quotes(t_linkedlist *list, char **line, int *state);
 void			lexer_wildcard(t_linkedlist *list, t_elem *elem, int state);
-int				check_syntax(t_elem *elem);
 int				word_len(char *line);
 int				env_len(char *line);
 int				filename_len(char *line);
 void			delete_from_list(t_linkedlist **list, t_elem *elem);
 // syntax
+int				check_syntax(t_elem *elem);
 int				syntax_error(t_elem *elem);
 int				redirection_syntax(t_elem *elem);
 int				quote_syntax(t_elem **elem);
 int				logical_syntax(t_elem *elem);
 int				parentasis_syntax(t_elem *elem);
+int				is_type_state(t_elem *elem, enum e_token type,
+					enum e_state state);
 
 // wildcard
 int				match_f(char *d_name, char *pattern);

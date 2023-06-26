@@ -42,7 +42,7 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 				{
 					while (*elem && is_quote(*elem) && (*elem)->state == GENERAL)
 						*elem = (*elem)->next;
-					if (!*elem || (*elem)->type == PARENTASIS_CLOSE)
+					if (!*elem || !is_type_state((*elem), PARENTASIS_CLOSE, GENERAL))
 						return ;
 					*tmp_args = ft_strconcat(*(tmp_args), (*elem)->content);
 					(*elem) = (*elem)->next;
