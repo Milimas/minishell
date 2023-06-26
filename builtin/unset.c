@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 09:51:14 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 10:55:01 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 11:13:27 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static int	isvalid(char *args)
 	}
 	return (0);
 }
-
 
 static void	unseting(t_env *env, char **args, t_env *hold)
 {
