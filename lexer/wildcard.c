@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 22:07:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 08:47:40 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 14:15:54 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,13 @@ void	lexer_wildcard(t_linkedlist *list, t_elem *elem, int state)
 	if (state != GENERAL || !elem)
 		return ;
 	if (ft_strrchr(elem->content, '/') && *(ft_strrchr(elem->content, '/') + 1) == 0)
-		files = get_files(".", ft_split(elem->content, '/'), DT_DIR);
+		files = get_files("", ft_split(elem->content, '/'), DT_DIR);
+	else if (*elem->content == '.')
+		files = get_files("", ft_split(ft_strchr(elem->content, '/'), '/'), DT_REG);
 	else
-		files = get_files(".", ft_split(elem->content, '/'), DT_REG);
+		files = get_files("", ft_split(elem->content, '/'), DT_REG);
+	if (!files)
+		return ;
 	sort_list(files);
 	files_tmp = files->next;
 	if (files)
@@ -109,6 +113,41 @@ void	sort_list(t_list *list)
 	}
 }
 
+// t_list	*get_files(char *path, char **pattern, unsigned char d_type)
+// {
+// 	DIR				*dirp;
+// 	struct dirent	*dir;
+// 	char			*npath;
+// 	t_list			*list;
+
+// 	list = NULL;
+// 	dirp = opendir(path);
+// 	if (!dirp)
+// 		return (NULL);
+// 	dir = readdir(dirp);
+// 	while (dir)
+// 	{
+// 		if (**pattern != '.' && (!ft_strncmp(dir->d_name, ".", 2) || !ft_strncmp(dir->d_name, "..", 3)))
+// 		{
+// 			dir = readdir(dirp);
+// 			continue ;
+// 		}
+// 		if (*pattern && match_f(dir->d_name, *pattern))
+// 		{
+// 			if (dir->d_type == DT_DIR && *(pattern + 1))
+// 			{
+// 				npath = ft_strjoin(path, "/");
+// 				npath = ft_strjoin(npath, dir->d_name);
+// 				return (get_files(npath, pattern + 1, d_type));
+// 			}
+// 			if (((d_type == DT_DIR && dir->d_type == d_type) || d_type == DT_REG) && !*(pattern + 1))
+// 				ft_lstadd_back(&list, ft_lstnew(dir->d_name));
+// 		}
+// 		dir = readdir(dirp);
+// 	}
+// 	return (list);
+// }
+
 t_list	*get_files(char *path, char **pattern, unsigned char d_type)
 {
 	DIR				*dirp;
@@ -117,27 +156,42 @@ t_list	*get_files(char *path, char **pattern, unsigned char d_type)
 	t_list			*list;
 
 	list = NULL;
-	dirp = opendir(path);
+	if (path && *path == 0)
+		dirp = opendir(".");
+	else
+		dirp = opendir(path);
 	if (!dirp)
 		return (NULL);
 	dir = readdir(dirp);
 	while (dir)
 	{
-		if (**pattern != '.' && (!ft_strncmp(dir->d_name, ".", 2) || !ft_strncmp(dir->d_name, "..", 3)))
-		{
-			dir = readdir(dirp);
-			continue ;
-		}
+		// if (**pattern != '.' && (!ft_strncmp(dir->d_name, ".", 2) || !ft_strncmp(dir->d_name, "..", 3)))
+		// {
+		// 	dir = readdir(dirp);
+		// 	continue ;
+		// }
 		if (*pattern && match_f(dir->d_name, *pattern))
 		{
 			if (dir->d_type == DT_DIR && *(pattern + 1))
 			{
-				npath = ft_strjoin(path, "/");
+				if (*path)
+					npath = ft_strjoin(path, "/");
+				else
+					npath = ft_strdup("./");
 				npath = ft_strjoin(npath, dir->d_name);
-				return (get_files(npath, pattern + 1, d_type));
+				ft_lstadd_back(&list, get_files(npath, pattern + 1, d_type));
 			}
 			if (((d_type == DT_DIR && dir->d_type == d_type) || d_type == DT_REG) && !*(pattern + 1))
-				ft_lstadd_back(&list, ft_lstnew(dir->d_name));
+			{
+				if  (*path)
+					npath = ft_strjoin(path, "/");
+				else
+					npath = path;
+				npath = ft_strjoin(npath, dir->d_name);
+				if ((d_type == DT_DIR && dir->d_type == d_type))
+					npath = ft_strjoin(npath, "/");
+				ft_lstadd_back(&list, ft_lstnew(npath));
+			}
 		}
 		dir = readdir(dirp);
 	}
