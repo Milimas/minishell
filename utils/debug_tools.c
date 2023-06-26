@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:05:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 23:17:29 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 06:31:46 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,20 @@ void	print_lexer(t_linkedlist *list)
 	printf("=================================================================\n");
 }
 
+void	print_redir(t_redir_elem *redir)
+{
+	if (!redir)
+		printf("no redir\n");
+	while (redir)
+	{
+		printf("redir: %s %d\n", redir->arg, redir->type);
+		redir = redir->next;
+	}
+}
+
 void	print_ast(t_ast_node *ast)
 {
 	char			**args;
-	// t_redir_elem	*redir;
 
 	if (ast && ast->type == CMD && ast->content && ast->content->cmd && ast->content->cmd->args)
 	{
@@ -102,22 +112,8 @@ void	print_ast(t_ast_node *ast)
 		args = ast->content->cmd->args;
 		printf("cmd: %s\n", *args);
 		while (*++args)
-		{
 			printf("arg: %s\n", *args);
-		}
-		// if (ast->content->cmd->redir && ast->content->cmd->redir->head)
-		// {
-		// 	redir = ast->content->cmd->redir->head;
-		// 	while (redir)
-		// 	{
-		// 		printf("redir: %s %d\n", redir->arg, redir->type);
-		// 		redir = redir->next;
-		// 	}
-		// }
-		// else
-		// {
-		// 	printf("no redir\n");
-		// }
+		print_redir(ast->content->cmd->redir->head);
 		printf("fd\nin:  %d\n", ast->content->cmd->fd.in);
 		printf("out: %d\n", ast->content->cmd->fd.out);
 		printf("****************************\n");
@@ -135,19 +131,3 @@ void	print_ast(t_ast_node *ast)
 		printf("ENDSUBSHELL\n");
 	}
 }
-
-// void	print_ast(t_ast_node *ast)
-// {
-// 	if (ast && ast->type == CMD)
-// 		printf("%s ", *ast->content->cmd->args);
-// 	printf("%s\n", ast_type(ast));
-// 	if (ast && ast->type == SUB)
-// 		print_ast(ast->content->ast);
-// 	if (ast && (ast->type == PIPE || ast->type == AND || ast->type == OR))
-// 	{
-// 		printf("first: ");
-// 		print_ast(ast->content->pipe->first);
-// 		printf("second: ");
-// 		print_ast(ast->content->pipe->second);
-// 	}
-// }
