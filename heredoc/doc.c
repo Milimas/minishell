@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/25 22:57:29 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 05:23:00 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,90 +51,29 @@ char	*rm_quotes(char *str)
 	return (res);
 }
 
-char	*ex_ist2(char *cmd)
-{
-	t_env	*env;
-
-	env = g_data.env;
-	while (env)
-	{
-		if (!ft_strncmp(env->key, cmd, ft_strlen(env->key) + 1))
-			return (env->value);
-		env = env->next;
-	}
-	return (NULL);
-}
-
-void	validing(char *str, char **tab2, int fd, int j)
-{
-	size_t	i;
-	size_t	len;
-	char *s;
-
-	i = 0;
-	len = 0;
-	while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
-		len++;
-	if (len == ft_strlen(str))
-	{
-		if (ex_ist2(tab2[j]))
-			ft_putstr_fd(ex_ist2(tab2[j]), fd);
-		else
-			ft_putstr_fd("", fd);
-	}
-	else
-	{
-		s = malloc(len + 1 * sizeof(char));
-		i = 0;
-		while(str[i] && s[i] && i < len)
-		{
-			s[i] = str[i];
-			i++;
-		}
-		s[i] = '\0';
-		if (ex_ist2(s))
-			ft_putstr_fd(ex_ist2(s), fd);
-		else
-			ft_putstr_fd("", fd);
-		while(str[i])
-		{
-			ft_putchar_fd(str[i], fd);
-			i++;
-		}
-		free (s);
-	}
-}
-
 void	expanding(char *str, int fd, char *limiter)
 {
-	char	**tab1;
-	char	**tab2;
-	int		i;
-	int		j;
-	int		x;
+	char *tmp;
+	char *value;
 
-	i = 0;
 	if (!str || !ft_strcmp(str, limiter))
 		return;
-	tab1 = ft_split(str, ' ');
-	while (tab1[i])
+	while (*str)
 	{
-		x = 0;
-		if (i)
-			ft_putstr_fd(" ", fd);
-		while (tab1[i][x] && tab1[i][x] != '$')
-			ft_putchar_fd(tab1[i][x++], fd);
-		if (ft_strchr(tab1[i], '$'))
+		if (*str == '$' && env_len(str + 1))
 		{
-			j = 0;
-			tab2 = ft_split(tab1[i], '$');
-			while (tab2[j])
-			{
-				validing(tab2[j],tab2,fd,j);
-				j++;
-			}
+			str++;
+			tmp = ft_substr(str, 0, env_len(str));
+			value = get_env_variable(tmp);
+			ft_putstr_fd(value, fd);
+			str += env_len(str) - 1;
+			free(tmp);
+			free(value);
 		}
-		i++;
+		else
+			ft_putchar_fd(*str, fd);
+		if (*str)
+			str++;
 	}
 }
 
