@@ -3,119 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:51:57 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 07:58:30 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 09:05:48 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	in_env(char *key, char *pwd)
+char	*bsh_toldpwd(t_env *env, char *dir)
 {
-	t_env	*env;
-
-	env = g_data.env;
 	while (env)
 	{
-		if (!ft_strncmp(env->key, key, ft_strlen(key)))
+		if (!ft_strncmp("OLDPWD", env->key, 7))
 		{
-			env->value = pwd;
-			return (1);
+			dir = env->value;
+			if (dir && !*dir)
+			{
+				printf("\n");
+				return (NULL);
+			}
+			if (dir)
+				bsh_pwd();
+			break ;
 		}
 		env = env->next;
 	}
-	return (0);
+	if (!dir || !ft_strcmp("-", dir))
+	{
+		ft_putstr_fd("bash: cd: OLDPWD not set\n", 2);
+		g_data.exit_status = 1;
+		return (NULL);
+	}
+	return (dir);
 }
 
-void	set_oldpwd(void)
+char	*bsh_mtcd(t_env *env, char *dir)
 {
-	t_env	*env;
-	t_env	*res;
-	char	*pwd;
-
-	env = g_data.env;
 	while (env)
 	{
-		if (!ft_strncmp("PWD", env->key, 4))
-			pwd = env->value;
+		if (!ft_strncmp("HOME", env->key, 5))
+		{
+			dir = env->value;
+			break ;
+		}
 		env = env->next;
 	}
-	if (pwd && !in_env("OLDPWD", pwd))
+	if (!dir)
 	{
-		res = (t_env *)ft_calloc(sizeof(t_env), 1);
-		res->key = "OLDPWD";
-		res->value = pwd;
-		envadd_back(&g_data.env, res);
+		ft_putstr_fd("bash: cd: HOME not set\n", 2);
+		g_data.exit_status = 1;
+		return (NULL);
 	}
+	return (dir);
 }
 
-void	set_pwd(void)
+void	opening_dir(char *dir)
 {
-	t_env	*env;
-
-	env = g_data.env;
-	while (env)
-	{
-		if (!ft_strncmp("PWD", env->key, 4))
-			env->value = getcwd(NULL, 0);
-		env = env->next;
-	}
-}
-
-void	bsh_cd(t_cmd *cmd)
-{
-	char	*dir;
 	DIR		*dirp;
-	t_env	*env;
 
-	dir = cmd->args[1];
-	env = g_data.env;
-	g_data.exit_status = 0;
-	if (dir && !ft_strcmp("-", dir))
-	{
-		while (env)
-		{
-			if (!ft_strncmp("OLDPWD", env->key, 7))
-			{
-				dir = env->value;
-				if (dir && !*dir)
-				{
-					printf("\n");
-					return ;
-				}
-				if (dir)
-					bsh_pwd();
-				break ;
-			}
-			env = env->next;
-		}
-		if (!dir || !ft_strcmp("-", dir))
-		{
-			ft_putstr_fd("bash: cd: OLDPWD not set\n", 2);
-			g_data.exit_status = 1;
-			return ;
-		}
-	}
-	else if (!dir)
-	{
-		while (env)
-		{
-			if (!ft_strncmp("HOME", env->key, 5))
-			{
-				dir = env->value;
-				break ;
-			}
-			env = env->next;
-		}
-		if (!dir)
-		{
-			ft_putstr_fd("bash: cd: HOME not set\n", 2);
-			g_data.exit_status = 1;
-			return ;
-		}
-	}
 	dirp = opendir(dir);
 	if (!dirp)
 	{
@@ -129,4 +76,27 @@ void	bsh_cd(t_cmd *cmd)
 	chdir(dir);
 	set_oldpwd();
 	set_pwd();
+}
+
+void	bsh_cd(t_cmd *cmd)
+{
+	char	*dir;
+	t_env	*env;
+
+	dir = cmd->args[1];
+	env = g_data.env;
+	g_data.exit_status = 0;
+	if (dir && !ft_strcmp("-", dir))
+	{
+		dir = bsh_toldpwd(env, dir);
+		if (dir == NULL)
+			return ;
+	}
+	else if (!dir || !ft_strcmp("~", dir))
+	{
+		dir = bsh_mtcd(env, dir);
+		if (dir == NULL)
+			return ;
+	}
+	opening_dir(dir);
 }

@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:19:39 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/25 08:07:53 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 09:18:06 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void    bsh_unset(t_cmd *cmd)
     t_env   *env;
     t_env   *hold;
 
-    args = cmd->args + 1;
+    args = cmd->args ;
     if (!args && isvalid(*args))
 		return ;
     while (*args)

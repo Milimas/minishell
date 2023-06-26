@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS += -Wall -Werror -Wextra #-fsanitize=address -g3
+CFLAGS += -Wall -Werror -Wextra -fsanitize=address -g3
 
 LDFLAGS += -lreadline -L/goinfre/$(USER)/homebrew/opt/readline/lib
 
@@ -37,6 +37,7 @@ SRC =	main.c					\
 		utils/debug_tools.c		\
 		utils/check_plus.c		\
 		utils/ft_strconcat.c	\
+		utils/sets.c			\
 		heredoc/here.c			\
 		heredoc/doc.c			\
 		signal/signals.c		\
