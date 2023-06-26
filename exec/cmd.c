@@ -6,10 +6,9 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 10:32:04 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:24:28 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../includes/minishell.h"
 
@@ -126,7 +125,7 @@ void	exec_ast_pipe(t_ast_node *ast_elem)
 	if (pipe(pipe_fd) == -1)
 		return ;
 	g_data.first_pipe = pipe_fd[0];
-	if (ast_elem->type == PIPE)
+	if (ast_elem->type == PIPE) // ila kano ba9in andk pipes l9dam anormiw bihom hado
 	{
 		if (ast_elem->content->pipe->first->type == PIPE || ast_elem->content->pipe->first->type == OR || ast_elem->content->pipe->first->type == AND)
 			if (ast_elem->content->pipe->first->type != SUB)
@@ -136,50 +135,75 @@ void	exec_ast_pipe(t_ast_node *ast_elem)
 		if (ast_elem->content->pipe->second->type == CMD)
 			ast_elem->content->pipe->second->content->cmd->fd.in = pipe_fd[0];
 	}
-		exec_ast(ast_elem->content->pipe->first, ast_elem->type);
-		exec_ast(ast_elem->content->pipe->second, ast_elem->type);
-	close(pipe_fd[0]);
+	exec_ast(ast_elem->content->pipe->first, ast_elem->type);
 	close(pipe_fd[1]);
+	exec_ast(ast_elem->content->pipe->second, ast_elem->type);
+	close(pipe_fd[0]);
 }
 
-void	exec_ast_or(t_ast_node *ast_elem, enum e_node_type parent_type)
+void	exec_ast_or(t_ast_node *ast_elem)
 {
-	(void)parent_type;
 	if (ast_elem->content->pipe->first)
-	exec_ast(ast_elem->content->pipe->first, ast_elem->type);
+		exec_ast(ast_elem->content->pipe->first, ast_elem->type);
 	if (g_data.exit_status && ast_elem->content->pipe->second)
 		exec_ast(ast_elem->content->pipe->second, ast_elem->type);
 }
 
-void	exec_ast_and(t_ast_node *ast_elem, enum e_node_type parent_type)
+void	exec_ast_and(t_ast_node *ast_elem)
 {
-	(void)parent_type;
 	if (ast_elem->content->pipe->first)
 		exec_ast(ast_elem->content->pipe->first, ast_elem->type);
 	if (!g_data.exit_status && ast_elem->content->pipe->second)
 		exec_ast(ast_elem->content->pipe->second, ast_elem->type);
 }
 
-void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
+void	exec_cmd(t_ast_node *ast_elem)
+{
+	signal(SIGINT, SIG_DFL);
+	if (ast_elem->content->cmd->fd.in != STDIN_FILENO)
+		close(ast_elem->content->cmd->fd.in + 1);
+	rediring(ast_elem->content->cmd->redir->head, ast_elem->content->cmd);
+	signal(SIGQUIT, sig_quit_handler);
+	if (dup2(ast_elem->content->cmd->fd.in, STDIN_FILENO) == -1)
+		perror("dup2: stdin");
+	if (dup2(ast_elem->content->cmd->fd.out, STDOUT_FILENO) == -1)
+		perror("dup2: stdout");
+	g_data.exit_status = 0;
+	if (is_builts(ast_elem->content->cmd))
+		builts(ast_elem->content->cmd);
+	else if (ast_elem->content->cmd->args[0])
+		exevc(ast_elem->content->cmd);
+	exit(g_data.exit_status);
+}
+
+void	update_status(void)
 {
 	int	status;
 
-	if (ast_elem && ast_elem->type == SUB)
+	waitpid(g_data.pid, &status, 0);
+	g_data.exit_status = WEXITSTATUS(status);
+}
+
+void	exec_sub(t_ast_node *ast_elem)
+{
+	g_data.pid = fork();
+	if (g_data.pid == -1)
 	{
-		g_data.pid = fork();
-		if (g_data.pid == -1)
-		{
-			ft_putendl_fd("bash: fork: Resource temporarily unavailable", 2);
-			return ;
-		}
-		if (!g_data.pid)
-		{
-			exec_ast(ast_elem->content->ast, ast_elem->type);
-			exit(g_data.exit_status);
-		}
-		waitpid(g_data.pid, &status, 0);
-		g_data.exit_status = WEXITSTATUS(status);
+		ft_putendl_fd("bash: fork: Resource temporarily unavailable", 2);
+		return ;
 	}
+	if (!g_data.pid)
+	{
+		exec_ast(ast_elem->content->ast, ast_elem->type);
+		exit(g_data.exit_status);
+	}
+	update_status();
+}
+
+void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
+{
+	if (ast_elem && ast_elem->type == SUB)
+		exec_sub(ast_elem);
 	else if (ast_elem && ast_elem->type == CMD && ast_elem->content)
 	{
 		if (is_builts(ast_elem->content->cmd) && parent_type != PIPE)
@@ -194,31 +218,13 @@ void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 			return ;
 		}
 		if (!g_data.pid)
-		{
-			signal(SIGINT, SIG_DFL);
-			rediring(ast_elem->content->cmd->redir->head, ast_elem->content->cmd);
-			signal(SIGQUIT, sig_quit_handler);
-			dup2(ast_elem->content->cmd->fd.in, STDIN_FILENO);
-			dup2(ast_elem->content->cmd->fd.out, STDOUT_FILENO);
-			close(g_data.first_pipe);
-			g_data.exit_status = 0;
-			if (is_builts(ast_elem->content->cmd))
-				builts(ast_elem->content->cmd);
-			else if (ast_elem->content->cmd->args[0])
-				exevc(ast_elem->content->cmd);
-			exit(g_data.exit_status);
-		}
-		waitpid(g_data.pid, &status, 0);
-		g_data.exit_status = WEXITSTATUS(status);
-		if (ast_elem->content->cmd->fd.out != STDOUT_FILENO)
-			close(ast_elem->content->cmd->fd.out);
-		if (ast_elem->content->cmd->fd.in != STDIN_FILENO)
-			close(ast_elem->content->cmd->fd.in);
+			exec_cmd(ast_elem);
+		update_status();
 	}
 	else if (ast_elem && ast_elem->type == PIPE)
 		exec_ast_pipe(ast_elem);
 	else if (ast_elem && ast_elem->type == AND)
-		exec_ast_and(ast_elem, parent_type);
+		exec_ast_and(ast_elem);
 	else if (ast_elem && ast_elem->type == OR)
-		exec_ast_or(ast_elem, parent_type);
+		exec_ast_or(ast_elem);
 }
