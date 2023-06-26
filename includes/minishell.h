@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 03:06:44 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 07:23:08 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,8 @@ void			builts(t_cmd *cmd);
 void			putfilefd(char *av, int fd);
 void			rediring(t_redir_elem *redir, t_cmd *cmd);
 char			*rm_quotes(char *str);
+char			*out_quotes(int len, char *str, int nb, char *res);
+void			expanding(char *str, int fd, char *limiter);
 
 // utils
 int				ft_isspace(char c);

@@ -37,6 +37,7 @@ SRC =	main.c					\
 		utils/debug_tools.c		\
 		utils/check_plus.c		\
 		utils/ft_strconcat.c	\
+		heredoc/here.c			\
 		heredoc/doc.c			\
 		signal/signals.c		\
 		lexer/lexer_len.c		\
