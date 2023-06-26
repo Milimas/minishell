@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:51:07 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/24 17:11:25 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 01:55:13 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ t_env	*envnew(char *value)
 	else
 		env->key = ft_substr(value, 0, ft_strchr(value, '=') - value);
 	if (ft_strchr(value, '='))
-		env->value = ft_substr(value, (ft_strchr(value, '=') - value) + 1, ft_strlen(value));
+		env->value = ft_substr(value, (ft_strchr(value, '=') - value)
+				+ 1, ft_strlen(value));
 	env->next = NULL;
 	return (env);
 }

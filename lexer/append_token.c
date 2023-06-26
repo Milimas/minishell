@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:10:42 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 23:18:42 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 01:54:32 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	lexer_redirection(t_linkedlist *list, char **line, int state)
 		{
 			while (**line == WHITE_SPACE)
 				(*line)++;
-			list_add_back(list, list_new_elem(*line, filename_len(*line), WORD, state));
+			list_add_back(list, list_new_elem(*line,
+					filename_len(*line), WORD, state));
 			*line += filename_len(*line);
 		}
 	}

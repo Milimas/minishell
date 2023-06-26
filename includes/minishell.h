@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 23:17:15 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 01:51:45 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,12 @@ int				word_len(char *line);
 int				env_len(char *line);
 int				filename_len(char *line);
 void			delete_from_list(t_linkedlist **list, t_elem *elem);
+// syntax
+int				syntax_error(t_elem *elem);
+int				redirection_syntax(t_elem *elem);
+int				quote_syntax(t_elem **elem);
+int				logical_syntax(t_elem *elem);
+int				parentasis_syntax(t_elem *elem);
 
 // wildcard
 int				match_f(char *d_name, char *pattern);
