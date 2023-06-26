@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:51:57 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 09:05:48 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 12:44:06 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,23 @@ char	*bsh_toldpwd(t_env *env, char *dir)
 	return (dir);
 }
 
-char	*bsh_mtcd(t_env *env, char *dir)
+char	*bsh_mtcd(t_env *env)
 {
 	while (env)
 	{
 		if (!ft_strncmp("HOME", env->key, 5))
 		{
-			dir = env->value;
-			break ;
+			if (!env->value)
+			{
+				ft_putstr_fd("bash: cd: HOME not set\n", 2);
+				g_data.exit_status = 1;
+				return (NULL);
+			}
+			return (env->value);
 		}
 		env = env->next;
 	}
-	if (!dir)
-	{
-		ft_putstr_fd("bash: cd: HOME not set\n", 2);
-		g_data.exit_status = 1;
-		return (NULL);
-	}
-	return (dir);
+	return (NULL);
 }
 
 void	opening_dir(char *dir)
@@ -91,10 +90,11 @@ void	bsh_cd(t_cmd *cmd)
 		dir = bsh_toldpwd(env, dir);
 		if (dir == NULL)
 			return ;
+		free (dir);
 	}
 	else if (!dir || !ft_strcmp("~", dir))
 	{
-		dir = bsh_mtcd(env, dir);
+		dir = bsh_mtcd(env);
 		if (dir == NULL)
 			return ;
 	}
