@@ -6,11 +6,18 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 23:52:36 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 02:18:58 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 02:38:01 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	is_type_state(t_elem *elem, enum e_token type, enum e_state state)
+{
+	if (elem->type == type && elem->state == state)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
+}
 
 int	check_syntax(t_elem *elem)
 {
@@ -29,13 +36,10 @@ int	check_syntax(t_elem *elem)
 			return (syntax_error(elem));
 		if (logical_syntax(elem))
 			return (syntax_error(elem));
-		printf("%d\n", parentasis_count);
 		if (parentasis_syntax(elem))
 			return (syntax_error(elem));
-		parentasis_count += (elem->type == PARENTASIS_OPEN
-				&& elem->state == GENERAL);
-		parentasis_count -= (elem->type == PARENTASIS_CLOSE
-				&& elem->state == GENERAL);
+		parentasis_count += !is_type_state(elem, PARENTASIS_OPEN, GENERAL);
+		parentasis_count -= !is_type_state(elem, PARENTASIS_CLOSE, GENERAL);
 		if (elem)
 			elem = elem->next;
 	}
