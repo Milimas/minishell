@@ -6,13 +6,13 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 07:21:27 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 08:26:41 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-static void	execute_line(void)
+void	execute_line(void)
 {
 	if (g_data.ast.root->type == CMD
 		&& is_builts(g_data.ast.root->content->cmd))
@@ -28,6 +28,7 @@ static void	execute_line(void)
 void	proccess_line(char *line)
 {
 	int				status;
+	t_elem			*lexer;
 
 	if (!line)
 		exit(!!printf("exit\n"));
@@ -37,8 +38,10 @@ void	proccess_line(char *line)
 		ft_lexer(line);
 		if (check_syntax(g_data.lexer.head))
 			return ;
+		lexer = g_data.lexer.head;
 		while (g_data.lexer.head)
 			g_data.ast.root = ft_parser(&g_data.lexer.head, g_data.ast.root);
+		g_data.lexer.head = lexer;
 		free_lexer();
 		execute_line();
 		free_tree(g_data.ast.root);

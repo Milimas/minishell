@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 00:40:12 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 07:30:09 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@
 char	**get_paths(void)
 {
 	t_env	*envp;
-	// char	**pth;
 
 	envp = g_data.env;
 	while (envp)
 	{
 		if (ft_strncmp(envp->key, "PATH", 5) == 0)
 		{
-			// pth = ft_split(envp->value, ':');
 			return (ft_split(envp->value, ':'));
 		}
 		envp = envp->next;
@@ -108,7 +106,14 @@ void	handle_err(int pid)
 
 void	exevc(t_cmd *cmd)
 {
-	execve(cmd_file(get_paths(), cmd->args[0]), cmd->args, NULL);
+	char	**paths;
+	char	*cmd_path;
+
+	paths = get_paths();
+	cmd_path = cmd_file(paths, cmd->args[0]);
+	free_split(paths);
+	execve(cmd_path, cmd->args, NULL);
+	free(cmd_path);
 	exit(g_data.exit_status);
 }
 

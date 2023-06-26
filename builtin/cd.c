@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:51:57 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/25 08:19:08 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 07:58:30 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	bsh_cd(t_cmd *cmd)
 	DIR		*dirp;
 	t_env	*env;
 
-	dir = *(++cmd->args);
+	dir = cmd->args[1];
 	env = g_data.env;
 	g_data.exit_status = 0;
 	if (dir && !ft_strcmp("-", dir))

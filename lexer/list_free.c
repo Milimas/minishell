@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 22:04:50 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 07:19:35 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 08:42:20 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 void	free_lexer(void)
 {
 	t_elem	*tmp;
+	t_elem	*tmp_f;
 
+	if (!g_data.lexer.head)
+		return ;
 	tmp = g_data.lexer.head;
 	while (tmp)
 	{
-		free(tmp->content);
-		free(tmp);
+		tmp_f = tmp;
 		tmp = tmp->next;
+		free(tmp_f->content);
+		free(tmp_f);
 	}
 }
 
@@ -67,18 +71,18 @@ void	free_pipe(t_pipe *pipe)
 void	free_sub(t_ast_node *sub)
 {
 	free_tree(sub->content->ast);
-	free(sub->content);
-	free(sub);
 }
 
 void	free_tree(t_ast_node *ast)
 {
+	if (!ast)
+		return ;
 	if (ast->type == CMD)
 		free_cmd(ast->content->cmd);
 	if (ast->type == PIPE || ast->type == AND || ast->type == OR)
 		free_pipe(ast->content->pipe);
 	if (ast->type == SUB)
-		free_sub(ast->content->ast);
+		free_sub(ast);
 	free(ast->content);
 	free(ast);
 }

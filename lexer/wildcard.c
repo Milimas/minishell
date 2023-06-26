@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 22:07:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 22:16:19 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 07:42:41 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	lexer_wildcard(t_linkedlist *list, t_elem *elem, int state)
 	}
 	while (files_tmp)
 	{
-		list_add_back(list, list_new_elem(ft_strdup(" "), 1, WHITE_SPACE, GENERAL));
+		list_add_back(list, list_new_elem(" ", 1, WHITE_SPACE, GENERAL));
 		list_add_back(list, list_new_elem(files_tmp->content, ft_strlen(files_tmp->content), WORD, GENERAL));
 		files_tmp = files_tmp->next;
 	}
