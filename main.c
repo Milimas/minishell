@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/25 21:49:07 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 07:21:27 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void	proccess_line(char *line)
 			return ;
 		while (g_data.lexer.head)
 			g_data.ast.root = ft_parser(&g_data.lexer.head, g_data.ast.root);
+		free_lexer();
 		execute_line();
+		free_tree(g_data.ast.root);
 		while (waitpid(-1, &status, 0) != -1)
 			if (waitpid(-1, &status, 0) == g_data.pid)
 				g_data.exit_status = WEXITSTATUS(status);

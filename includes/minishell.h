@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 10:02:40 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 07:23:08 by rouarrak         ###   ########.fr       */
+/*   Created: 2023/06/26 07:26:40 by rouarrak          #+#    #+#             */
+/*   Updated: 2023/06/26 07:26:43 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,9 @@ t_elem			*list_new_elem(char *content,
 					int len, enum e_token type, enum e_state state);
 void			list_add_back(t_linkedlist *list, t_elem *new);
 void			list_remove(t_linkedlist *list, t_elem *node);
-void			list_free(t_linkedlist *list);
+void			free_lexer();
+void			free_tree(t_ast_node *ast);
+void			free_split(char **split);
 
 // lexer
 t_linkedlist	*ft_lexer(char *line);
