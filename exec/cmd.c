@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 20:24:28 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:25:37 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,10 @@ void	exec_ast_pipe(t_ast_node *ast_elem)
 	if (!ast_elem->content->pipe->first || !ast_elem->content->pipe->second)
 		return ;
 	if (pipe(pipe_fd) == -1)
+	{
+		perror("pipe");
 		return ;
+	}
 	g_data.first_pipe = pipe_fd[0];
 	if (ast_elem->type == PIPE) // ila kano ba9in andk pipes l9dam anormiw bihom hado
 	{
