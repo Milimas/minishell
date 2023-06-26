@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 09:51:14 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 10:01:58 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/26 10:05:41 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ static int	isvalid(char *args)
 
 	i = 0;
 	plus = 0;
-	if (!*args || *args == '=' || *args == '+' || (!ft_isalpha(*args) && *args != '_'))
+	if (!*args || *args == '=' || *args == '+'
+		|| (!ft_isalpha(*args) && *args != '_'))
 	{
 		printf("bash: unset: `%s': not a valid identifier\n", args);
 		return (1);
 	}
 	while (args[i])
 	{
-		if (!(ft_isalnum(args[i]) || args[i] == '_') || args[i] == '=' || args[i] == '+')
+		if (!(ft_isalnum(args[i]) || args[i] == '_')
+			|| args[i] == '=' || args[i] == '+')
 		{
 			printf("bash: unset: `%s': not a valid identifier\n", args);
 			return (1);
@@ -34,6 +36,20 @@ static int	isvalid(char *args)
 		i++;
 	}
 	return (0);
+}
+
+static void	unseting(t_env *env, char **args, t_env *hold)
+{
+	while (env)
+	{
+		if (env->next && !ft_strcmp(*args, env->next->key))
+		{
+			hold = env->next;
+			env->next = hold->next;
+			free(hold);
+		}
+		env = env->next;
+	}
 }
 
 void	bsh_unset(t_cmd *cmd)
@@ -57,17 +73,6 @@ void	bsh_unset(t_cmd *cmd)
 			free (hold);
 		}
 		else
-		{
-			while (env)
-			{
-				if (env->next && !ft_strcmp(*args, env->next->key))
-				{
-					hold = env->next;
-					env->next = hold->next;
-					free(hold);
-				}
-				env = env->next;
-			}
-		}
+			unseting(env, args, hold);
 	}
 }
