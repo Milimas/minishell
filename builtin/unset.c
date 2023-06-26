@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/08 20:19:39 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 09:18:06 by rouarrak         ###   ########.fr       */
+/*   Created: 2023/06/26 09:51:14 by rouarrak          #+#    #+#             */
+/*   Updated: 2023/06/26 09:51:34 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@ static int	isvalid(char *args)
 
 	i = 0;
 	plus = 0;
-	if (*args == '=' || *args == '+' || (!ft_isalpha(*args) && *args != '_'))
+	if (!*args || *args == '=' || *args == '+' || (!ft_isalpha(*args) && *args != '_'))
 	{
 		printf("bash: unset: `%s': not a valid identifier\n", args);
 		return (1);
 	}
-	while (args[i] && args[i] != '=')
+	while (args[i])
 	{
-		if ((!ft_isalnum(args[i]) && args[i] != '_' && args[i] != '=' && args[i] != '+') 
-		 || plus_check(args) > 1)
+		if (!(ft_isalnum(args[i]) || args[i] == '_') || args[i] == '=' || args[i] == '+')
 		{
 			printf("bash: unset: `%s': not a valid identifier\n", args);
 			return (1);
@@ -45,9 +44,13 @@ void    bsh_unset(t_cmd *cmd)
 
     args = cmd->args ;
     if (!args && isvalid(*args))
+    args = cmd->args;
+    if (!args)
 		return ;
-    while (*args)
+    while (*(++args))
     {
+        if (isvalid(*args))
+		    continue ;
         env = g_data.env;
         if (!ft_strcmp(*args, env->key))
         {
@@ -68,7 +71,6 @@ void    bsh_unset(t_cmd *cmd)
                 env = env->next;
             }
         }
-        args++;
     }
 }
     

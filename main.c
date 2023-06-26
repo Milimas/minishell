@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 08:26:41 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 09:48:31 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,12 @@ void	proccess_line(char *line)
 	{
 		add_history(line);
 		ft_lexer(line);
-		if (check_syntax(g_data.lexer.head))
-			return ;
 		lexer = g_data.lexer.head;
+		if (check_syntax(g_data.lexer.head))
+		{
+			free_lexer();
+			return ;
+		}
 		while (g_data.lexer.head)
 			g_data.ast.root = ft_parser(&g_data.lexer.head, g_data.ast.root);
 		g_data.lexer.head = lexer;

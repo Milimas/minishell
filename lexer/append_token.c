@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:10:42 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 01:54:32 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 09:02:18 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	lexer_redirection(t_linkedlist *list, char **line, int state)
 				**line, state));
 		(*line)++;
 	}
-	print_lexer(&g_data.lexer);
 }
 
 void	lexer_quotes(t_linkedlist *list, char **line, int *state)

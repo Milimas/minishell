@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 03:26:47 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 03:26:59 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/26 09:48:08 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ int	count_args(t_elem *elem)
 
 char	*creat_arg(t_elem **elem, char *arg)
 {
+	if ((*elem) && is_quote(*elem))
+		arg = ft_strdup("");
 	while ((*elem) && is_type_state(*elem, ' ', GENERAL)
 		&& !(is_logical_operator(*elem) && (*elem)->state == GENERAL))
 	{
 		while (*elem && is_quote(*elem) && (*elem)->state == GENERAL)
 			*elem = (*elem)->next;
-		if (!*elem || !is_type_state((*elem), ')', GENERAL))
+		if (!*elem || !is_type_state((*elem), ')', GENERAL)
+			|| !is_type_state(*elem, ' ', GENERAL))
 			return (arg);
 		arg = ft_strconcat(arg, (*elem)->content);
 		(*elem) = (*elem)->next;
