@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 19:06:22 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:30:53 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ char	*cmd_file(char **paths, char *cmd)
 	char	*path_tmp;
 	char	*file;
 
-	if (access(cmd, X_OK) == 0)
+	if (*cmd && access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
-	while (paths && *paths && cmd)
+	while (paths && *paths && cmd && *cmd)
 	{
 		path_tmp = ft_strjoin(*paths, "/");
 		file = ft_strjoin(path_tmp, cmd);
@@ -113,6 +113,7 @@ void	exevc(t_cmd *cmd)
 	free_split(paths);
 	execve(cmd_path, cmd->args, NULL);
 	free(cmd_path);
+	perror("bash");
 	exit(g_data.exit_status);
 }
 
