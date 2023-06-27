@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 11:48:46 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:44:37 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ void	ex_modify(char	*cmd)
 	}
 }
 
+void	printing(char *args)
+{
+	ft_putstr_fd("bash: export: `", 2);
+	ft_putstr_fd(args, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+}
+
 static int	isvalid(char *args)
 {
 	int	i;
@@ -62,7 +69,7 @@ static int	isvalid(char *args)
 	plus = 0;
 	if (*args == '=' || *args == '+' || (!ft_isalpha(*args) && *args != '_'))
 	{
-		printf("bash: export: `%s': not a valid identifier\n", args);
+		printing(args);
 		g_data.exit_status = 1;
 		return (1);
 	}
@@ -71,7 +78,7 @@ static int	isvalid(char *args)
 		if ((!ft_isalnum(args[i]) && args[i] != '_' && args[i] != '='
 				&& args[i] != '+') || plus_check(args) > 1)
 		{
-			printf("bash: export: `%s': not a valid identifier\n", args);
+			printing(args);
 			g_data.exit_status = 1;
 			return (1);
 		}
