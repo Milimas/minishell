@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:51:07 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 17:21:33 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:32:49 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	init_global_data(void)
 	char	**env;
 
 	env = environ;
-	g_data.envp = environ;
 	while (env && *env)
 	{
 		if (ft_strncmp(*env, "OLDPWD", 6))
