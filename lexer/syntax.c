@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 23:52:36 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 16:32:04 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:54:49 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_syntax(t_elem *elem)
 		if (quote_syntax(&elem))
 			return (syntax_error(elem, 2));
 		if (redirection_syntax(elem))
-			return (syntax_error(elem, 2));
+			return (EXIT_FAILURE);
 		if (logical_syntax(elem))
 			return (syntax_error(elem, 2));
 		if (parentasis_syntax(elem))

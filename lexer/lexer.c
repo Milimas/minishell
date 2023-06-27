@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 15:00:32 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:54:01 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@ void	ft_token_lexer(char **line, int *state)
 	}
 }
 
+t_elem	*rskip_space(t_elem *elem)
+{
+	while (elem)
+	{
+		if (elem->type != WHITE_SPACE)
+			return (elem);
+		elem = elem->prev;
+	}
+	return (g_data.lexer.tail);
+}
+
 t_linkedlist	*ft_lexer(char *line)
 {
 	int				state;
@@ -55,7 +66,8 @@ t_linkedlist	*ft_lexer(char *line)
 		if (g_data.lexer.tail
 			&& ft_strchr(g_data.lexer.tail->content, WILDCARD))
 			g_data.lexer.tail->type = WILDCARD;
-		if (g_data.lexer.tail && g_data.lexer.tail->type == WILDCARD)
+		if (g_data.lexer.tail && g_data.lexer.tail->type == WILDCARD
+			&& !is_redirection(rskip_space(g_data.lexer.tail->prev)))
 			lexer_wildcard(&g_data.lexer, g_data.lexer.tail, state);
 	}
 	return (&g_data.lexer);
