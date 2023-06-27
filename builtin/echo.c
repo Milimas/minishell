@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:54:21 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/25 08:19:46 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:33:33 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,5 @@ void	bsh_echo(t_cmd *cmd)
 		args++;
 	}
 	write(cmd->fd.out, "\n", 1 * n);
-	g_data.envp = 0;
 	g_data.exit_status = 0;
 }

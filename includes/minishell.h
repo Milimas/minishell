@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/27 16:58:06 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 18:03:44 by rouarrak         ###   ########.fr       */
+/*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
+/*   Updated: 2023/06/27 18:19:34 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,6 @@ typedef struct s_data
 {
 	int				exit_status;
 	int				pid;
-	char			**envp;
 	t_env			*env;
 	t_ast			ast;
 	t_linkedlist	lexer;
