@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:51:07 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 14:33:24 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:21:33 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,9 @@ void	init_global_data(void)
 	{
 		if (ft_strncmp(*env, "OLDPWD", 6))
 			envadd_back(&g_data.env, envnew(*env));
-		else
-			envadd_back(&g_data.env, envnew("OLDPWD"));
 		env++;
 	}
+	envadd_back(&g_data.env, envnew("OLDPWD"));
 	g_data.first_pipe = -1;
 	g_data.exit_status = 0;
 	g_data.ast.root = NULL;
