@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 20:25:37 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 10:53:05 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,8 @@ void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 		}
 		if (!g_data.pid)
 			exec_cmd(ast_elem);
-		update_status();
+		if (parent_type != PIPE)
+			update_status();
 	}
 	else if (ast_elem && ast_elem->type == PIPE)
 		exec_ast_pipe(ast_elem);
