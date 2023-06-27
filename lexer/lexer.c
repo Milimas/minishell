@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 17:13:39 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:32:35 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	is_after_redir()
 {
 	t_elem	*elem;
 
+	if (!g_data.lexer.tail)
+		return (EXIT_FAILURE);
 	elem = g_data.lexer.tail->prev;
 	while (elem)
 	{
