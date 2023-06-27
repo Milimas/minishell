@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:51:57 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 12:44:06 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/27 10:53:32 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	bsh_cd(t_cmd *cmd)
 		dir = bsh_toldpwd(env, dir);
 		if (dir == NULL)
 			return ;
-		free (dir);
 	}
 	else if (!dir || !ft_strcmp("~", dir))
 	{
