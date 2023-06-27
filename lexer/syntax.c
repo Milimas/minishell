@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 23:52:36 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 02:38:01 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:32:04 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,23 @@ int	check_syntax(t_elem *elem)
 	while (elem && elem->type == WHITE_SPACE)
 		elem = elem->next;
 	if (is_logical_operator(elem))
-		return (syntax_error(elem));
+		return (syntax_error(elem, 2));
 	while (elem)
 	{
 		if (quote_syntax(&elem))
-			return (syntax_error(elem));
+			return (syntax_error(elem, 2));
 		if (redirection_syntax(elem))
-			return (syntax_error(elem));
+			return (syntax_error(elem, 2));
 		if (logical_syntax(elem))
-			return (syntax_error(elem));
+			return (syntax_error(elem, 2));
 		if (parentasis_syntax(elem))
-			return (syntax_error(elem));
+			return (syntax_error(elem, 2));
 		parentasis_count += !is_type_state(elem, PARENTASIS_OPEN, GENERAL);
 		parentasis_count -= !is_type_state(elem, PARENTASIS_CLOSE, GENERAL);
 		if (elem)
 			elem = elem->next;
 	}
 	if (parentasis_count)
-		return (syntax_error(elem));
+		return (syntax_error(elem, 2));
 	return (EXIT_SUCCESS);
 }

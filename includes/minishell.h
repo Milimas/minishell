@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/26 11:12:19 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 16:28:13 by rouarrak         ###   ########.fr       */
+/*   Created: 2023/06/27 16:58:06 by rouarrak          #+#    #+#             */
+/*   Updated: 2023/06/27 16:58:09 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void			delete_from_list(t_linkedlist **list, t_elem *elem);
 void			lexer_env(t_linkedlist *list, char **line, int state);
 // syntax
 int				check_syntax(t_elem *elem);
-int				syntax_error(t_elem *elem);
+int				syntax_error(t_elem *elem, int estatus);
 int				redirection_syntax(t_elem *elem);
 int				quote_syntax(t_elem **elem);
 int				logical_syntax(t_elem *elem);
