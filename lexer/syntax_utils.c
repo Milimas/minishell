@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 01:50:20 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 17:12:36 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:37:02 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	syntax_error(t_elem *elem, int estatus)
 {
 	ft_putstr_fd("bash: syntax error near unexpected token ", 2);
 	ft_putstr_fd("`", 2);
-	if (elem)
+	if (elem && *elem->content)
 		ft_putstr_fd(elem->content, 2);
 	else
 		ft_putstr_fd("newline", 2);
@@ -48,7 +48,7 @@ int	redirection_syntax(t_elem *elem)
 		while (elem && elem->type == WHITE_SPACE)
 			elem = elem->next;
 		if (!elem || (is_token(elem->type)
-				&& !is_quote(elem)))
+				&& !is_quote(elem)) || !*elem->content)
 			return (syntax_error(elem, 2));
 		else if (elem->type == WILDCARD && redir_type != HERE_DOC)
 			return (ambiguous_redirect(elem, 1));
