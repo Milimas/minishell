@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 08:59:12 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 10:55:20 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/27 10:52:33 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,16 @@
 int	in_env(char *key, char *pwd)
 {
 	t_env	*env;
+	char	*tmp;
 
 	env = g_data.env;
 	while (env)
 	{
 		if (!ft_strncmp(env->key, key, ft_strlen(key)))
 		{
+			tmp = env->value;
 			env->value = pwd;
+			free (tmp);
 			return (1);
 		}
 		env = env->next;
