@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 10:53:05 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:06:22 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ void	exec_cmd(t_ast_node *ast_elem)
 		perror("dup2: stdin");
 	if (dup2(ast_elem->content->cmd->fd.out, STDOUT_FILENO) == -1)
 		perror("dup2: stdout");
+	close(g_data.first_pipe);
 	g_data.exit_status = 0;
 	if (is_builts(ast_elem->content->cmd))
 		builts(ast_elem->content->cmd);
