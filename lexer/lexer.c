@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 03:06:23 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:00:32 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ void	ft_token_lexer(char **line, int *state)
 		lexer_double_pipe(&g_data.lexer, line, *state);
 	else if (**line == '&' && *((*line) + 1) == '&')
 		lexer_double_ampersand(&g_data.lexer, line, *state);
-	else if (is_double_redirection(*line)
+	else if ((is_double_redirection(*line)
 		|| **line == REDIRECTION_IN || **line == REDIRECTION_OUT)
+		&& *state == GENERAL)
 		lexer_redirection(&g_data.lexer, line, *state);
 	else if (**line == QUOTE || **line == DOUBLE_QUOTE)
 		lexer_quotes(&g_data.lexer, line, state);

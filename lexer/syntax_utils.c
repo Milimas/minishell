@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 01:50:20 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 02:33:17 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 14:44:51 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	syntax_error(t_elem *elem)
 
 int	redirection_syntax(t_elem *elem)
 {
-	if (elem && is_redirection(elem))
+	if (elem && is_redirection(elem) && elem->state == GENERAL)
 	{
 		while (elem->next && elem->next->type == WHITE_SPACE)
 			elem = elem->next;
