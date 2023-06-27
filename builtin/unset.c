@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 09:51:14 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 11:13:27 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:02:38 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static int	isvalid(char *args)
 	if (!*args || *args == '=' || *args == '+'
 		|| (!ft_isalpha(*args) && *args != '_'))
 	{
-		printf("bash: unset: `%s': not a valid identifier\n", args);
+		built_error(args);
+		g_data.exit_status = 1;
 		return (1);
 	}
 	while (args[i])
@@ -30,7 +31,8 @@ static int	isvalid(char *args)
 		if (!(ft_isalnum(args[i]) || args[i] == '_')
 			|| args[i] == '=' || args[i] == '+')
 		{
-			printf("bash: unset: `%s': not a valid identifier\n", args);
+			built_error(args);
+			g_data.exit_status = 1;
 			return (1);
 		}
 		i++;

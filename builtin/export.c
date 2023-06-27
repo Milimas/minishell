@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 16:28:05 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:07:19 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ex_modify(char	*cmd)
 	}
 }
 
-void	export_error(char *args)
+void	built_error(char *args)
 {
 	ft_putstr_fd("bash: export: `", 2);
 	ft_putstr_fd(args, 2);
@@ -69,7 +69,7 @@ static int	isvalid(char *args)
 	plus = 0;
 	if (*args == '=' || *args == '+' || (!ft_isalpha(*args) && *args != '_'))
 	{
-		export_error(args);
+		built_error(args);
 		g_data.exit_status = 1;
 		return (1);
 	}
@@ -78,7 +78,7 @@ static int	isvalid(char *args)
 		if ((!ft_isalnum(args[i]) && args[i] != '_' && args[i] != '='
 				&& args[i] != '+') || plus_check(args) > 1)
 		{
-			export_error(args);
+			built_error(args);
 			g_data.exit_status = 1;
 			return (1);
 		}
@@ -97,11 +97,14 @@ void	bsh_export(t_cmd *cmd)
 	if (!*args)
 		exp_tab(env);
 	else
-	{		
-		if (isvalid(*args))
-			return ;
+	{
 		while (*args)
 		{
+			if (isvalid(*args))
+			{
+				args++;
+				continue ;
+			}
 			if (ex_ist(*args) && ft_strchr(*args, '='))
 				ex_modify(*args);
 			else if (!ex_ist(*args))
