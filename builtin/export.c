@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 15:44:37 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:28:05 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ex_modify(char	*cmd)
 	}
 }
 
-void	printing(char *args)
+void	export_error(char *args)
 {
 	ft_putstr_fd("bash: export: `", 2);
 	ft_putstr_fd(args, 2);
@@ -69,7 +69,7 @@ static int	isvalid(char *args)
 	plus = 0;
 	if (*args == '=' || *args == '+' || (!ft_isalpha(*args) && *args != '_'))
 	{
-		printing(args);
+		export_error(args);
 		g_data.exit_status = 1;
 		return (1);
 	}
@@ -78,7 +78,7 @@ static int	isvalid(char *args)
 		if ((!ft_isalnum(args[i]) && args[i] != '_' && args[i] != '='
 				&& args[i] != '+') || plus_check(args) > 1)
 		{
-			printing(args);
+			export_error(args);
 			g_data.exit_status = 1;
 			return (1);
 		}

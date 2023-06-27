@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 05:21:33 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/20 05:37:34 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:56:15 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@ int	is_int(char *arg)
 
 	len = ft_strlen(arg);
 	i = 0;
-	if (arg[0] == '-' && arg[1])
+	if (ft_strcmp(arg, "9223372036854775807") > 0)
+		return (0);
+	if ((arg[0] == '+' || arg[0] == '-') && arg[1])
+	{
+		if (ft_strcmp(arg, "-9223372036854775808") > 0)
+			return (0);
 		i++;
+	}
 	while (i < len)
 	{
 		if (arg[i] < '0' || arg[i] > '9')
@@ -34,19 +40,25 @@ void	bsh_exit(t_cmd *cmd)
 {
 	if (!cmd->args[1])
 	{
-		printf("exit\n");
+		ft_putstr_fd("exit\n", 1);
 		exit (0);
 	}
 	else if (cmd->args[2])
-		printf("bash: exit: too many arguments\n");
+	{
+		ft_putstr_fd("bash: exit: too many arguments\n", 2);
+		g_data.exit_status = 1;
+	}
 	else if (is_int(cmd->args[1]))
 	{
-		printf("exit\n");
+		ft_putstr_fd("exit\n", 1);
 		exit(ft_atoi(cmd->args[1]));
 	}
 	if (!is_int(cmd->args[1]))
 	{
-		printf("exit\nbash: exit: %s: numeric argument required\n", cmd->args[1]);
+		ft_putstr_fd("exit\n", 1);
+		ft_putstr_fd("bash: exit: ", 2);
+		ft_putstr_fd(cmd->args[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
 		exit (255);
 	}
 }

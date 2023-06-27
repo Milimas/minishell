@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:12:19 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 11:12:24 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:28:13 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,7 @@ int				ft_envsize(t_env *lst);
 void			exp_tab(t_env *env);
 void			sort_chartab(char **tab, int size);
 void			print_export(char **tab, int size);
+void			export_error(char *args);
 
 // execution
 void			exevc(t_cmd *cmd);
