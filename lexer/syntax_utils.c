@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 01:50:20 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 16:58:04 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:12:36 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,21 @@ int	ambiguous_redirect(t_elem *elem, int estatus)
 
 int	redirection_syntax(t_elem *elem)
 {
+	enum e_token	redir_type;
+
 	if (elem && is_redirection(elem) && elem->state == GENERAL)
 	{
+		redir_type = elem->type;
 		elem = elem->next;
 		while (elem && elem->type == WHITE_SPACE)
 			elem = elem->next;
 		if (!elem || (is_token(elem->type)
 				&& !is_quote(elem)))
 			return (syntax_error(elem, 2));
-		else if (elem->type == WILDCARD)
+		else if (elem->type == WILDCARD && redir_type != HERE_DOC)
 			return (ambiguous_redirect(elem, 1));
+		if (redir_type == HERE_DOC && elem->type == WILDCARD)
+			elem->type = WORD;
 	}
 	return (EXIT_SUCCESS);
 }

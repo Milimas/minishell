@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:41 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 16:54:01 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:13:39 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,20 @@ void	ft_token_lexer(char **line, int *state)
 	}
 }
 
-t_elem	*rskip_space(t_elem *elem)
+int	is_after_redir()
 {
+	t_elem	*elem;
+
+	elem = g_data.lexer.tail->prev;
 	while (elem)
 	{
 		if (elem->type != WHITE_SPACE)
-			return (elem);
+			break ;
 		elem = elem->prev;
 	}
-	return (g_data.lexer.tail);
+	if (elem && is_redirection(elem))
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
 t_linkedlist	*ft_lexer(char *line)
@@ -59,7 +64,7 @@ t_linkedlist	*ft_lexer(char *line)
 			*line = WHITE_SPACE;
 		if (is_token(*line) && *line != ENV)
 			ft_token_lexer(&line, &state);
-		else if (line && *line == ENV)
+		else if (line && *line == ENV && is_after_redir())
 			lexer_env(&g_data.lexer, &line, state);
 		else
 			lexer_word(&g_data.lexer, &line, state);
@@ -67,7 +72,7 @@ t_linkedlist	*ft_lexer(char *line)
 			&& ft_strchr(g_data.lexer.tail->content, WILDCARD))
 			g_data.lexer.tail->type = WILDCARD;
 		if (g_data.lexer.tail && g_data.lexer.tail->type == WILDCARD
-			&& !is_redirection(rskip_space(g_data.lexer.tail->prev)))
+			&& is_after_redir())
 			lexer_wildcard(&g_data.lexer, g_data.lexer.tail, state);
 	}
 	return (&g_data.lexer);
