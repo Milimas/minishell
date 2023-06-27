@@ -8,6 +8,8 @@ INCLUDES += -I /goinfre/$(USER)/homebrew/opt/readline/include
 
 NAME = minishell
 
+BONUS = minishell_bonus
+
 LIBFT = libft.a
 LIBFT_DIR = libft/
 
@@ -52,7 +54,7 @@ OBJ = $(SRC:.c=.o)
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
-all: $(NAME)
+all: $(NAME) $(BONUS)
 
 $(NAME): $(OBJ) $(LIBFT) ./includes/minishell.h
 	# @stty -echoctl
@@ -62,12 +64,19 @@ $(LIBFT):
 	$(MAKE) bonus -C $(LIBFT_DIR)
 	mv $(LIBFT_DIR)$(LIBFT) .
 
+bonus: $(BONUS)
+
+$(BONUS): $(OBJ) $(LIBFT) ./includes/minishell.h
+	# @stty -echoctl
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(RFLAGS) $(INCLUDES) $(LDFLAGS) -o $(BONUS)
+
 clean:
 	rm -f $(OBJ)
 	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(BONUS)
 	rm -f $(LIBFT)
 
 re: clean fclean all minishell

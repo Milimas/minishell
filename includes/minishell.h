@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:12:19 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 11:12:24 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:31:49 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void			delete_from_list(t_linkedlist **list, t_elem *elem);
 void			lexer_env(t_linkedlist *list, char **line, int state);
 // syntax
 int				check_syntax(t_elem *elem);
-int				syntax_error(t_elem *elem);
+int				syntax_error(t_elem *elem, int estatus);
 int				redirection_syntax(t_elem *elem);
 int				quote_syntax(t_elem **elem);
 int				logical_syntax(t_elem *elem);

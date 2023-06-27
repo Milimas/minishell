@@ -6,13 +6,13 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 01:50:20 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 14:44:51 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:31:28 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	syntax_error(t_elem *elem)
+int	syntax_error(t_elem *elem, int estatus)
 {
 	ft_putstr_fd("bash: syntax error near unexpected token ", 2);
 	ft_putstr_fd("`", 2);
@@ -21,7 +21,7 @@ int	syntax_error(t_elem *elem)
 	else
 		ft_putstr_fd("newline", 2);
 	ft_putstr_fd("'\n", 2);
-	g_data.exit_status = 258;
+	g_data.exit_status = estatus;
 	return (EXIT_FAILURE);
 }
 
