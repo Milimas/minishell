@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:10:20 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 00:04:44 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:02:17 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ t_redir_elem	*create_redir(t_elem **elem)
 		while ((*elem) && (!(is_token((*elem)->type)
 					&& (*elem)->state == GENERAL) || is_quote(*elem)))
 		{
-			redir->arg = ft_strconcat(redir->arg, (*elem)->content);
+			if (!(is_quote(*elem)
+					&& (*elem)->state == GENERAL)
+				|| redir->type == HERE_DOC)
+				redir->arg = ft_strconcat(redir->arg, (*elem)->content);
 			(*elem) = (*elem)->next;
 		}
 	}
