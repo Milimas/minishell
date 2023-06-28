@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/28 15:31:38 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:36:21 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	execute_line(void)
 {
-	if (g_data.ast.root->type == CMD
+	if (g_data.ast.root && g_data.ast.root->type == CMD
 		&& is_builts(g_data.ast.root->content->cmd))
 	{
 		if (rediring(g_data.ast.root->content->cmd->redir->head,
 				g_data.ast.root->content->cmd))
-			builts(g_data.ast.root->content->cmd);
+		builts(g_data.ast.root->content->cmd);
 	}
-	else
+	else if (g_data.ast.root)
 		exec_ast(g_data.ast.root, g_data.ast.root->type);
 }
 

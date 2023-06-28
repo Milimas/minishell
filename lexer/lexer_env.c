@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 03:05:38 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 15:36:35 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:29:07 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	lexer_expand_env(t_linkedlist *list)
 	value = get_env_variable(list->tail->content + 1);
 	if (list->tail->state == IN_DOUBLE_QUOTE)
 		lexer_expand_env_quote(list, value);
-	else
+	else if (*value)
 	{
 		split = ft_split(value, ' ');
 		free(list->tail->content);
@@ -50,6 +50,8 @@ void	lexer_expand_env(t_linkedlist *list)
 		list->tail->type = WORD;
 		add_envs(list, split);
 	}
+	else
+		delete_from_list(&list, list->tail);
 	free(value);
 	free_split(split);
 }

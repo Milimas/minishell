@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 23:52:36 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/27 16:54:49 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:29:46 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_syntax(t_elem *elem)
 	parentasis_count = 0;
 	while (elem && elem->type == WHITE_SPACE)
 		elem = elem->next;
-	if (is_logical_operator(elem))
+	if (elem && is_logical_operator(elem))
 		return (syntax_error(elem, 2));
 	while (elem)
 	{

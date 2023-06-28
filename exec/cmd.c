@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/28 15:32:11 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:10:24 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,11 +213,11 @@ void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 		exec_sub(ast_elem);
 	else if (ast_elem && ast_elem->type == CMD && ast_elem->content)
 	{
-		// if (is_builts(ast_elem->content->cmd) && parent_type != PIPE)
-		// {
-		// 	builts(ast_elem->content->cmd);
-		// 	return ;
-		// }
+		if (is_builts(ast_elem->content->cmd) && parent_type != PIPE)
+		{
+			builts(ast_elem->content->cmd);
+			return ;
+		}
 		g_data.pid = fork();
 		if (g_data.pid == -1)
 		{

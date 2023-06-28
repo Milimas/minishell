@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/28 12:44:06 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:19:02 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,6 @@ int				is_type_state(t_elem *elem, enum e_token type,
 
 // wildcard
 int				match_f(char *d_name, char *pattern);
-int				is_regular_file(const char *path);
 int				is_regular_file(const char *path);
 void			lexer_wildcard(t_linkedlist *list, t_elem *elem, int state);
 void			sort_list(t_list *list);
