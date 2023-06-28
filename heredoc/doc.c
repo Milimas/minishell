@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/28 12:49:21 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:54:31 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int	checks(t_redir_elem *redir, t_cmd *cmd, int *pipe_hd)
 	else if (redir->type == DOUBLE_REDIRECTION_OUT)
 	{
 		cmd->fd.out = open(redir->arg, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (cmd->fd.out == -1)
+			return (check_permission(redir->arg));
 	}
 	else if (cmd->redir->tail->type == REDIRECTION_IN)
 	{
@@ -94,7 +96,7 @@ int	rediring(t_redir_elem *redir, t_cmd *cmd)
 			close(pipe_hd[1]);
 			return (0);
 		}
-		// close(pipe_hd[0]);
+			// close(pipe_hd[0]);
 		close(pipe_hd[1]);
 		redir = redir->next;
 	}
