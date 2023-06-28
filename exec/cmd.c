@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/28 16:10:24 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:48:23 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,21 @@ char	*cmd_file(char **paths, char *cmd)
 		free(file);
 		paths++;
 	}
-	ft_putstr_fd("bash: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(": command not found", 2);
-	ft_putstr_fd("\n", 2);
-	exit(127);
+	if (ft_strchr(cmd, '/') && access (cmd, F_OK) == -1)
+	{
+		ft_putstr_fd("jfd: ", 2);
+		perror(cmd);
+		g_data.exit_status = 127;
+		exit(g_data.exit_status);
+	}
+	else
+	{	
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		g_data.exit_status = 127;
+		exit(g_data.exit_status);
+	}
 	return (NULL);
 }
 
@@ -110,6 +120,17 @@ void	exevc(t_cmd *cmd)
 
 	paths = get_paths();
 	cmd_path = cmd_file(paths, cmd->args[0]);
+	if (!is_regular_file(cmd_path) && ft_strchr(cmd_path, '/'))
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(cmd_path, 2);
+		ft_putstr_fd(": is a directory\n", 2);
+		free(cmd_path);
+		g_data.exit_status = 126;
+		exit(g_data.exit_status);
+	}
+	else if (!is_regular_file(cmd_path))
+		exit(g_data.exit_status);
 	free_split(paths);
 	execve(cmd_path, cmd->args, NULL);
 	free(cmd_path);
