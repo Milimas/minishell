@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/26 09:06:18 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/28 11:49:17 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ void	checks(t_redir_elem *redir, t_cmd *cmd, int *pipe_hd)
 	else if (redir->type == REDIRECTION_OUT)
 	{
 		cmd->fd.out = open(redir->arg, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	}
+	else if (redir->type == DOUBLE_REDIRECTION_OUT)
+	{
+		cmd->fd.out = open(redir->arg, O_CREAT | O_RDWR | O_APPEND, 0644);
 	}
 	else if (cmd->redir->tail->type == REDIRECTION_IN)
 	{
