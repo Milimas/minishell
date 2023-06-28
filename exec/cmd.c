@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 19:30:53 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/06/28 12:39:38 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,9 @@ void	exec_cmd(t_ast_node *ast_elem)
 	signal(SIGINT, SIG_DFL);
 	if (ast_elem->content->cmd->fd.in != STDIN_FILENO)
 		close(ast_elem->content->cmd->fd.in + 1);
-	rediring(ast_elem->content->cmd->redir->head, ast_elem->content->cmd);
+	if (!rediring(ast_elem->content->cmd->redir->head,
+			ast_elem->content->cmd))
+		exit(g_data.exit_status);
 	signal(SIGQUIT, sig_quit_handler);
 	if (dup2(ast_elem->content->cmd->fd.in, STDIN_FILENO) == -1)
 		perror("dup2: stdin");

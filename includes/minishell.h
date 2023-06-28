@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 18:19:34 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/28 12:44:06 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,7 @@ void			builts(t_cmd *cmd);
 
 //heredoc
 void			putfilefd(char *av, int fd);
-void			rediring(t_redir_elem *redir, t_cmd *cmd);
+int				rediring(t_redir_elem *redir, t_cmd *cmd);
 char			*rm_quotes(char *str);
 char			*out_quotes(int len, char *str, int nb, char *res);
 void			expanding(char *str, int fd, char *limiter);
@@ -270,6 +270,7 @@ int				in_env(char *key, char *pwd);
 void			set_oldpwd(void);
 void			set_pwd(void);
 void			free_env(t_env *env);
+int				check_permission(char *arg);
 
 // debug tools
 void			print_lexer(t_linkedlist *list);
