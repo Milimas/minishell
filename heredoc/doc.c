@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doc.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/28 15:54:31 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:01:06 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	checks(t_redir_elem *redir, t_cmd *cmd, int *pipe_hd)
 		if (cmd->fd.out == -1)
 			return (check_permission(redir->arg));
 	}
-	else if (cmd->redir->tail->type == REDIRECTION_IN)
+	else if (redir->type == REDIRECTION_IN)
 	{
 		cmd->fd.in = open(redir->arg, O_RDONLY, 0644);
 		if (cmd->fd.in < 0)
