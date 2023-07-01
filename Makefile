@@ -33,7 +33,10 @@ SRC =	main.c					\
 		builtin/env.c			\
 		builtin/unset.c			\
 		builtin/export_sort.c	\
+		exec/cmd_util.c			\
+		exec/executers.c		\
 		exec/cmd.c				\
+		exec/executing.c		\
 		utils/ft_isspace.c		\
 		utils/get_env.c			\
 		utils/debug_tools.c		\

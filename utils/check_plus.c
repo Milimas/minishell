@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:01:34 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/16 15:01:43 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/01 23:30:28 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int	plus_check(char *args)
 {
 	int	i;
-	int cpt;
+	int	cpt;
 
 	i = 0;
 	cpt = 0;
-	while(args[i] && args[i] != '=')
+	while (args[i] && args[i] != '=')
 		i++;
 	i--;
 	while (args[i] && args[i] == '+')

@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/01 23:15:46 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/01 23:55:28 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,15 @@ void			print_export(char **tab, int size, int fd);
 void			built_error(char *args);
 
 // execution
+char			**get_paths(void);
+char			*cmd_file(char **paths, char *cmd);
+void			update_status(void);
+void			exec_sub(t_ast_node *ast_elem);
 void			exevc(t_cmd *cmd);
+void			exec_cmd(t_ast_node *ast_elem);
+void			exec_ast_pipe(t_ast_node *ast_elem);
+void			exec_ast_or(t_ast_node *ast_elem);
+void			exec_ast_and(t_ast_node *ast_elem);
 void			exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type);
 int				is_builts(t_cmd *cmd);
 void			builts(t_cmd *cmd);
