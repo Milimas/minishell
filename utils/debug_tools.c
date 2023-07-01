@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 10:05:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 06:31:46 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/01 23:00:53 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*state_to_text(int state)
 	return (NULL);
 }
 
-char	*type_to_text(int type)
+char	*type_to_text_helper(int type)
 {
 	if (type == WORD)
 		return ("WORD");
@@ -43,6 +43,13 @@ char	*type_to_text(int type)
 		return ("PIPE_LINE");
 	if (type == REDIRECTION_IN)
 		return ("REDIRECTION_IN");
+	return (NULL);
+}
+
+char	*type_to_text(int type)
+{
+	if (type_to_text_helper(type))
+		return (type_to_text_helper(type));
 	if (type == REDIRECTION_OUT)
 		return ("REDIRECTION_OUT");
 	if (type == HERE_DOC)
@@ -82,52 +89,14 @@ void	print_lexer(t_linkedlist *list)
 	t_elem	*elem;
 
 	elem = list->head;
-	printf("=================================================================\n");
+	printf("============================"
+		"=====================================\n");
 	while (elem)
 	{
-		printf("content: %s\tlen: %d\tstate: %s\ttype: %s\n", elem->content, elem->len, state_to_text(elem->state), type_to_text(elem->type));
+		printf("content: %s\tlen: %d\tstate: %s\ttype: %s\n", elem->content,
+			elem->len, state_to_text(elem->state), type_to_text(elem->type));
 		elem = elem->next;
 	}
-	printf("=================================================================\n");
-}
-
-void	print_redir(t_redir_elem *redir)
-{
-	if (!redir)
-		printf("no redir\n");
-	while (redir)
-	{
-		printf("redir: %s %d\n", redir->arg, redir->type);
-		redir = redir->next;
-	}
-}
-
-void	print_ast(t_ast_node *ast)
-{
-	char			**args;
-
-	if (ast && ast->type == CMD && ast->content && ast->content->cmd && ast->content->cmd->args)
-	{
-		printf("****************************\n");
-		args = ast->content->cmd->args;
-		printf("cmd: %s\n", *args);
-		while (*++args)
-			printf("arg: %s\n", *args);
-		print_redir(ast->content->cmd->redir->head);
-		printf("fd\nin:  %d\n", ast->content->cmd->fd.in);
-		printf("out: %d\n", ast->content->cmd->fd.out);
-		printf("****************************\n");
-	}
-	if (ast && (ast->type == PIPE || ast->type == AND || ast->type == OR))
-	{
-		printf("%s\n", ast_type(ast));
-		print_ast(ast->content->pipe->first);
-		print_ast(ast->content->pipe->second);
-	}
-	if (ast && ast->type == SUB)
-	{
-		printf("SUBSEHLL\n");
-		print_ast(ast->content->ast);
-		printf("ENDSUBSHELL\n");
-	}
+	printf("============================"
+		"=====================================\n");
 }

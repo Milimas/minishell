@@ -37,6 +37,7 @@ SRC =	main.c					\
 		utils/ft_isspace.c		\
 		utils/get_env.c			\
 		utils/debug_tools.c		\
+		utils/debug_tools2.c	\
 		utils/check_plus.c		\
 		utils/ft_strconcat.c	\
 		utils/sets.c			\
@@ -48,6 +49,8 @@ SRC =	main.c					\
         lexer/wildcard.c		\
 		lexer/syntax_utils.c	\
 		lexer/lexer_env.c		\
+		lexer/free_ast.c		\
+		lexer/wildcard_helper.c	\
 
 OBJ = $(SRC:.c=.o)
 

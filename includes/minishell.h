@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/01 16:55:53 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/01 23:05:46 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ int				logical_syntax(t_elem *elem);
 int				parentasis_syntax(t_elem *elem);
 int				is_type_state(t_elem *elem, enum e_token type,
 					enum e_state state);
+int				ambiguous_redirect(t_elem *elem, int estatus);
 
 // wildcard
 int				match_f(char *d_name, char *pattern);
@@ -211,6 +212,12 @@ int				is_regular_file(const char *path);
 void			lexer_wildcard(t_linkedlist *list, t_elem *elem, int state);
 void			sort_list(t_list *list);
 t_list			*get_files(char *pattern);
+void			get_files_rec_helper(char *path, char *pattern,
+					t_list **list, struct dirent *dir);
+void			get_files_rec(char *path, char *pattern, t_list **list);
+char			*skip_currdir(char *path);
+void			sort_list(t_list *list);
+int				is_hidden(char *d_name, char *pattern);
 
 // parser
 t_ast_node		*ft_parser(t_elem **elem, t_ast_node *ast);

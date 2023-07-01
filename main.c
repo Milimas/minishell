@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/28 18:07:13 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/01 22:30:42 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,29 @@ void	execute_line(void)
 	{
 		if (rediring(g_data.ast.root->content->cmd->redir->head,
 				g_data.ast.root->content->cmd))
-		builts(g_data.ast.root->content->cmd);
+			builts(g_data.ast.root->content->cmd);
 	}
 	else if (g_data.ast.root)
 		exec_ast(g_data.ast.root, g_data.ast.root->type);
 }
 
-void	proccess_line(char *line)
+void	wait_last(void)
 {
 	int				status;
-	t_elem			*lexer;
 	pid_t			pid;
+
+	pid = waitpid(-1, &status, 0);
+	while (pid != -1)
+	{
+		if (pid == g_data.pid)
+			g_data.exit_status = WEXITSTATUS(status);
+		pid = waitpid(-1, &status, 0);
+	}
+}
+
+void	proccess_line(char *line)
+{
+	t_elem			*lexer;
 
 	if (!line)
 		exit(!!printf("exit\n"));
@@ -49,13 +61,7 @@ void	proccess_line(char *line)
 		free_lexer();
 		execute_line();
 		free_tree(g_data.ast.root);
-		pid = waitpid(-1, &status, 0);
-		while (pid != -1)
-		{
-			if (pid == g_data.pid)
-				g_data.exit_status = WEXITSTATUS(status);
-			pid = waitpid(-1, &status, 0);
-		}
+		wait_last();
 	}
 }
 

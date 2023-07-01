@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:58:02 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/28 14:44:05 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/01 22:42:16 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_ast_node	*ft_parser_pipe(t_elem **elem, t_ast_node *ast)
 		ast_new->content->pipe->first = ast->content->pipe->second;
 		if (*elem)
 		ast_new->content->pipe->second
-			= ft_parser(elem, ast_new->content->pipe->second);
+				= ft_parser(elem, ast_new->content->pipe->second);
 		ast->content->pipe->second = ast_new;
 		return (ast);
 	}
@@ -97,7 +97,8 @@ t_ast_node	*ft_parser(t_elem **elem, t_ast_node *ast)
 	if ((*elem) && (*elem)->type == PIPE_LINE
 		&& (*elem)->state == GENERAL && ast)
 		ast_new = ft_parser_pipe(elem, ast);
-	else if ((*elem) && ((*elem)->type == DOUBLE_AMPERSAND || (*elem)->type == LOGICAL_OR_OPERATOR)
+	else if ((*elem) && ((*elem)->type == DOUBLE_AMPERSAND
+			|| (*elem)->type == LOGICAL_OR_OPERATOR)
 		&& (*elem)->state == GENERAL && ast)
 		ast_new = ft_parser_logic(elem, ast);
 	if (*elem && !is_type_state((*elem), PARENTASIS_OPEN, GENERAL))
