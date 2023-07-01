@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 22:07:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 14:15:54 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/01 14:58:54 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	lexer_wildcard(t_linkedlist *list, t_elem *elem, int state)
 		return ;
 	if (ft_strrchr(elem->content, '/') && *(ft_strrchr(elem->content, '/') + 1) == 0)
 		files = get_files("", ft_split(elem->content, '/'), DT_DIR);
-	else if (*elem->content == '.')
+	else if (*elem->content == '.' && ft_strchr(elem->content, '/'))
 		files = get_files("", ft_split(ft_strchr(elem->content, '/'), '/'), DT_REG);
 	else
 		files = get_files("", ft_split(elem->content, '/'), DT_REG);
