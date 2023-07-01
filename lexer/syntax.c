@@ -6,11 +6,36 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 23:52:36 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/28 16:29:46 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/01 22:46:05 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	syntax_error(t_elem *elem, int estatus)
+{
+	ft_putstr_fd("bash: syntax error near unexpected token ", 2);
+	ft_putstr_fd("`", 2);
+	if (elem && *elem->content)
+		ft_putstr_fd(elem->content, 2);
+	else
+		ft_putstr_fd("newline", 2);
+	ft_putstr_fd("'\n", 2);
+	g_data.exit_status = estatus;
+	return (EXIT_FAILURE);
+}
+
+int	ambiguous_redirect(t_elem *elem, int estatus)
+{
+	ft_putstr_fd("bash: ", 2);
+	if (elem)
+		ft_putstr_fd(elem->content, 2);
+	else
+		ft_putstr_fd("newline", 2);
+	ft_putstr_fd(": ambiguous redirect\n", 2);
+	g_data.exit_status = estatus;
+	return (EXIT_FAILURE);
+}
 
 int	is_type_state(t_elem *elem, enum e_token type, enum e_state state)
 {

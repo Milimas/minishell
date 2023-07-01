@@ -6,18 +6,11 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 22:07:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/01 19:56:38 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/01 22:50:37 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*skip_currdir(char *path)
-{
-	while (!ft_strncmp(path, "./", 2))
-		path += 2;
-	return (path);
-}
 
 int	match_f(char *d_name, char *pattern)
 {
@@ -48,14 +41,6 @@ int	match_f(char *d_name, char *pattern)
 	return (0);
 }
 
-int	is_regular_file(const char *path)
-{
-	struct stat	path_stat;
-
-	stat(path, &path_stat);
-	return (S_ISREG(path_stat.st_mode));
-}
-
 void	lexer_wildcard(t_linkedlist *list, t_elem *elem, int state)
 {
 	t_list	*files;
@@ -79,45 +64,41 @@ void	lexer_wildcard(t_linkedlist *list, t_elem *elem, int state)
 	while (files_tmp)
 	{
 		list_add_back(list, list_new_elem(" ", 1, WHITE_SPACE, GENERAL));
-		list_add_back(list, list_new_elem(files_tmp->content, ft_strlen(files_tmp->content), WORD, GENERAL));
+		list_add_back(list, list_new_elem(files_tmp->content,
+				ft_strlen(files_tmp->content), WORD, GENERAL));
 		files_tmp = files_tmp->next;
 	}
 }
 
-void	sort_list(t_list *list)
+void	get_files_rec_helper(char *path, char *pattern,
+	t_list **list, struct dirent *dir)
 {
-	t_list	*tmp;
-	char	*ctmp;
+	char			*npath;
 
-	while (list)
+	npath = path;
+	if (*path)
+		npath = ft_strjoin(path, "/");
+	npath = ft_strjoin(npath, dir->d_name);
+	if (match_f(npath, skip_currdir(pattern)))
 	{
-		tmp = list;
-		while (tmp)
-		{
-			if (ft_strcmp(list->content, tmp->content) > 0)
-			{
-				ctmp = list->content;
-				list->content = tmp->content;
-				tmp->content = ctmp;
-			}
-			tmp = tmp->next;
-		}
-		list = list->next;
+		ft_lstadd_back(list, ft_lstnew(npath));
 	}
-}
-
-int	is_hidden(char *d_name, char *pattern)
-{
-	if (!d_name || !pattern || (*pattern != '.' && *d_name == '.' && *(d_name + 1) != '/'))
-		return (0);
-	return (1);
+	else if (dir->d_type == DT_DIR && ft_strrchr(pattern, '/')
+		&& *(ft_strrchr(pattern, '/') + 1) == 0
+		&& match_f(ft_strjoin(npath, "/"), skip_currdir(pattern)))
+		ft_lstadd_back(list, ft_lstnew(ft_strjoin(npath, "/")));
+	else if (dir->d_type == DT_DIR && ft_strcmp(dir->d_name, ".")
+		&& ft_strcmp(dir->d_name, ".."))
+	{
+		npath = ft_strjoin(path, "/");
+		get_files_rec(ft_strjoin(npath, dir->d_name), pattern, list);
+	}
 }
 
 void	get_files_rec(char *path, char *pattern, t_list **list)
 {
 	DIR				*dirp;
 	struct dirent	*dir;
-	char			*npath;
 
 	if (ft_strncmp(path, "./", 2))
 		dirp = opendir(ft_strjoin("./", path));
@@ -132,31 +113,13 @@ void	get_files_rec(char *path, char *pattern, t_list **list)
 	while (dir)
 	{
 		if (is_hidden(dir->d_name, skip_currdir(pattern)))
-		{
-			npath = path;
-			if (*path)
-				npath = ft_strjoin(path, "/");
-			npath = ft_strjoin(npath, dir->d_name);
-			printf("%s\n", npath);
-			if (match_f(npath, skip_currdir(pattern)))
-			{
-				ft_lstadd_back(list, ft_lstnew(npath));
-			}
-			else if (dir->d_type == DT_DIR && ft_strrchr(pattern, '/')
-				&& *(ft_strrchr(pattern, '/') + 1) == 0 && match_f(ft_strjoin(npath, "/"), skip_currdir(pattern)))
-				ft_lstadd_back(list, ft_lstnew(ft_strjoin(npath, "/")));
-			else if (dir->d_type == DT_DIR && ft_strcmp(dir->d_name, ".") && ft_strcmp(dir->d_name, ".."))
-			{
-				npath = ft_strjoin(path, "/");
-				get_files_rec(ft_strjoin(npath, dir->d_name), pattern, list);
-			}
-		}
+			get_files_rec_helper(path, pattern, list, dir);
 		dir = readdir(dirp);
 	}
 	closedir(dirp);
 }
 
-t_list	*get_files(char* pattern)
+t_list	*get_files(char *pattern)
 {
 	t_list	*list;
 
