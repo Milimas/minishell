@@ -6,13 +6,13 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:51:57 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 10:53:32 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/01 22:45:08 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*bsh_toldpwd(t_env *env, char *dir)
+char	*bsh_toldpwd(t_env *env, char *dir, int fd)
 {
 	while (env)
 	{
@@ -21,11 +21,11 @@ char	*bsh_toldpwd(t_env *env, char *dir)
 			dir = env->value;
 			if (dir && !*dir)
 			{
-				printf("\n");
+				ft_putchar_fd('\n', fd);
 				return (NULL);
 			}
 			if (dir)
-				bsh_pwd();
+				bsh_pwd(fd);
 			break ;
 		}
 		env = env->next;
@@ -87,7 +87,7 @@ void	bsh_cd(t_cmd *cmd)
 	g_data.exit_status = 0;
 	if (dir && !ft_strcmp("-", dir))
 	{
-		dir = bsh_toldpwd(env, dir);
+		dir = bsh_toldpwd(env, dir, cmd->fd.out);
 		if (dir == NULL)
 			return ;
 	}

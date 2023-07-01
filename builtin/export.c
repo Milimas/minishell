@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 18:07:19 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/01 22:25:41 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	bsh_export(t_cmd *cmd)
 	args = cmd->args + 1;
 	env = g_data.env;
 	if (!*args)
-		exp_tab(env);
+		exp_tab(env, cmd->fd.out);
 	else
 	{
 		while (*args)

@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:56:25 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/25 08:22:10 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/01 22:18:33 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,20 @@ char	*fetch_env(void)
 	return (NULL);
 }
 
-void	bsh_pwd(void)
+void	bsh_pwd(int fd)
 {
 	char	*buf;
 
 	buf = getcwd(0, 0);
 	if (buf == NULL)
-		printf("%s\n", fetch_env());
+	{	
+		ft_putstr_fd(fetch_env(), fd);
+		ft_putstr_fd("\n", fd);
+	}
 	else
-		printf("%s\n", buf);
+	{
+		ft_putstr_fd(buf, fd);
+		ft_putstr_fd("\n", fd);
+	}
 	free(buf);
 }

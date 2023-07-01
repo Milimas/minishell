@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/01 16:55:53 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/01 22:30:30 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,19 +231,19 @@ int				is_logical_operator(t_elem *elem);
 int				is_ast_logical(t_ast_node *ast);
 
 // builtin
-void			bsh_pwd(void);
+void			bsh_pwd(int fd);
 void			bsh_echo(t_cmd *cmd);
 void			bsh_exit(t_cmd *cmd);
 void			bsh_cd(t_cmd *cmd);
 void			bsh_export(t_cmd *cmd);
 void			bsh_unset(t_cmd *cmd);
-void			bsh_env(void);
+void			bsh_env(int fd);
 
 // builtin utils
 int				ft_envsize(t_env *lst);
-void			exp_tab(t_env *env);
+void			exp_tab(t_env *env, int fd);
 void			sort_chartab(char **tab, int size);
-void			print_export(char **tab, int size);
+void			print_export(char **tab, int size, int fd);
 void			built_error(char *args);
 
 // execution

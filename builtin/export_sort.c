@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 03:15:22 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/25 08:21:31 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/01 23:12:05 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,20 @@ void	sort_chartab(char **tab, int size)
 	}
 }
 
-void	print_export(char **tab, int size)
+static void	print_export_prime(int fd, t_env *env)
+{
+	ft_putstr_fd("declare -x ", fd);
+	ft_putstr_fd(env->key, fd);
+	if (env->value)
+	{
+		ft_putstr_fd("=\"", fd);
+		ft_putstr_fd(env->value, fd);
+		ft_putstr_fd("\"", fd);
+	}
+	ft_putchar_fd('\n', fd);
+}
+
+void	print_export(char **tab, int size, int fd)
 {
 	t_env	*tmp;
 	t_env	*env;
@@ -60,10 +73,7 @@ void	print_export(char **tab, int size)
 	{
 		if (ft_strcmp(env->key, tab[i]) == 0)
 		{	
-			printf("declare -x %s", env->key);
-			if (env->value)
-				printf("=\"%s\"", env->value);
-			printf("\n");
+			print_export_prime(fd, env);
 			env = tmp;
 			i++;
 		}
@@ -72,7 +82,7 @@ void	print_export(char **tab, int size)
 	}
 }
 
-void	exp_tab(t_env *env)
+void	exp_tab(t_env *env, int fd)
 {
 	char	**tab;
 	int		size;
@@ -88,6 +98,6 @@ void	exp_tab(t_env *env)
 		i++;
 	}
 	sort_chartab(tab, size);
-	print_export(tab, size);
+	print_export(tab, size, fd);
 	free(tab);
 }

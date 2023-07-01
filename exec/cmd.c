@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/28 19:48:23 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/01 22:16:23 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	builts(t_cmd *cmd)
 	else if (!ft_strncmp("echo", cmd->args[0], 5))
 		bsh_echo(cmd);
 	else if (!ft_strncmp("pwd", cmd->args[0], 4))
-		bsh_pwd();
+		bsh_pwd(cmd->fd.out);
 	else if (!ft_strncmp("cd", cmd->args[0], 3))
 		bsh_cd(cmd);
 	else if (!ft_strncmp("export", cmd->args[0], 7))
@@ -99,7 +99,7 @@ void	builts(t_cmd *cmd)
 	else if (!ft_strncmp("unset", cmd->args[0], 6))
 		bsh_unset(cmd);
 	else if (!ft_strncmp("env", cmd->args[0], 4))
-		bsh_env();
+		bsh_env(cmd->fd.out);
 	else
 		return ;
 }
