@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/28 19:48:23 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/01 21:27:36 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,6 @@ void	exec_cmd(t_ast_node *ast_elem)
 	if (!rediring(ast_elem->content->cmd->redir->head,
 			ast_elem->content->cmd))
 		exit(g_data.exit_status);
-	signal(SIGQUIT, sig_quit_handler);
 	if (dup2(ast_elem->content->cmd->fd.in, STDIN_FILENO) == -1)
 		perror("dup2: stdin");
 	if (dup2(ast_elem->content->cmd->fd.out, STDOUT_FILENO) == -1)
@@ -239,6 +238,7 @@ void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 			builts(ast_elem->content->cmd);
 			return ;
 		}
+		signal(SIGQUIT, sig_quit_handler);
 		g_data.pid = fork();
 		if (g_data.pid == -1)
 		{
@@ -249,6 +249,7 @@ void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 			exec_cmd(ast_elem);
 		if (parent_type != PIPE)
 			update_status();
+		signal(SIGQUIT, SIG_IGN);
 	}
 	else if (ast_elem && ast_elem->type == PIPE)
 		exec_ast_pipe(ast_elem);
