@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 03:26:47 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/26 09:48:08 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/01 21:42:52 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	count_args(t_elem *elem)
 	int	count;
 
 	count = 0;
-	while (elem && !is_logical_operator(elem))
+	while (elem && !(is_logical_operator(elem) && elem->state == GENERAL))
 	{
 		elem = elem->next;
 		count++;
