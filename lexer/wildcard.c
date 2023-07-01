@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 22:07:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/01 14:58:54 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/01 16:25:37 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,28 @@
 
 int	match_f(char *d_name, char *pattern)
 {
-	char	**patterns;
-	int		check_start;
-	int		check_end;
-
-	if (!*pattern)
-		return (0);
-	pattern = ft_substr(pattern, 0, ft_strchr(pattern, '/') - pattern);
-	check_start = (*pattern != '*');
-	check_end = (pattern[ft_strlen(pattern) - 1] != '*');
-	patterns = ft_split(pattern, '*');
-	if (*d_name == '.' && *pattern != '.')
-		return (0);
-	if (!*patterns)
+	if (!*pattern && !*d_name)
 		return (1);
-	if (check_start)
+	if (!ft_strncmp(pattern, "*", 1))
 	{
-		if (ft_strnstr(d_name, *patterns, ft_strlen(*patterns)) == d_name)
-			patterns++;
-		else
-			return (0);
+		while (*(pattern + 1) == '*')
+			pattern++;
+		if (!*(pattern + 1))
+			return (1);
+		while (*d_name)
+		{
+			if (match_f(d_name, pattern + 1))
+			{
+				return (1);
+			}
+			d_name++;
+		}
 	}
-	while (*patterns && *(patterns + check_end))
+	else if (*d_name && *pattern == *d_name)
 	{
-		d_name = ft_strnstr(d_name, *patterns, ft_strlen(d_name)) + ft_strlen(*patterns) - 1;
-		if (!d_name)
-			return (0);
-		patterns++;
+		return (match_f(d_name + 1, pattern + 1));
 	}
-	if (*patterns && check_end)
-	{
-		if (ft_strnstr(d_name, *patterns, ft_strlen(d_name)) != d_name + ft_strlen(d_name) - ft_strlen(*patterns))
-			return (0);
-	}
-	return (1);
+	return (0);
 }
 
 int	is_regular_file(const char *path)
@@ -70,7 +58,7 @@ void	lexer_wildcard(t_linkedlist *list, t_elem *elem, int state)
 	if (ft_strrchr(elem->content, '/') && *(ft_strrchr(elem->content, '/') + 1) == 0)
 		files = get_files("", ft_split(elem->content, '/'), DT_DIR);
 	else if (*elem->content == '.' && ft_strchr(elem->content, '/'))
-		files = get_files("", ft_split(ft_strchr(elem->content, '/'), '/'), DT_REG);
+		files = get_files(".", ft_split(ft_strchr(elem->content, '/'), '/'), DT_REG);
 	else
 		files = get_files("", ft_split(elem->content, '/'), DT_REG);
 	if (!files)
@@ -148,6 +136,13 @@ void	sort_list(t_list *list)
 // 	return (list);
 // }
 
+int	is_hidden(char *d_name, char *pattern)
+{
+	if (!d_name || !pattern || (*pattern != '.' && *d_name == '.'))
+		return (0);
+	return (1);
+}
+
 t_list	*get_files(char *path, char **pattern, unsigned char d_type)
 {
 	DIR				*dirp;
@@ -165,12 +160,7 @@ t_list	*get_files(char *path, char **pattern, unsigned char d_type)
 	dir = readdir(dirp);
 	while (dir)
 	{
-		// if (**pattern != '.' && (!ft_strncmp(dir->d_name, ".", 2) || !ft_strncmp(dir->d_name, "..", 3)))
-		// {
-		// 	dir = readdir(dirp);
-		// 	continue ;
-		// }
-		if (*pattern && match_f(dir->d_name, *pattern))
+		if (is_hidden(dir->d_name, *pattern) && match_f(dir->d_name, *pattern))
 		{
 			if (dir->d_type == DT_DIR && *(pattern + 1))
 			{
