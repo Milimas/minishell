@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 03:05:38 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/28 16:29:07 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/02 03:31:31 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	add_envs(t_linkedlist *list, char **split)
 				list->tail->state));
 		list_add_back(list, list_new_elem(*split,
 				ft_strlen(*split), WORD, list->tail->state));
-		free(*split);
 	}
 }
 
