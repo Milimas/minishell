@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 22:49:46 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/02 18:15:43 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/02 20:50:21 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ char	*join_path(char *path, char *d_name, char *sep)
 
 	if (path && *path)
 	{
-		path = ft_strjoin(path, sep);
+		if (ft_strlen(path) && path[ft_strlen(path) - 1] != '/')
+			path = ft_strjoin(path, sep);
+		else
+			path = ft_strdup(path);
 		new_path = ft_strjoin(path, d_name);
 		free(path);
 		return (new_path);
