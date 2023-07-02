@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 22:49:46 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/01 22:51:12 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/02 18:15:43 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,18 @@ int	is_hidden(char *d_name, char *pattern)
 			&& *d_name == '.' && *(d_name + 1) != '/'))
 		return (0);
 	return (1);
+}
+
+char	*join_path(char *path, char *d_name, char *sep)
+{
+	char	*new_path;
+
+	if (path && *path)
+	{
+		path = ft_strjoin(path, sep);
+		new_path = ft_strjoin(path, d_name);
+		free(path);
+		return (new_path);
+	}
+	return (ft_strdup(d_name));
 }

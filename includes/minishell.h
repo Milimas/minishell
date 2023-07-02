@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/01 23:55:28 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/02 18:02:15 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ void			get_files_rec(char *path, char *pattern, t_list **list);
 char			*skip_currdir(char *path);
 void			sort_list(t_list *list);
 int				is_hidden(char *d_name, char *pattern);
+char			*join_path(char *path, char *d_name, char *sep);
 
 // parser
 t_ast_node		*ft_parser(t_elem **elem, t_ast_node *ast);

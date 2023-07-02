@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 22:07:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/01 22:50:37 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/02 18:20:05 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,16 @@ int	match_f(char *d_name, char *pattern)
 		while (*(pattern + 1) == '*')
 			pattern++;
 		if (!*(pattern + 1))
-		{
 			return (1);
-		}
 		while (*d_name)
 		{
 			if (match_f(d_name, pattern + 1))
-			{
 				return (1);
-			}
 			d_name++;
 		}
 	}
 	else if (*d_name && (*pattern == *d_name))
-	{
 		return (match_f(d_name + 1, pattern + 1));
-	}
 	return (0);
 }
 
@@ -75,23 +69,25 @@ void	get_files_rec_helper(char *path, char *pattern,
 {
 	char			*npath;
 
-	npath = path;
-	if (*path)
-		npath = ft_strjoin(path, "/");
-	npath = ft_strjoin(npath, dir->d_name);
+	npath = join_path(path, dir->d_name, "/");
 	if (match_f(npath, skip_currdir(pattern)))
 	{
 		ft_lstadd_back(list, ft_lstnew(npath));
 	}
-	else if (dir->d_type == DT_DIR && ft_strrchr(pattern, '/')
-		&& *(ft_strrchr(pattern, '/') + 1) == 0
-		&& match_f(ft_strjoin(npath, "/"), skip_currdir(pattern)))
-		ft_lstadd_back(list, ft_lstnew(ft_strjoin(npath, "/")));
-	else if (dir->d_type == DT_DIR && ft_strcmp(dir->d_name, ".")
-		&& ft_strcmp(dir->d_name, ".."))
+	else if (dir->d_type == DT_DIR)
 	{
-		npath = ft_strjoin(path, "/");
-		get_files_rec(ft_strjoin(npath, dir->d_name), pattern, list);
+		npath = ft_strconcat(npath, "/");
+		if (ft_strrchr(pattern, '/')
+			&& *(ft_strrchr(pattern, '/') + 1) == 0
+			&& match_f(npath, skip_currdir(pattern)))
+			ft_lstadd_back(list, ft_lstnew(npath));
+		else if (ft_strcmp(dir->d_name, ".")
+			&& ft_strcmp(dir->d_name, ".."))
+		{
+			npath = ft_strjoin(path, dir->d_name);
+			get_files_rec(npath, pattern, list);
+			free(npath);
+		}
 	}
 }
 
@@ -100,15 +96,14 @@ void	get_files_rec(char *path, char *pattern, t_list **list)
 	DIR				*dirp;
 	struct dirent	*dir;
 
-	if (ft_strncmp(path, "./", 2))
-		dirp = opendir(ft_strjoin("./", path));
-	else
+	if (!ft_strncmp(pattern, "./", 2) && ft_strncmp(path, "./", 2))
+		path = ft_strjoin("./", path);
+	if (*path)
 		dirp = opendir(path);
+	else
+		dirp = opendir(".");
 	if (!dirp)
-	{
-		perror(path);
 		return ;
-	}
 	dir = readdir(dirp);
 	while (dir)
 	{
