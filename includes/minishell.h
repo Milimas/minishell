@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 06:05:15 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 09:50:21 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ typedef struct s_data
 	int				exit_status;
 	int				pid;
 	t_env			*env;
+	char			**envp;
 	t_ast			ast;
 	t_linkedlist	lexer;
 	int				first_pipe;

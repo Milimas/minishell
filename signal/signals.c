@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 21:33:56 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/02 04:43:33 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 09:49:44 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ void	sig_ign_handler(int signum)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		g_data.exit_status = 1;
 	}
 }

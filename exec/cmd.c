@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 06:01:00 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 09:16:15 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,10 @@ void	update_status(void)
 	int	status;
 
 	waitpid(g_data.pid, &status, 0);
-	g_data.exit_status = WEXITSTATUS(status);
+	if (WIFEXITED(status))
+		g_data.exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_data.exit_status = WTERMSIG(status) + 128;
 }
 
 void	exec_sub(t_ast_node *ast_elem)

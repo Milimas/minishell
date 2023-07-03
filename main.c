@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/03 06:08:43 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 09:50:37 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ void	execute_line(void)
 	{
 		if (rediring(g_data.ast.root->content->cmd->redir->head,
 				g_data.ast.root->content->cmd))
+		{
+			here_doc(g_data.ast.root->content->cmd->redir->head,
+				g_data.ast.root->content->cmd);
 			builts(g_data.ast.root->content->cmd);
+		}
 	}
 	else if (g_data.ast.root)
 	{
@@ -34,12 +38,17 @@ void	wait_last(void)
 	int				status;
 	pid_t			pid;
 
-	pid = waitpid(-1, &status, 0);
+	pid = waitpid(-1, &status, WUNTRACED);
 	while (pid != -1)
 	{
 		if (pid == g_data.pid)
-			g_data.exit_status = WEXITSTATUS(status);
-		pid = waitpid(-1, &status, 0);
+		{
+			if (WIFEXITED(status))
+				g_data.exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				g_data.exit_status = WTERMSIG(status) + 128;
+		}
+		pid = waitpid(-1, &status, WUNTRACED);
 	}
 }
 
@@ -48,7 +57,7 @@ void	proccess_line(char *line)
 	t_elem			*lexer;
 
 	if (!line)
-		exit(!!printf("exit\n"));
+		exit(!printf("exit\n"));
 	if (ft_strlen(line))
 	{
 		add_history(line);
@@ -85,6 +94,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	(void)envp;
+	g_data.envp = envp;
 	init_global_data();
 	while (1)
 	{
@@ -92,4 +102,5 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGINT, sig_ign_handler);
 		bash_promt();
 	}
+	return (0);
 }
