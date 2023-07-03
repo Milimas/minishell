@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:51:57 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/01 22:45:08 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 11:39:21 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ char	*bsh_mtcd(t_env *env)
 		}
 		env = env->next;
 	}
+	ft_putstr_fd("bash: cd: HOME not set\n", 2);
+	g_data.exit_status = 1;
 	return (NULL);
 }
 

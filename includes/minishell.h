@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 09:50:21 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 11:54:57 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,7 @@ void			print_export(char **tab, int size, int fd);
 void			built_error(char *args);
 
 // execution
+char			**envp_totab(void);
 char			**get_paths(void);
 char			*cmd_file(char **paths, char *cmd);
 void			update_status(void);
@@ -289,6 +290,7 @@ void			set_oldpwd(void);
 void			set_pwd(void);
 void			free_env(t_env *env);
 int				check_permission(char *arg);
+int				env_size(t_env *lst);
 
 // debug tools
 void			print_lexer(t_linkedlist *list);

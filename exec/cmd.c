@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 09:16:15 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 12:03:36 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,51 @@ void	handle_err(int pid)
 		perror("fork error");
 		exit(-1);
 	}
+}
+
+int	env_size(t_env *lst)
+{
+	int		size;
+	t_env	*current;
+
+	size = 0;
+	current = lst;
+	while (current != NULL)
+	{
+		current = current->next;
+		size++;
+	}
+	return (size);
+}
+
+char	**envp_totab(void)
+{
+	char	**tab;
+	int		size;
+	t_env	*env;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	env = g_data.env;
+	size = env_size(env);
+	tab = (char **)malloc(size * sizeof(char *) + 1);
+	if (!tab)
+		return (NULL);
+	while (env && i < size)
+	{
+		if (env->value)
+		{
+			tmp = ft_strjoin(env->key, "=");
+			tab[i] = ft_strjoin(tmp, env->value);
+		}
+		else
+			tab[i] = ft_strdup(env->key);
+		i++;
+		env = env->next;
+	}
+	tab[i] = 0;
+	return (tab);
 }
 
 void	exevc(t_cmd *cmd)
@@ -40,7 +85,7 @@ void	exevc(t_cmd *cmd)
 	else if (!is_regular_file(cmd_path))
 		exit(g_data.exit_status);
 	free_split(paths);
-	execve(cmd_path, cmd->args, NULL);
+	execve(cmd_path, cmd->args, envp_totab());
 	free(cmd_path);
 	perror("bash");
 	exit(g_data.exit_status);
