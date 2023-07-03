@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executers.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:40:27 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/01 23:49:16 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 03:17:33 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,10 @@ void	ast_calls(t_ast_node *ast_elem, int *pipe_fd)
 
 void	exec_ast_pipe(t_ast_node *ast_elem)
 {
-	int	pipe_fd[2];
-
 	if (!ast_elem->content->pipe->first || !ast_elem->content->pipe->second)
 		return ;
-	if (pipe(pipe_fd) == -1)
-	{
-		perror("pipe");
-		return ;
-	}
-	g_data.first_pipe = pipe_fd[0];
-	if (ast_elem->type == PIPE)
-		ast_calls(ast_elem, pipe_fd);
 	exec_ast(ast_elem->content->pipe->first, ast_elem->type);
-	close(pipe_fd[1]);
 	exec_ast(ast_elem->content->pipe->second, ast_elem->type);
-	close(pipe_fd[0]);
 }
 
 void	exec_ast_or(t_ast_node *ast_elem)
