@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 05:40:15 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 06:01:00 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void	exec_cmd(t_ast_node *ast_elem)
 	if (!rediring(ast_elem->content->cmd->redir->head,
 			ast_elem->content->cmd))
 		exit(g_data.exit_status);
-	close_ast_pipe(g_data.ast.root, ast_elem->content->cmd->fd.in, ast_elem->content->cmd->fd.out);
+	close_ast_pipe(g_data.ast.root, ast_elem->content->cmd->fd.in,
+		ast_elem->content->cmd->fd.out);
 	if (dup2(ast_elem->content->cmd->fd.in, STDIN_FILENO) == -1)
 		perror("dup2: stdin");
 	if (dup2(ast_elem->content->cmd->fd.out, STDOUT_FILENO) == -1)

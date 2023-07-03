@@ -44,6 +44,7 @@ SRC =	main.c					\
 		utils/check_plus.c		\
 		utils/ft_strconcat.c	\
 		utils/sets.c			\
+		utils/piping.c			\
 		heredoc/here.c			\
 		heredoc/doc.c			\
 		heredoc/hd_utils.c		\
@@ -55,6 +56,7 @@ SRC =	main.c					\
 		lexer/lexer_env.c		\
 		lexer/free_ast.c		\
 		lexer/wildcard_helper.c	\
+		lexer/wildcard_helper2.c\
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 05:39:11 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 06:05:15 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,7 @@ void			exec_cmd(t_ast_node *ast_elem);
 void			exec_ast_pipe(t_ast_node *ast_elem);
 void			exec_ast_or(t_ast_node *ast_elem);
 void			exec_ast_and(t_ast_node *ast_elem);
-void			exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type);
+int				exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type);
 int				is_builts(t_cmd *cmd);
 void			builts(t_cmd *cmd);
 

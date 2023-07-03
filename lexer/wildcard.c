@@ -3,43 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 22:07:28 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/02 19:43:33 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/03 06:17:11 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	match_f(char *d_name, char *pattern)
+void	add_files(t_list *files_tmp, t_linkedlist *list)
 {
-	d_name = skip_currdir(d_name);
-	if (!*pattern && !*d_name)
-		return (1);
-	if (!ft_strncmp(pattern, "*", 1))
+	t_list	*tmp;
+
+	while (files_tmp)
 	{
-		while (*(pattern + 1) == '*')
-			pattern++;
-		if (!*(pattern + 1))
-			return (1);
-		while (*d_name)
-		{
-			if (match_f(d_name, pattern + 1))
-				return (1);
-			d_name++;
-		}
+		list_add_back(list, list_new_elem(" ", 1, WHITE_SPACE, GENERAL));
+		list_add_back(list, list_new_elem(files_tmp->content,
+				ft_strlen(files_tmp->content), WORD, GENERAL));
+		tmp = files_tmp;
+		files_tmp = files_tmp->next;
+		free(tmp->content);
+		free(tmp);
 	}
-	else if (*d_name && (*pattern == *d_name))
-		return (match_f(d_name + 1, pattern + 1));
-	return (0);
 }
 
 void	lexer_wildcard(t_linkedlist *list, t_elem *elem, int state)
 {
 	t_list	*files;
 	t_list	*files_tmp;
-	t_list	*tmp;
 
 	(void)list;
 	files = NULL;
@@ -58,16 +50,7 @@ void	lexer_wildcard(t_linkedlist *list, t_elem *elem, int state)
 		list->tail->type = WORD;
 		free(files->content);
 	}
-	while (files_tmp)
-	{
-		list_add_back(list, list_new_elem(" ", 1, WHITE_SPACE, GENERAL));
-		list_add_back(list, list_new_elem(files_tmp->content,
-				ft_strlen(files_tmp->content), WORD, GENERAL));
-		tmp = files_tmp;
-		files_tmp = files_tmp->next;
-		free(tmp->content);
-		free(tmp);
-	}
+	add_files(files_tmp, list);
 	free(files);
 }
 
