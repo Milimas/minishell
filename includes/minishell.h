@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 03:15:37 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/03 05:39:11 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,6 +274,7 @@ int				rediring(t_redir_elem *redir, t_cmd *cmd);
 char			*rm_quotes(char *str);
 char			*out_quotes(int len, char *str, int nb, char *res);
 void			expanding(char *str, int fd, char *limiter);
+int				here_doc(t_redir_elem *redir, t_cmd *cmd);
 
 // utils
 int				ft_isspace(char c);

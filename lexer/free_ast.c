@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 22:48:35 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/01 22:48:59 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/03 04:56:59 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 void	free_redir(t_redir_list *redir)
 {
 	t_redir_elem	*elem;
+	t_redir_elem	*tmp;
 
 	elem = redir->head;
 	while (elem)
 	{
+		tmp = elem;
 		free(elem->arg);
 		elem = elem->next;
+		free (tmp);
 	}
 	free(redir);
 }

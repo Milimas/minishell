@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/03 03:18:38 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/03 05:19:58 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	set_ast_pipe(t_ast_node *ast, int in, int out)
 		}
 		set_ast_pipe(ast->content->pipe->first, in, pipe_fd[1]);
 		set_ast_pipe(ast->content->pipe->second, pipe_fd[0], out);
-		// close(pipe_fd[0]);
-		// close(pipe_fd[1]);
 	}
 	else if (ast->type != SUB)
 	{

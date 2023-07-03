@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:51:15 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 03:10:53 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/03 05:39:51 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 			builts(ast_elem->content->cmd);
 			return ;
 		}
+		here_doc(ast_elem->content->cmd->redir->head,
+			ast_elem->content->cmd);
 		signal(SIGQUIT, sig_quit_handler);
 		g_data.pid = fork();
 		if (g_data.pid == -1)

@@ -46,6 +46,7 @@ SRC =	main.c					\
 		utils/sets.c			\
 		heredoc/here.c			\
 		heredoc/doc.c			\
+		heredoc/hd_utils.c		\
 		signal/signals.c		\
 		lexer/lexer_len.c		\
         lexer/list_free.c		\

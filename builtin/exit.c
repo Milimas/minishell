@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 05:21:33 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 16:56:15 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/02 21:41:25 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	bsh_exit(t_cmd *cmd)
 	if (!cmd->args[1])
 	{
 		ft_putstr_fd("exit\n", 1);
-		exit (0);
+		exit (g_data.exit_status);
 	}
 	else if (cmd->args[2])
 	{
