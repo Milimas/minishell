@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_helper2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 06:16:52 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 06:17:14 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/03 14:34:44 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	match_f(char *d_name, char *pattern)
 		{
 			if (match_f(d_name, pattern + 1))
 				return (1);
+			if (*d_name == '/')
+				return (0);
 			d_name++;
 		}
 	}
