@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 05:21:33 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/02 21:41:25 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:50:34 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	bsh_exit(t_cmd *cmd)
 		ft_putstr_fd("exit\n", 1);
 		exit (g_data.exit_status);
 	}
-	else if (cmd->args[2])
+	else if (cmd->args[2] && is_int(cmd->args[1]))
 	{
-		ft_putstr_fd("bash: exit: too many arguments\n", 2);
+		ft_putstr_fd("exit\nbash: exit: too many arguments\n", 2);
 		g_data.exit_status = 1;
 	}
 	else if (is_int(cmd->args[1]))
