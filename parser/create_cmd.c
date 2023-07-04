@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 03:26:47 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/01 21:42:52 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:56:17 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ char	*creat_arg(t_elem **elem, char *arg)
 	if ((*elem) && is_quote(*elem))
 		arg = ft_strdup("");
 	while ((*elem) && is_type_state(*elem, ' ', GENERAL)
-		&& !(is_logical_operator(*elem) && (*elem)->state == GENERAL))
+		&& !((is_logical_operator(*elem) || is_redirection(*elem))
+		&& (*elem)->state == GENERAL))
 	{
 		while (*elem && is_quote(*elem) && (*elem)->state == GENERAL)
 			*elem = (*elem)->next;
@@ -61,7 +62,7 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 		}
 		if ((*elem) && is_logical_operator(*elem) && (*elem)->state == GENERAL)
 			break ;
-		if ((*elem))
+		if ((*elem) && !is_redirection(*elem))
 			(*elem) = (*elem)->next;
 	}
 }

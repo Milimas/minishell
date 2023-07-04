@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 02:35:50 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/06/23 06:57:19 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:56:49 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_redirection(t_elem *elem)
 {
+	if (elem->state != GENERAL)
+		return (0);
 	return (elem->type == REDIRECTION_IN
 		|| elem->type == REDIRECTION_OUT
 		|| elem->type == HERE_DOC
