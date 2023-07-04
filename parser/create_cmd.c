@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 03:26:47 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/04 10:56:17 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:15:16 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*creat_arg(t_elem **elem, char *arg)
 		arg = ft_strdup("");
 	while ((*elem) && is_type_state(*elem, ' ', GENERAL)
 		&& !((is_logical_operator(*elem) || is_redirection(*elem))
-		&& (*elem)->state == GENERAL))
+			&& (*elem)->state == GENERAL))
 	{
 		while (*elem && is_quote(*elem) && (*elem)->state == GENERAL)
 			*elem = (*elem)->next;

@@ -6,11 +6,26 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:54:21 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/02 04:14:55 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:27:05 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	check_n_flag(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (arg[i] != '-')
+		return (0);
+	i++;
+	while (arg[i] == 'n')
+		i++;
+	if (arg[i])
+		return (0);
+	return (1);
+}
 
 void	bsh_echo(t_cmd *cmd)
 {
@@ -19,7 +34,7 @@ void	bsh_echo(t_cmd *cmd)
 
 	n = 1;
 	args = cmd->args + 1;
-	if (*args && ft_strnstr(*args, "-n", 3))
+	while (*args && check_n_flag(*args))
 	{
 		args++;
 		n = 0;

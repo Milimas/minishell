@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 11:40:06 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:17:14 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	here_doc(t_redir_elem *redir, t_cmd *cmd)
 			close(pipe_hd[1]);
 			return (0);
 		}
-		// close(pipe_hd[0]);
 		close(pipe_hd[1]);
 		redir = redir->next;
 	}
