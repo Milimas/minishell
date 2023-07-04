@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 11:54:57 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:46:47 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,6 +277,8 @@ char			*rm_quotes(char *str);
 char			*out_quotes(int len, char *str, int nb, char *res);
 void			expanding(char *str, int fd, char *limiter);
 int				here_doc(t_redir_elem *redir, t_cmd *cmd);
+char			which_quote(char *str);
+int				check_limiter(char *str);
 
 // utils
 int				ft_isspace(char c);

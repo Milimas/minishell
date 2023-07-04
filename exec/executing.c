@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:51:15 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 08:54:57 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:35:41 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,9 @@ int	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 		exec_sub(ast_elem);
 	else if (ast_elem && ast_elem->type == CMD && ast_elem->content)
 	{
-		here_doc(ast_elem->content->cmd->redir->head,
-			ast_elem->content->cmd);
-		// if (is_builts(ast_elem->content->cmd) && parent_type != PIPE)
-		// {
-		// 	builts(ast_elem->content->cmd);
-		// 	return (1);
-		// }
+		if (!here_doc(ast_elem->content->cmd->redir->head,
+				ast_elem->content->cmd))
+			return (0);
 		signal(SIGQUIT, sig_quit_handler);
 		g_data.pid = fork();
 		if (g_data.pid == -1)

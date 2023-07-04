@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 12:03:36 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:31:43 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	**envp_totab(void)
 	i = 0;
 	env = g_data.env;
 	size = env_size(env);
-	tab = (char **)malloc(size * sizeof(char *) + 1);
+	tab = (char **)ft_calloc(size + 1, sizeof(char *));
 	if (!tab)
 		return (NULL);
 	while (env && i < size)
@@ -62,7 +62,6 @@ char	**envp_totab(void)
 		i++;
 		env = env->next;
 	}
-	tab[i] = 0;
 	return (tab);
 }
 

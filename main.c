@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/03 14:06:42 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:34:46 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	execute_line(void)
 		if (rediring(g_data.ast.root->content->cmd->redir->head,
 				g_data.ast.root->content->cmd))
 		{
-			here_doc(g_data.ast.root->content->cmd->redir->head,
-				g_data.ast.root->content->cmd);
-			builts(g_data.ast.root->content->cmd);
+			if (here_doc(g_data.ast.root->content->cmd->redir->head,
+					g_data.ast.root->content->cmd))
+				builts(g_data.ast.root->content->cmd);
 		}
 	}
 	else if (g_data.ast.root)

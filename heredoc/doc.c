@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 05:57:41 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:40:06 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ int	check_hd(t_redir_elem *redir, t_cmd *cmd, int *pipe_hd)
 {
 	if (redir->type == HERE_DOC)
 	{
+		if (!check_limiter(redir->arg))
+		{
+			ft_putstr_fd("bash: unexpected EOF while "
+				"looking for matching quote\n", 2);
+			g_data.exit_status = 258;
+			return (0);
+		}
 		putfilefd(redir->arg, pipe_hd[1]);
 		close(pipe_hd[1]);
 		if (cmd->fd.in != STDIN_FILENO)
