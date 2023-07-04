@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+         #
+#    By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/04 11:54:50 by rouarrak          #+#    #+#              #
-#    Updated: 2023/07/04 13:52:09 by rouarrak         ###   ########.fr        #
+#    Updated: 2023/07/04 14:13:01 by abeihaqi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS += -Wall -Werror -Wextra #-fsanitize=address -g3
+CFLAGS += -Wall -Werror -Wextra -fsanitize=address -g3
 
 LDFLAGS += -lreadline -L/goinfre/$(USER)/homebrew/opt/readline/lib
 

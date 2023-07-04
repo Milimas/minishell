@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:51:15 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 14:00:31 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:18:24 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,26 @@ void	exec_ast_other(t_ast_node *ast_elem)
 		exec_ast_or(ast_elem);
 }
 
+static char	*check_cmd(char **paths, char *cmd)
+{
+	char	*path_tmp;
+	char	*file;
+
+	if (*cmd && access(cmd, X_OK) == 0)
+		return (ft_strdup(cmd));
+	while (paths && *paths && cmd && *cmd)
+	{
+		path_tmp = ft_strjoin(*paths, "/");
+		file = ft_strjoin(path_tmp, cmd);
+		free(path_tmp);
+		if (access(file, X_OK) == 0)
+			return (file);
+		free(file);
+		paths++;
+	}
+	return (NULL);
+}
+
 void	update_(t_ast_node *ast_elem)
 {
 	char	**paths;
@@ -29,11 +49,13 @@ void	update_(t_ast_node *ast_elem)
 	char	*cmd_path;
 
 	paths = get_paths();
-	cmd_path = cmd_file(paths, ast_elem->content->cmd->args[0]);
-	tmp = ft_strjoin("_=", cmd_path);
-	ex_modify(tmp);
+	cmd_path = check_cmd(paths, ast_elem->content->cmd->args[0]);
 	free_split(paths);
+	if (!cmd_path)
+		return ;
+	tmp = ft_strjoin("_=", cmd_path);
 	free(cmd_path);
+	ex_modify(tmp);
 	free(tmp);
 }
 
@@ -55,7 +77,7 @@ int	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 			exec_cmd(ast_elem);
 		if (parent_type != PIPE)
 			update_status();
-		update_(ast_elem);
+		// update_(ast_elem);
 		signal(SIGQUIT, SIG_IGN);
 	}
 	else
