@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 01:50:20 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/01 22:45:59 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:45:54 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	redirection_syntax(t_elem *elem)
 			elem = elem->next;
 		if (!elem || (is_token(elem->type)
 				&& !is_quote(elem)) || !*elem->content)
-			return (syntax_error(elem, 2));
+			return (syntax_error(elem, 258));
 		else if (elem->type == WILDCARD && redir_type != HERE_DOC)
 			return (ambiguous_redirect(elem, 1));
 		if (redir_type == HERE_DOC && elem->type == WILDCARD)
