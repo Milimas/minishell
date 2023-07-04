@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:32:27 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/01 23:36:10 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:58:24 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,22 +89,13 @@ int	is_builts(t_cmd *cmd)
 	return (0);
 }
 
-void	builts(t_cmd *cmd)
+void	update_status(void)
 {
-	if (!ft_strncmp("exit", cmd->args[0], 5))
-		bsh_exit(cmd);
-	else if (!ft_strncmp("echo", cmd->args[0], 5))
-		bsh_echo(cmd);
-	else if (!ft_strncmp("pwd", cmd->args[0], 4))
-		bsh_pwd(cmd->fd.out);
-	else if (!ft_strncmp("cd", cmd->args[0], 3))
-		bsh_cd(cmd);
-	else if (!ft_strncmp("export", cmd->args[0], 7))
-		bsh_export(cmd);
-	else if (!ft_strncmp("unset", cmd->args[0], 6))
-		bsh_unset(cmd);
-	else if (!ft_strncmp("env", cmd->args[0], 4))
-		bsh_env(cmd->fd.out);
-	else
-		return ;
+	int	status;
+
+	waitpid(g_data.pid, &status, 0);
+	if (WIFEXITED(status))
+		g_data.exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_data.exit_status = WTERMSIG(status) + 128;
 }

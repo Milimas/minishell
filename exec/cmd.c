@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:42:59 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 10:31:43 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:58:19 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,31 +108,4 @@ void	exec_cmd(t_ast_node *ast_elem)
 	else if (ast_elem->content->cmd->args[0])
 		exevc(ast_elem->content->cmd);
 	exit(g_data.exit_status);
-}
-
-void	update_status(void)
-{
-	int	status;
-
-	waitpid(g_data.pid, &status, 0);
-	if (WIFEXITED(status))
-		g_data.exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		g_data.exit_status = WTERMSIG(status) + 128;
-}
-
-void	exec_sub(t_ast_node *ast_elem)
-{
-	g_data.pid = fork();
-	if (g_data.pid == -1)
-	{
-		ft_putendl_fd("bash: fork: Resource temporarily unavailable", 2);
-		return ;
-	}
-	if (!g_data.pid)
-	{
-		exec_ast(ast_elem->content->ast, ast_elem->type);
-		exit(g_data.exit_status);
-	}
-	update_status();
 }
