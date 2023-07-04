@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 01:50:20 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/04 10:45:54 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:27:38 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	logical_syntax(t_elem *elem)
 		elem = elem->next;
 		while (elem && elem->type == WHITE_SPACE)
 			elem = elem->next;
-		if (!elem)
+		if (!elem || is_logical_operator(elem))
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
