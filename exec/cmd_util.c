@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:32:27 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 11:58:24 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:32:22 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	check_file(char *cmd)
 {
 	if (ft_strchr(cmd, '/') && access (cmd, F_OK) == -1)
 	{
-		ft_putstr_fd("jfd: ", 2);
+		ft_putstr_fd("bash: ", 2);
 		perror(cmd);
 		g_data.exit_status = 127;
 		exit(g_data.exit_status);
