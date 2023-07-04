@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:51:15 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 16:04:00 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 23:06:33 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	update_(t_ast_node *ast_elem)
 	char	*tmp;
 	char	*cmd_path;
 
+	if (!ast_elem->content->cmd->args[0])
+		return ;
 	paths = get_paths();
 	cmd_path = check_cmd(paths, ast_elem->content->cmd->args[0]);
 	free_split(paths);
@@ -55,7 +57,7 @@ void	update_(t_ast_node *ast_elem)
 		return ;
 	tmp = ft_strjoin("_=", cmd_path);
 	free(cmd_path);
-	ex_modify(tmp);
+	env_modo(tmp);
 	free(tmp);
 }
 

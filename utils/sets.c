@@ -6,11 +6,19 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 08:59:12 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/06/27 10:52:33 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 23:03:03 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	env_modo(char *str)
+{
+	if (ex_ist(str) && ft_strchr(str, '='))
+		ex_modify(str);
+	else if (!ex_ist(str))
+		envadd_back(&g_data.env, envnew(str));
+}
 
 int	in_env(char *key, char *pwd)
 {
@@ -57,13 +65,28 @@ void	set_oldpwd(void)
 void	set_pwd(void)
 {
 	t_env	*env;
+	int		flg;
+	char	*pwd;
+	char	*str;
 
+	flg = 0;
 	env = g_data.env;
+	pwd = getcwd(NULL, 0);
 	while (env)
 	{
 		if (!ft_strncmp("PWD", env->key, 4))
-			env->value = getcwd(NULL, 0);
+		{
+			env->value = pwd;
+			flg = 1;
+		}
 		env = env->next;
+	}
+	if (!flg)
+	{
+		str = ft_strjoin("PWD=", pwd);
+		free (pwd);
+		env_modo(str);
+		free (str);
 	}
 }
 

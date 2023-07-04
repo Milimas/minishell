@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 15:14:42 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 22:56:16 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,7 @@ void	bsh_export(t_cmd *cmd)
 				args++;
 				continue ;
 			}
-			if (ex_ist(*args) && ft_strchr(*args, '='))
-				ex_modify(*args);
-			else if (!ex_ist(*args))
-				envadd_back(&g_data.env, envnew(*args));
+			env_modo(*args);
 			args++;
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 13:00:04 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/04 22:55:29 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,7 @@ void			bsh_cd(t_cmd *cmd);
 void			bsh_export(t_cmd *cmd);
 void			bsh_unset(t_cmd *cmd);
 void			bsh_env(int fd);
+void			env_modo(char *str);
 
 // builtin utils
 int				ft_envsize(t_env *lst);
