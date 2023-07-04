@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:51:15 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 11:35:41 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:46:49 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,21 @@ void	exec_ast_other(t_ast_node *ast_elem)
 		exec_ast_and(ast_elem);
 	else if (ast_elem && ast_elem->type == OR)
 		exec_ast_or(ast_elem);
+}
+
+void	update_(t_ast_node *ast_elem)
+{
+	char	**paths;
+	char	*tmp;
+	char	*cmd_path;
+
+	paths = get_paths();
+	cmd_path = cmd_file(paths, ast_elem->content->cmd->args[0]);
+	tmp = ft_strjoin("_=", cmd_path);
+	ex_modify(tmp);
+	free_split(paths);
+	free(cmd_path);
+	free(tmp);
 }
 
 int	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
@@ -40,6 +55,7 @@ int	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 			exec_cmd(ast_elem);
 		if (parent_type != PIPE)
 			update_status();
+		update_(ast_elem);
 		signal(SIGQUIT, SIG_IGN);
 	}
 	else

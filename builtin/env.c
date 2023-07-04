@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 19:57:55 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/01 22:22:43 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:41:57 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	bsh_env(int fd)
 	t_env	*env;
 
 	env = g_data.env;
+	ex_modify("_=/usr/bin/env");
 	while (env)
 	{
 		if (env->value)
