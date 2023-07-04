@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 11:46:47 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:00:04 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,10 +159,8 @@ typedef struct s_data
 	int				exit_status;
 	int				pid;
 	t_env			*env;
-	char			**envp;
 	t_ast			ast;
 	t_linkedlist	lexer;
-	int				first_pipe;
 }	t_data;
 
 t_data						g_data;

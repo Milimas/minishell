@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   global.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:51:07 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/03 12:01:53 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:00:15 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	init_global_data(void)
 	free(buf);
 	envadd_back(&g_data.env, envnew(tmp));
 	free(tmp);
-	g_data.first_pipe = -1;
 	g_data.exit_status = 0;
 	g_data.ast.root = NULL;
 	g_data.lexer.head = NULL;
@@ -76,7 +75,6 @@ void	init_global_data(void)
 
 void	reset_global_data(void)
 {
-	g_data.first_pipe = -1;
 	g_data.ast.root = NULL;
 	g_data.lexer.head = NULL;
 	g_data.lexer.tail = NULL;
