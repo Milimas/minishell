@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/01 22:25:41 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:51:05 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void	ex_modify(char	*cmd)
 		egal = ft_strjoin(env->key, "=");
 		if (!ft_strncmp(egal,
 				cmd, ft_strchr(cmd, '=') - cmd +1))
-			env->value = ft_strdup(ft_strchr(cmd, '=') + 1);
+			{
+				free (env->value);
+				env->value = ft_strdup(ft_strchr(cmd, '=') + 1);
+			}
 		else if (!ft_strncmp(env->key, cmd, ft_strchr(cmd, '+') - cmd))
 		{
 			env->value = ft_strconcat(env->value, ft_strchr(cmd, '=') + 1);

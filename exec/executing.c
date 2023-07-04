@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:51:15 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 11:35:41 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:58:13 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,24 @@ int	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 	else
 		exec_ast_other(ast_elem);
 	return (1);
+}
+
+void	builts(t_cmd *cmd)
+{
+	if (!ft_strncmp("exit", cmd->args[0], 5))
+		bsh_exit(cmd);
+	else if (!ft_strncmp("echo", cmd->args[0], 5))
+		bsh_echo(cmd);
+	else if (!ft_strncmp("pwd", cmd->args[0], 4))
+		bsh_pwd(cmd->fd.out);
+	else if (!ft_strncmp("cd", cmd->args[0], 3))
+		bsh_cd(cmd);
+	else if (!ft_strncmp("export", cmd->args[0], 7))
+		bsh_export(cmd);
+	else if (!ft_strncmp("unset", cmd->args[0], 6))
+		bsh_unset(cmd);
+	else if (!ft_strncmp("env", cmd->args[0], 4))
+		bsh_env(cmd->fd.out);
+	else
+		return ;
 }
