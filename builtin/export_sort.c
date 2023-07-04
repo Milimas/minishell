@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 03:15:22 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/01 23:12:05 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:57:56 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	sort_chartab(char **tab, int size)
 
 static void	print_export_prime(int fd, t_env *env)
 {
+	if (!ft_strcmp(env->key, "_"))
+		return ;
 	ft_putstr_fd("declare -x ", fd);
 	ft_putstr_fd(env->key, fd);
 	if (env->value)
