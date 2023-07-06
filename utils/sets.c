@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 08:59:12 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 23:03:03 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/06 20:46:54 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	set_oldpwd(void)
 	if (pwd && !in_env("OLDPWD", pwd))
 	{
 		res = (t_env *)ft_calloc(sizeof(t_env), 1);
-		res->key = "OLDPWD";
+		res->key = ft_strdup("OLDPWD");
 		res->value = pwd;
 		envadd_back(&g_data.env, res);
 	}
