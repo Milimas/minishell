@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 21:33:56 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/03 09:49:44 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/08 02:22:51 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 void	sig_quit_handler(int signum)
 {
+	char	*sig;
+
 	if (signum == SIGQUIT)
 	{
 		write(1, "Quit:", 6);
-		ft_putstr_fd(ft_itoa(SIGQUIT), 1);
+		sig = ft_itoa(SIGQUIT);
+		ft_putstr_fd(sig, 1);
 		write(1, "\n", 1);
+		free (sig);
 		signal(SIGQUIT, SIG_DFL);
 	}
 }

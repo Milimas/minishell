@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 05:55:12 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 05:56:20 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/06 23:17:43 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,13 @@ void	writing_hd(char *limiter, int fd, char *av)
 	{
 		str = readline(">");
 		if (!str)
+		{
+			free (limiter);
 			break ;
+		}
 		if (ft_strcmp(str, limiter) == 0)
 		{
+			free (str);
 			free (limiter);
 			break ;
 		}
