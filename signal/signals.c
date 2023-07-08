@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 21:33:56 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/08 02:22:51 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/08 02:26:50 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,11 @@
 
 void	sig_quit_handler(int signum)
 {
-	char	*sig;
-
 	if (signum == SIGQUIT)
 	{
 		write(1, "Quit:", 6);
-		sig = ft_itoa(SIGQUIT);
-		ft_putstr_fd(sig, 1);
+		ft_putnbr_fd(SIGQUIT, 1);
 		write(1, "\n", 1);
-		free (sig);
 		signal(SIGQUIT, SIG_DFL);
 	}
 }
