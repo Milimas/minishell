@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 02:35:50 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/04 10:56:49 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/08 03:18:44 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	is_in_quote(t_elem *elem)
 
 int	is_logical_operator(t_elem *elem)
 {
+	if (!elem || elem->state != GENERAL)
+		return (0);
 	return (elem->type == PIPE_LINE
 		|| elem->type == DOUBLE_AMPERSAND
 		|| elem->type == LOGICAL_OR_OPERATOR);
