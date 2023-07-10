@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 07:14:35 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/04 13:29:18 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/10 04:08:28 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,18 @@ char	*get_env_variable(char *name)
 		env = env->next;
 	}
 	return (ft_strdup(""));
+}
+
+int	key_len(char *cmd, char *env)
+{
+	int	i;
+	int	size;
+
+	i = 0;
+	while (cmd[i] && cmd[i] != '=' && cmd[i] != '+')
+		i++;
+	size = ft_strlen(env);
+	if (size > i)
+		return (size);
+	return (i);
 }

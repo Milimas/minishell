@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 00:39:56 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 22:56:16 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/10 04:12:57 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	ex_ist(char *cmd)
 	env = g_data.env;
 	while (env)
 	{
-		if (plus == 1 && (!ft_strncmp(env->key, cmd, ft_strlen(env->key))))
+		if (plus == 1 && (!ft_strncmp(env->key, cmd, key_len(cmd, env->key))))
 			return (1);
-		else if (!ft_strncmp(env->key, cmd, ft_strlen(env->key)))
+		else if (!ft_strncmp(env->key, cmd, key_len(cmd, env->key)))
 			return (1);
 		env = env->next;
 	}
@@ -45,7 +45,7 @@ void	ex_modify(char	*cmd)
 			free (env->value);
 			env->value = ft_strdup(ft_strchr(cmd, '=') + 1);
 		}
-		else if (!ft_strncmp(env->key, cmd, ft_strchr(cmd, '+') - cmd))
+		else if (!ft_strncmp(env->key, cmd, key_len(cmd, env->key)))
 		{
 			env->value = ft_strconcat(env->value, ft_strchr(cmd, '=') + 1);
 			if (!env->value)
@@ -79,7 +79,8 @@ static int	isvalid(char *args)
 	while (args[i] && args[i] != '=')
 	{
 		if ((!ft_isalnum(args[i]) && args[i] != '_' && args[i] != '='
-				&& args[i] != '+') || plus_check(args) > 1)
+				&& !(args[i] == '+' && args[i + 1] == '='))
+			|| plus_check(args) > 1)
 		{
 			built_error(args);
 			g_data.exit_status = 1;

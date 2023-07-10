@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/10 02:33:03 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/10 03:44:30 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,7 @@ void			exp_tab(t_env *env, int fd);
 void			sort_chartab(char **tab, int size);
 void			print_export(char **tab, int size, int fd);
 void			built_error(char *args);
+int				key_len(char *cmd, char *env);
 
 // execution
 char			**envp_totab(void);
