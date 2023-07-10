@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 03:26:47 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/04 15:15:16 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/10 05:52:58 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 	char	**tmp_args;
 
 	tmp_args = cmd->args;
-	while (*elem)
+	while (*elem && is_type_state(*elem, PARENTASIS_CLOSE, GENERAL))
 	{
 		if ((*elem) && is_redirection(*elem) && (*elem)->state == GENERAL)
 			append_redir(cmd->redir, create_redir(elem));
@@ -62,7 +62,8 @@ void	init_cmd(t_cmd *cmd, t_elem **elem)
 		}
 		if ((*elem) && is_logical_operator(*elem) && (*elem)->state == GENERAL)
 			break ;
-		if ((*elem) && !is_redirection(*elem))
+		if ((*elem) && !is_redirection(*elem)
+			&& is_type_state(*elem, PARENTASIS_CLOSE, GENERAL))
 			(*elem) = (*elem)->next;
 	}
 }
