@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/10 03:44:30 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/10 09:33:59 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,5 +307,6 @@ void			sig_ign_handler(int signum);
 void			proccess_line(char *line);
 void			close_ast_pipe(t_ast_node *ast, int in, int out);
 void			set_ast_pipe(t_ast_node *ast, int in, int out);
+void			wait_last(void);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doc.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 15:17:14 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/10 08:34:31 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,20 @@ int	check_hd(t_redir_elem *redir, t_cmd *cmd, int *pipe_hd)
 			g_data.exit_status = 258;
 			return (0);
 		}
-		putfilefd(redir->arg, pipe_hd[1]);
+		g_data.pid = fork();
+		if (!g_data.pid)
+		{
+			signal(SIGINT, SIG_DFL);
+			putfilefd(redir->arg, pipe_hd[1]);
+			exit(EXIT_SUCCESS);
+		}
+		update_status(g_data.pid);
 		close(pipe_hd[1]);
 		if (cmd->fd.in != STDIN_FILENO)
 			close(cmd->fd.in);
 		cmd->fd.in = pipe_hd[0];
+		g_data.exit_status = !!g_data.exit_status;
+		return (!write(1, "\n", !!g_data.exit_status));
 	}
 	return (1);
 }
