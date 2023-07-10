@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   piping.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 06:08:09 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/03 06:08:51 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/10 01:57:56 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ void	close_ast_pipe(t_ast_node *ast, int in, int out)
 {
 	if (ast->type == CMD)
 	{
-		if (ast->content->cmd->fd.in != in)
+		if (ast->content->cmd->fd.in != in
+			&& ast->content->cmd->fd.in != STDIN_FILENO)
 			close(ast->content->cmd->fd.in);
-		if (ast->content->cmd->fd.out != out)
+		if (ast->content->cmd->fd.out != out
+			&& ast->content->cmd->fd.out != STDOUT_FILENO)
 			close(ast->content->cmd->fd.out);
 	}
 	else if (ast->type == PIPE)

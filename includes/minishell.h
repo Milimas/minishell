@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:19:32 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 22:55:29 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/10 02:33:03 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ typedef struct s_data
 {
 	int				exit_status;
 	int				pid;
+	int				subpid;
 	t_env			*env;
 	t_ast			ast;
 	t_linkedlist	lexer;
@@ -221,7 +222,6 @@ char			*join_path(char *path, char *d_name, char *sep);
 
 // parser
 t_ast_node		*ft_parser(t_elem **elem, t_ast_node *ast);
-// void			ft_parser(t_elem **elem, t_ast_node **ast);
 int				count_args(t_elem *elem);
 t_ast_node		*create_cmd(t_elem **elem);
 t_redir_elem	*create_redir(t_elem **elem);
@@ -258,7 +258,7 @@ void			built_error(char *args);
 char			**envp_totab(void);
 char			**get_paths(void);
 char			*cmd_file(char **paths, char *cmd);
-void			update_status(void);
+void			update_status(pid_t pid);
 void			exec_sub(t_ast_node *ast_elem);
 void			exevc(t_cmd *cmd);
 void			exec_cmd(t_ast_node *ast_elem);

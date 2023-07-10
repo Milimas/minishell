@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_util.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:32:27 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 15:32:22 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/10 01:57:29 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,11 @@ int	is_builts(t_cmd *cmd)
 	return (0);
 }
 
-void	update_status(void)
+void	update_status(pid_t pid)
 {
 	int	status;
 
-	waitpid(g_data.pid, &status, 0);
+	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		g_data.exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

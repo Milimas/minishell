@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:51:15 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 23:06:33 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/10 01:55:14 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 					"bash: fork: Resource temporarily unavailable", 2), 1);
 		if (!g_data.pid)
 			exec_cmd(ast_elem);
-		if (parent_type != PIPE)
-			update_status();
+		if (parent_type != PIPE && parent_type != SUB)
+			update_status(g_data.pid);
 		update_(ast_elem);
 		signal(SIGQUIT, SIG_IGN);
 	}

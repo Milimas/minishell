@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executers.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:40:27 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 11:57:26 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/10 01:58:06 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	exec_ast_pipe(t_ast_node *ast_elem)
 	if (!ast_elem->content->pipe->first || !ast_elem->content->pipe->second)
 		return ;
 	exec_ast(ast_elem->content->pipe->first, ast_elem->type);
+	close_ast_pipe(ast_elem->content->pipe->first, STDIN_FILENO, STDOUT_FILENO);
 	exec_ast(ast_elem->content->pipe->second, ast_elem->type);
+	close_ast_pipe(ast_elem->content->pipe->second, STDIN_FILENO,
+		STDOUT_FILENO);
 }
 
 void	exec_ast_or(t_ast_node *ast_elem)
@@ -38,8 +41,8 @@ void	exec_ast_and(t_ast_node *ast_elem)
 
 void	exec_sub(t_ast_node *ast_elem)
 {
-	g_data.pid = fork();
-	if (g_data.pid == -1)
+	g_data.subpid = fork();
+	if (g_data.subpid == -1)
 	{
 		ft_putendl_fd("bash: fork: Resource temporarily unavailable", 2);
 		return ;
@@ -47,7 +50,8 @@ void	exec_sub(t_ast_node *ast_elem)
 	if (!g_data.pid)
 	{
 		exec_ast(ast_elem->content->ast, ast_elem->type);
+		update_status(g_data.pid);
 		exit(g_data.exit_status);
 	}
-	update_status();
+	update_status(g_data.subpid);
 }

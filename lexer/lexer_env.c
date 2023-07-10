@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 03:05:38 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/02 04:22:32 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/10 02:55:27 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	lexer_expand_env(t_linkedlist *list)
 
 	split = NULL;
 	value = get_env_variable(list->tail->content + 1);
-	g_data.exit_status = 0;
 	if (list->tail->state == IN_DOUBLE_QUOTE)
 		lexer_expand_env_quote(list, value);
 	else if (*value)
