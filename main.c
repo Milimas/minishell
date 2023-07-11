@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:43:05 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/04 12:57:45 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/11 11:04:36 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	execute_line(void)
 	{
 		set_ast_pipe(g_data.ast.root, STDIN_FILENO, STDOUT_FILENO);
 		exec_ast(g_data.ast.root, g_data.ast.root->type);
-		close_ast_pipe(g_data.ast.root, STDIN_FILENO, STDOUT_FILENO);
 	}
+	close_ast_pipe(g_data.ast.root, STDIN_FILENO, STDOUT_FILENO);
 }
 
 void	wait_last(void)
