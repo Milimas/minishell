@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 06:08:09 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/11 12:50:01 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/11 15:15:42 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@ void	set_ast_pipe(t_ast_node *ast, int in, int out)
 {
 	int	pipe_fd[2];
 
-	if (!ast)
-		return ;
-	if (ast->type == CMD)
+	if (ast && ast->type == CMD)
 	{
 		ast->content->cmd->fd.in = in;
 		ast->content->cmd->fd.out = out;
 	}
-	else if (ast->type == PIPE)
+	else if (ast && ast->type == PIPE)
 	{
 		if (pipe(pipe_fd))
 		{
@@ -33,12 +31,12 @@ void	set_ast_pipe(t_ast_node *ast, int in, int out)
 		set_ast_pipe(ast->content->pipe->first, in, pipe_fd[1]);
 		set_ast_pipe(ast->content->pipe->second, pipe_fd[0], out);
 	}
-	else if (ast->type != SUB)
+	else if (ast && ast->type != SUB)
 	{
 		set_ast_pipe(ast->content->pipe->first, in, out);
 		set_ast_pipe(ast->content->pipe->second, in, out);
 	}
-	else
+	else if (ast)
 		set_ast_pipe(ast->content->ast, in, out);
 }
 
