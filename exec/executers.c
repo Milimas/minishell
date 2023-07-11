@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:40:27 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/11 08:18:57 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/11 09:09:19 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,14 @@ void	exec_sub(t_ast_node *ast_elem)
 		ft_putendl_fd("bash: fork: Resource temporarily unavailable", 2);
 		return ;
 	}
+	if (g_data.subpid)
+		close_ast_pipe(ast_elem->content->ast, STDIN_FILENO, STDOUT_FILENO);
 	if (!g_data.subpid)
 	{
 		exec_ast(ast_elem->content->ast, ast_elem->content->ast->type);
-		close_ast_pipe(ast_elem->content->ast, STDIN_FILENO, STDOUT_FILENO);
+		close_ast_pipe(g_data.ast.root, STDIN_FILENO, STDOUT_FILENO);
 		wait_last();
 		exit(g_data.exit_status);
 	}
-	close_ast_pipe(ast_elem->content->ast, STDIN_FILENO, STDOUT_FILENO);
 	update_status(g_data.subpid);
 }
