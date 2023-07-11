@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/11 11:52:32 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/11 12:29:54 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	here_doc(t_redir_elem *redir, t_cmd *cmd)
 		if (redir->type != HERE_DOC)
 		{
 			redir = redir->next;
-			continue;
+			continue ;
 		}
 		pipe(pipe_hd);
 		if (!check_hd(redir, cmd, pipe_hd))
