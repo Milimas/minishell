@@ -6,13 +6,13 @@
 #    By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/04 11:54:50 by rouarrak          #+#    #+#              #
-#    Updated: 2023/07/04 15:58:53 by rouarrak         ###   ########.fr        #
+#    Updated: 2023/07/12 23:26:01 by rouarrak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS += -Wall -Werror -Wextra #-fsanitize=address -g3
+CFLAGS += -Wall -Werror -Wextra -fsanitize=address -g3
 
 LDFLAGS += -lreadline -L/goinfre/$(USER)/homebrew/opt/readline/lib
 

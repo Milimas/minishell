@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doc.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/11 12:29:54 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/12 23:43:58 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,13 @@ int	check_hd(t_redir_elem *redir, t_cmd *cmd, int *pipe_hd)
 
 int	checks(t_redir_elem *redir, t_cmd *cmd)
 {
-	if (redir->type == REDIRECTION_OUT)
+	if (redir->type == REDIRECTION_IN)
+	{
+		cmd->fd.in = open(redir->arg, O_RDONLY, 0644);
+		if (cmd->fd.in < 0)
+			return (check_permission(redir->arg));
+	}
+	else if (redir->type == REDIRECTION_OUT)
 	{
 		cmd->fd.out = open(redir->arg, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (cmd->fd.out == -1)
@@ -63,12 +69,8 @@ int	checks(t_redir_elem *redir, t_cmd *cmd)
 		if (cmd->fd.out == -1)
 			return (check_permission(redir->arg));
 	}
-	else if (redir->type == REDIRECTION_IN)
-	{
-		cmd->fd.in = open(redir->arg, O_RDONLY, 0644);
-		if (cmd->fd.in < 0)
-			return (check_permission(redir->arg));
-	}
+	else if (redir->type == HERE_DOC)
+		return (here_doc(redir, cmd));
 	return (1);
 }
 
@@ -76,23 +78,14 @@ int	here_doc(t_redir_elem *redir, t_cmd *cmd)
 {
 	int	pipe_hd[2];
 
-	while (redir)
+	pipe(pipe_hd);
+	if (!check_hd(redir, cmd, pipe_hd))
 	{
-		if (redir->type != HERE_DOC)
-		{
-			redir = redir->next;
-			continue ;
-		}
-		pipe(pipe_hd);
-		if (!check_hd(redir, cmd, pipe_hd))
-		{
-			close(pipe_hd[0]);
-			close(pipe_hd[1]);
-			return (0);
-		}
+		close(pipe_hd[0]);
 		close(pipe_hd[1]);
-		redir = redir->next;
+		return (0);
 	}
+	close(pipe_hd[1]);
 	return (1);
 }
 
