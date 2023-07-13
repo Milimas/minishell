@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 06:54:21 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/04 15:27:05 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/13 02:45:58 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	check_n_flag(char *arg)
 	if (arg[i] != '-')
 		return (0);
 	i++;
+	if (!arg[i])
+		return (0);
 	while (arg[i] == 'n')
 		i++;
 	if (arg[i])

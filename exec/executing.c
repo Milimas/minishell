@@ -6,7 +6,7 @@
 /*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 23:51:15 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/12 23:59:32 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/13 02:35:52 by rouarrak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,7 @@ int	exec_ast(t_ast_node *ast_elem, enum e_node_type parent_type)
 		signal(SIGQUIT, SIG_IGN);
 		if (!rediring(ast_elem->content->cmd->redir->head,
 				ast_elem->content->cmd))
-		{
-			wait(NULL);
-			return (0);
-		}
+			return (wait(NULL), 0);
 		signal(SIGQUIT, sig_quit_handler);
 		g_data.pid = fork();
 		if (g_data.pid == -1)
