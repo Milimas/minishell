@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doc.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rouarrak <rouarrak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 08:23:18 by rouarrak          #+#    #+#             */
-/*   Updated: 2023/07/12 23:43:58 by rouarrak         ###   ########.fr       */
+/*   Updated: 2023/07/13 02:04:32 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,25 +51,27 @@ int	check_hd(t_redir_elem *redir, t_cmd *cmd, int *pipe_hd)
 
 int	checks(t_redir_elem *redir, t_cmd *cmd)
 {
+	if (redir->type == REDIRECTION_IN && cmd->fd.in != STDIN_FILENO)
+		close(cmd->fd.in);
+	else if ((redir->type == REDIRECTION_OUT
+			|| redir->type == DOUBLE_REDIRECTION_OUT)
+		&& cmd->fd.out != STDOUT_FILENO)
+		close(cmd->fd.out);
 	if (redir->type == REDIRECTION_IN)
 	{
 		cmd->fd.in = open(redir->arg, O_RDONLY, 0644);
-		if (cmd->fd.in < 0)
-			return (check_permission(redir->arg));
 	}
 	else if (redir->type == REDIRECTION_OUT)
 	{
 		cmd->fd.out = open(redir->arg, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (cmd->fd.out == -1)
-			return (check_permission(redir->arg));
 	}
 	else if (redir->type == DOUBLE_REDIRECTION_OUT)
 	{
 		cmd->fd.out = open(redir->arg, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (cmd->fd.out == -1)
-			return (check_permission(redir->arg));
 	}
-	else if (redir->type == HERE_DOC)
+	if (cmd->fd.out < 0 || cmd->fd.in < 0)
+		return (check_permission(redir->arg));
+	if (redir->type == HERE_DOC)
 		return (here_doc(redir, cmd));
 	return (1);
 }
