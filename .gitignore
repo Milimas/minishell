@@ -60,3 +60,4 @@ ppx/
 deleteme.c
 tests.txt
 minishell_tester/
+*.txt
