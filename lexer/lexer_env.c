@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 03:05:38 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/13 03:20:33 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/13 03:49:09 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	lexer_expand_env(t_linkedlist *list)
 {
 	char	**split;
 	char	*value;
+	int		state;
 
 	split = NULL;
 	value = get_env_variable(list->tail->content + 1);
@@ -43,12 +44,13 @@ void	lexer_expand_env(t_linkedlist *list)
 	else if (*value)
 	{
 		split = ft_split(value, ' ');
+		state = list->tail->state;
 		delete_from_list(&list, list->tail);
 		if (*value == WHITE_SPACE)
 			list_add_back(list, list_new_elem(" ", 1, WHITE_SPACE,
-					list->tail->state));
+					state));
 		list_add_back(list, list_new_elem(ft_strdup(*split), ft_strlen(*split),
-				WORD, list->tail->state));
+				WORD, state));
 		add_envs(list, split);
 	}
 	else

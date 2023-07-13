@@ -6,7 +6,7 @@
 /*   By: abeihaqi <abeihaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 01:50:20 by abeihaqi          #+#    #+#             */
-/*   Updated: 2023/07/08 03:48:35 by abeihaqi         ###   ########.fr       */
+/*   Updated: 2023/07/13 03:42:45 by abeihaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,10 @@ int	parentasis_syntax(t_elem *elem)
 		elem = elem->next;
 		if ((elem->type == PARENTASIS_CLOSE && elem->state == GENERAL)
 			|| is_logical_operator(elem))
+			return (EXIT_FAILURE);
+		while (elem && elem->type == WHITE_SPACE)
+			elem = elem->next;
+		if (elem && is_logical_operator(elem))
 			return (EXIT_FAILURE);
 		while (elem)
 		{
